@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">sichqu</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="todo">TODO</string>
+    <string name="pris">Pris</string>
 </resources>

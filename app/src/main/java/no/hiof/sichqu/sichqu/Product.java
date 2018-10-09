@@ -6,13 +6,15 @@ public class Product {
 
     private int id;
     private String title, shortDesc;
-    private ImageView image;
+    private int image;
+    private int price;
 
-    public Product(int id, String title, String shortDesc, ImageView image) {
+    public Product(int id, String title, String shortDesc, int image, int price) {
         this.id = id;
         this.title = title;
         this.shortDesc = shortDesc;
         this.image = image;
+        this.price = price;
     }
 
     public int getId() {
@@ -39,11 +41,19 @@ public class Product {
         this.shortDesc = shortDesc;
     }
 
-    public ImageView getImage() {
+    public int getImage() {
         return image;
     }
 
-    public void setImage(ImageView image) {
+    public void setImage(int image) {
         this.image = image;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
     }
 }
