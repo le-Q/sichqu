@@ -45,7 +45,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     }
 
     class ProductViewHolder extends RecyclerView.ViewHolder{
-        
+
         TextView textViewTitle, textViewShortDesc, textViewPrice;
 
         public ProductViewHolder(@NonNull View itemView) {
