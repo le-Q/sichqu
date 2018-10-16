@@ -30,8 +30,12 @@ public class MainActivity extends AppCompatActivity {
                         1,
                         "Melk",
                         "Melk fra Tine",
-                        R.drawable.ic_launcher_background,
                         27));
+        productList.add(
+                new Product(1,
+                        "Salt",
+                        "Fancy salt",
+                        15));
 
         mAdapter = new ProductAdapter(this, productList);
         mRecyclerView.setAdapter(mAdapter);
