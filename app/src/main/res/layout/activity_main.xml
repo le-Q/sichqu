@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-<<<<<<< HEAD
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyleViewListe"
@@ -14,7 +13,6 @@
         android:layout_height="match_parent">
 
     </android.support.v7.widget.RecyclerView>
-=======
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
@@ -37,5 +35,4 @@
         app:layout_constraintTop_toBottomOf="@+id/textView"
         tools:layout_editor_absoluteX="153dp" />
 
->>>>>>> api
 </android.support.constraint.ConstraintLayout>
