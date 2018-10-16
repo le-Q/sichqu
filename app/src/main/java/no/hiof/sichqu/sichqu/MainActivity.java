@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getResponse() {
-        String URL = "https://kolonial.no/api/v1/search/?q=";
+        String URL = "https://kolonial.no/api/v1/search/?q="+cider;
         RequestQueue queue = Volley.newRequestQueue(this);
         JsonObjectRequest request = new JsonObjectRequest
                 (Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
