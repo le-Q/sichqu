@@ -16,6 +16,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import org.json.JSONObject;
@@ -23,8 +24,15 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import no.hiof.sichqu.sichqu.Products.Produkt;
+import no.hiof.sichqu.sichqu.Products.UPC_data;
+
 public class MainActivity extends AppCompatActivity {
     TextView textView;
+    String iste = "Iste grønn te lime";
+    String cider = "Grevens cider skogsbær";
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,18 +43,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void hentAPI(View view) {
-        //getResponse();
-        getName();
+        getResponse();
+        //getName(iste);
     }
 
     private void getResponse() {
-        String URL = "https://kolonial.no/api/v1/products/12061/";
+        String URL = "https://kolonial.no/api/v1/search/?q=";
         RequestQueue queue = Volley.newRequestQueue(this);
         JsonObjectRequest request = new JsonObjectRequest
                 (Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        //textView.setText("Response : " + response.toString());
+                        Gson gson = new Gson();
+                        Produkt produkt = gson.fromJson(response.toString(), Produkt.class);
+                        textView.setText("Response : " + produkt.getProducts()[0].getFull_name());
                         Log.e("Check Error", response.toString());
                     }
                 }, new Response.ErrorListener() {
@@ -68,9 +78,9 @@ public class MainActivity extends AppCompatActivity {
         //request.setRetryPolicy(new DefaultRetryPolicy(15000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_MAX_RETRIES));
         queue.add(request);
     }
-
-    private void getName() {
-        String URL = "https://api.upcdatabase.org/product/0111222333446/098f6bcd4621d373cade4e832627b4f6";
+    /* SKU kode henter
+    private void getName(String skuKode) {
+        String URL = "https://api.upcdatabase.org/product/"+skuKode+"/9E29B3CE1CA7A534EF90DCEC796F94AD";
         RequestQueue queue = Volley.newRequestQueue(this);
         JsonObjectRequest request = new JsonObjectRequest
                 (Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
@@ -78,6 +88,11 @@ public class MainActivity extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         //textView.setText("Response : " + response.toString());
                         Log.e("Check Error", response.toString());
+                        Gson gson = new Gson();
+                        UPC_data upc_produkt = gson.fromJson(response.toString(), UPC_data.class);
+                        Log.e("Check Error", upc_produkt.getUpcnumber());
+                        getResponse(upc_produkt.getTitle());
+
                     }
                 }, new Response.ErrorListener() {
                     @Override
@@ -90,7 +105,6 @@ public class MainActivity extends AppCompatActivity {
                 Map<String, String> map = new HashMap<>();
                 map.put("Content-Type", "application/json");
                 map.put("Accept", "application/json");
-                map.put("User-Agent", "QuangLe_Test");
                 map.put("X-Client-Token", "9E29B3CE1CA7A534EF90DCEC796F94AD");
                 return map;
             }
@@ -98,4 +112,5 @@ public class MainActivity extends AppCompatActivity {
         //request.setRetryPolicy(new DefaultRetryPolicy(15000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_MAX_RETRIES));
         queue.add(request);
     }
+    */
 }
