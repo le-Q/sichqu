@@ -6,6 +6,9 @@ public class Images
 
     private Large large;
 
+    public Images(Thumbnail thumbnail){
+        this.thumbnail = thumbnail;
+    }
     public Thumbnail getThumbnail ()
     {
         return thumbnail;

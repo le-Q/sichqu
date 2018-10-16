@@ -17,6 +17,6 @@ public class Thumbnail
     @Override
     public String toString()
     {
-        return "ClassPojo [url = "+url+"]";
+        return url;
     }
 }

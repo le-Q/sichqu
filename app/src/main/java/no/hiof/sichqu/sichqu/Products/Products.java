@@ -1,5 +1,6 @@
 package no.hiof.sichqu.sichqu.Products;
 
+
 public class Products
 {
     private String gross_unit_price;

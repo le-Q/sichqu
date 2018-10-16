@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import no.hiof.sichqu.sichqu.Products.Products;
 import no.hiof.sichqu.sichqu.Products.Produkt;
 
 
@@ -32,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
 
-    List<Product> productList;
+    List<Products> productList;
 
 
     @Override
@@ -46,17 +47,8 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setHasFixedSize(true);
 
-        productList.add(
-                new Product(
-                        1,
-                        "Melk",
-                        "Melk fra Tine",
-                        27));
-        productList.add(
-                new Product(1,
-                        "Salt",
-                        "Fancy salt",
-                        15));
+        //productList.add(new Products("Melk"));
+        //productList.add(new Products("Salt"));
 
         mAdapter = new ProductAdapter(this, productList);
         mRecyclerView.setAdapter(mAdapter);
@@ -64,12 +56,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void hentAPI(View view) {
-        getResponse();
+        getResponse(cider);
         //getName(iste);
     }
 
-    private void getResponse() {
-        String URL = "https://kolonial.no/api/v1/search/?q="+cider;
+    private void getResponse(String produktNavn) {
+        String URL = "https://kolonial.no/api/v1/search/?q="+produktNavn;
         RequestQueue queue = Volley.newRequestQueue(this);
         JsonObjectRequest request = new JsonObjectRequest
                 (Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
@@ -78,7 +70,11 @@ public class MainActivity extends AppCompatActivity {
                         Gson gson = new Gson();
                         Produkt produkt = gson.fromJson(response.toString(), Produkt.class);
                         textView.setText("Response : " + produkt.getProducts()[0].getFull_name());
+                        productList.add(produkt.getProducts()[0]);
                         Log.e("Check Error", response.toString());
+                        mAdapter = new ProductAdapter(MainActivity.this, productList);
+                        mRecyclerView.setAdapter(mAdapter);
+                        Log.e("Check Error", produkt.getProducts()[0].getImages()[0].getThumbnail().getUrl());
                     }
                 }, new Response.ErrorListener() {
                     @Override
