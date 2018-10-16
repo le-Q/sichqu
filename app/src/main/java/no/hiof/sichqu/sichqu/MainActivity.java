@@ -2,23 +2,14 @@ package no.hiof.sichqu.sichqu;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-<<<<<<< HEAD
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
-
-public class MainActivity extends AppCompatActivity {
-    private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
-
-    List<Product> productList;
-=======
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -41,6 +32,13 @@ import no.hiof.sichqu.sichqu.Products.Produkt;
 import no.hiof.sichqu.sichqu.Products.UPC_data;
 
 public class MainActivity extends AppCompatActivity {
+
+
+public class MainActivity extends AppCompatActivity {
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    List<Product> productList;
+
     TextView textView;
     String iste = "Iste grønn te lime";
     String cider = "Grevens cider skogsbær";
