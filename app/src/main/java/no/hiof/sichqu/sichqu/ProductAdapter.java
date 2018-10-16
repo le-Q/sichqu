@@ -37,8 +37,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         productViewHolder.textViewTitle.setText(product.getTitle());
         productViewHolder.textViewShortDesc.setText(product.getShortDesc());
         productViewHolder.textViewPrice.setText(String.valueOf(product.getPrice()));
-
-        productViewHolder.imageView.setImageDrawable(mCtx.getResources().getDrawable(product.getImage()));
     }
 
     @Override

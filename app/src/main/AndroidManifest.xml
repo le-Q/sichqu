@@ -17,7 +17,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".Main2Activity" />
-        <activity android:name=".addNewItem"></activity>
+        <activity android:name=".addNewItem"
+            android:label="Add new">
+        </activity>
     </application>
 
 </manifest>

@@ -6,4 +6,7 @@
     <string name="pris">Pris</string>
     <string name="lister">lister</string>
     <string name="liste2">liste2</string>
+    <string name="name_input">Name</string>
+    <string name="description_input">Description</string>
+    <string name="add_input">Add</string>
 </resources>
