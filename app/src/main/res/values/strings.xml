@@ -4,4 +4,6 @@
     <string name="description">Description</string>
     <string name="todo">TODO</string>
     <string name="pris">Pris</string>
+    <string name="todo">TODO</string>
+    <string name="lister">lister</string>
 </resources>
