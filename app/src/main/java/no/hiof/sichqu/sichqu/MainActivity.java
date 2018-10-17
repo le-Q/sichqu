@@ -86,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                getResponse(newText);
                 return false;
             }
         });
