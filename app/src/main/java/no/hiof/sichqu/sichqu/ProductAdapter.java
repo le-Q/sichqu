@@ -55,6 +55,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
         TextView textViewTitle;
         ImageView thumbnails;
+        
 
 
         public ProductViewHolder(@NonNull View itemView) {
@@ -62,6 +63,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
             thumbnails = itemView.findViewById(R.id.thumb);
             textViewTitle = itemView.findViewById(R.id.textViewTitle);
+
         }
     }
 
