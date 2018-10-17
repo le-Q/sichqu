@@ -60,8 +60,6 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setHasFixedSize(true);
 
-        productList.add()
-
         mAdapter = new ProductAdapter(this, productList);
         mRecyclerView.setAdapter(mAdapter);
         textView = findViewById(R.id.textView);
