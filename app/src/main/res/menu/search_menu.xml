@@ -3,16 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
 
-
     <item
-        android:id="@+id/search_groc"
-        android:layout_height="wrap_content"
-        android:app.ShowAsAction="always"
-        android:app.actionViewClass="android.widget.SearchView"
-        android:icon="@android:drawable/ic_menu_search"
-        android:title="@string/s_k_p_varer"
-        >
+    android:id="@+id/search_groc"
+    android:layout_height="wrap_content"
+    app:showAsAction="always"
+    app:actionViewClass="android.widget.SearchView"
+    android:icon="@android:drawable/ic_menu_search"
+    android:title="@string/s_k_p_varer"
+    >
 
 
-    </item>
+</item>
 </menu>

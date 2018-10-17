@@ -67,31 +67,22 @@ public class MainActivity extends AppCompatActivity {
         mAdapter = new ProductAdapter(this, productList);
         mRecyclerView.setAdapter(mAdapter);
         textView = findViewById(R.id.textView);
-    }
 
-    public void hentAPI(View view) {
-        getResponse(cider);
-        //getName(iste);
+
+
+
     }
 
     @Override
     public void onContextMenuClosed(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.search_menu, menu);
-        MenuItem item = menu.findItem(R.id.search_groc);
-        SearchView searchView = (SearchView)item.getActionView();
 
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
+    }
 
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
+    public void hentAPI(View view) {
+        getResponse(cider);
+        //getName(iste);
     }
 
     private void getResponse(String produktNavn) {
