@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import com.squareup.picasso.Picasso;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -43,7 +43,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
         productViewHolder.textViewTitle.setText(product.getFull_name());
         //Bitmap bitmap = ImageLoadTask("https://kolonial.no/media/uploads/public/140/274/970674-9ff95-product_detail.jpg");
-        //productViewHolder.thumbnails.setImageBitmap(bitmap);
+
+        Picasso.get().load(product.getImages()[0].getThumbnail().getUrl()).into(productViewHolder.thumbnails);
     }
 
     @Override
@@ -70,11 +71,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     public Bitmap ImageLoadTask(String url) {
         try {
             URL urlConnection = new URL(url);
-            HttpURLConnection connection = (HttpURLConnection) urlConnection.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            //HttpURLConnection connection = (HttpURLConnection) urlConnection.openConnection();
+            //connection.setDoInput(true);
+            //connection.connect();
+            //InputStream input = connection.getInputStream();
+
+            Bitmap myBitmap = BitmapFactory.decodeStream(urlConnection.openConnection().getInputStream());
             return myBitmap;
         } catch (Exception e) {
             e.printStackTrace();
