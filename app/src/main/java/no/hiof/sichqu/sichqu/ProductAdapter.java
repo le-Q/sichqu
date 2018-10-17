@@ -42,8 +42,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         Products product = productList.get(i);
 
         productViewHolder.textViewTitle.setText(product.getFull_name());
-        Bitmap bitmap = ImageLoadTask("https://kolonial.no/media/uploads/public/140/274/970674-9ff95-product_detail.jpg");
-        productViewHolder.thumbnails.setImageBitmap(bitmap);
+        //Bitmap bitmap = ImageLoadTask("https://kolonial.no/media/uploads/public/140/274/970674-9ff95-product_detail.jpg");
+        //productViewHolder.thumbnails.setImageBitmap(bitmap);
     }
 
     @Override

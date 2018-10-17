@@ -79,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         Gson gson = new Gson();
                         Produkt produkt = gson.fromJson(response.toString(), Produkt.class);
-                        textView.setText("Response : " + produkt.getProducts()[0].getFull_name());
                         productList.add(produkt.getProducts()[0]);
                         Log.e("Check Error", response.toString());
                         mAdapter = new ProductAdapter(MainActivity.this, productList);
