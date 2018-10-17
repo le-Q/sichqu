@@ -53,6 +53,18 @@ public class MainActivity extends AppCompatActivity {
         mAdapter = new ProductAdapter(this, productList);
         mRecyclerView.setAdapter(mAdapter);
         textView = findViewById(R.id.textView);
+
+        productList = new ArrayList<>();
+
+        mRecyclerView = findViewById(R.id.recyleViewListe);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setHasFixedSize(true);
+
+        productList.add()
+
+        mAdapter = new ProductAdapter(this, productList);
+        mRecyclerView.setAdapter(mAdapter);
+        textView = findViewById(R.id.textView);
     }
 
     public void hentAPI(View view) {
