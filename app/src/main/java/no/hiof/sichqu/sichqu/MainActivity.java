@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
     public void onContextMenuClosed(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.search_menu, menu);
-
+        
     }
 
     public void hentAPI(View view) {
