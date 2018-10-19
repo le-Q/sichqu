@@ -218,14 +218,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
-<<<<<<< HEAD
-
-    
-=======
-
-
->>>>>>> 837f178b180264038ffd74ea03c8f138f12d6027
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
