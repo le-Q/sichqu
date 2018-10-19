@@ -78,13 +78,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        productList = new ArrayList<>();
+
+        mRecyclerView = findViewById(R.id.recyleViewListe);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setHasFixedSize(true);
+
+        //productList.add(new Products("Melk"));
+        //productList.add(new Products("Salt"));
+
+        mAdapter = new ProductAdapter(this, productList);
+        mRecyclerView.setAdapter(mAdapter);
+        textView = findViewById(R.id.textView);
+
+        productList = new ArrayList<>();
+
+        mRecyclerView = findViewById(R.id.recyleViewListe);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setHasFixedSize(true);
+
+        mAdapter = new ProductAdapter(this, productList);
+        mRecyclerView.setAdapter(mAdapter);
+        textView = findViewById(R.id.textView);
 
         firebaseAuth = FirebaseAuth.getInstance();
 
         if (firebaseAuth.getCurrentUser() != null) {
             //account activity
             finish();
-            startActivity(new Intent(getApplicationContext(), AccountActivity.class));
+            startActivity(new Intent(getApplicationContext(), HandlelisteActivity.class));
         }
 
         progressDialog = new ProgressDialog(this);
@@ -104,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if(firebaseAuth.getCurrentUser() != null){
-                    startActivity(new Intent(MainActivity.this, AccountActivity.class));
+                    startActivity(new Intent(MainActivity.this, HandlelisteActivity.class));
                 }
             }
         };
@@ -141,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()) {
                                 finish();
-                                startActivity(new Intent(getApplicationContext(), AccountActivity.class));
+                                startActivity(new Intent(getApplicationContext(), HandlelisteActivity.class));
                         }else{
                                 Toast.makeText(MainActivity.this, "Could not register... Please try agian", Toast.LENGTH_SHORT).show();
                             }
@@ -155,7 +177,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         public void onClick (View v){
             if (v == buttonRegister) {
                 registerUser();
-                startActivity(new Intent(MainActivity.this, AccountActivity.class));
+                startActivity(new Intent(MainActivity.this, HandlelisteActivity.class));
             }
 
             if (v == textViewSignin) {
@@ -166,36 +188,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (v == buttonSkip) {
                 //Does not work yet
                 finish();
-                startActivity(new Intent(MainActivity.this, AccountActivity.class));
+                startActivity(new Intent(MainActivity.this, HandlelisteActivity.class));
             }
         }
 
 
 
 
-        productList = new ArrayList<>();
 
-        mRecyclerView = findViewById(R.id.recyleViewListe);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setHasFixedSize(true);
 
-        //productList.add(new Products("Melk"));
-        //productList.add(new Products("Salt"));
-
-        mAdapter = new ProductAdapter(this, productList);
-        mRecyclerView.setAdapter(mAdapter);
-        textView = findViewById(R.id.textView);
-
-        productList = new ArrayList<>();
-
-        mRecyclerView = findViewById(R.id.recyleViewListe);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setHasFixedSize(true);
-
-        mAdapter = new ProductAdapter(this, productList);
-        mRecyclerView.setAdapter(mAdapter);
-        textView = findViewById(R.id.textView);
-    
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
