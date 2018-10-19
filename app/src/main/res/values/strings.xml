@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">sichqu</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="todo">TODO</string>
+    <string name="pris">Pris</string>
+    <string name="lister">lister</string>
+    <string name="liste2">liste2</string>
+    <string name="name_input">Name</string>
+    <string name="description_input">Description</string>
+    <string name="add_input">Add</string>
+    <string name="s_k_p_varer">Søk på varer</string>
 </resources>
