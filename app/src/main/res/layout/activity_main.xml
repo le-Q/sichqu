@@ -6,7 +6,12 @@
     android:padding="16dp"
     tools:context=".MainActivity">
 
-
+       <LinearLayout
+           android:layout_centerHorizontal="true"
+           android:layout_centerVertical="true"
+           android:orientation="vertical"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
 
 
        <TextView
@@ -56,4 +61,5 @@
            android:layout_margin="15dp"
            android:text="Skip Login"
            android:textAlignment="center" />
+       </LinearLayout>
 </RelativeLayout>
