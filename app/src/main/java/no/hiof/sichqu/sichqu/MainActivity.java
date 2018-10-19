@@ -1,6 +1,6 @@
 package no.hiof.sichqu.sichqu;
 
-<<<<<<< HEAD
+
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -18,21 +18,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-
-    private Button buttonRegister;
-    private EditText editTextEmail;
-    private EditText editTextPassword;
-    private TextView textViewSignin;
-    private Button buttonSkip;
-
-    private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
-
-    private ProgressDialog progressDialog;
-    private FirebaseAuth firebaseAuth;
-=======
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -61,8 +46,21 @@ import java.util.Map;
 import no.hiof.sichqu.sichqu.Products.Products;
 import no.hiof.sichqu.sichqu.Products.Produkt;
 
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-public class MainActivity extends AppCompatActivity {
+    private Button buttonRegister;
+    private EditText editTextEmail;
+    private EditText editTextPassword;
+    private TextView textViewSignin;
+    private Button buttonSkip;
+
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+
+    private ProgressDialog progressDialog;
+    private FirebaseAuth firebaseAuth;
+
+
     TextView textView;
     String iste = "Iste grønn te lime";
     String cider = "Grevens cider skogsbær";
@@ -73,14 +71,14 @@ public class MainActivity extends AppCompatActivity {
 
     List<Products> productList;
 
->>>>>>> master
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-<<<<<<< HEAD
+
         firebaseAuth = FirebaseAuth.getInstance();
 
         if (firebaseAuth.getCurrentUser() != null) {
@@ -171,10 +169,10 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, AccountActivity.class));
             }
         }
-    }
 
 
-=======
+
+
         productList = new ArrayList<>();
 
         mRecyclerView = findViewById(R.id.recyleViewListe);
@@ -197,7 +195,7 @@ public class MainActivity extends AppCompatActivity {
         mAdapter = new ProductAdapter(this, productList);
         mRecyclerView.setAdapter(mAdapter);
         textView = findViewById(R.id.textView);
-    }
+    
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -297,4 +295,4 @@ public class MainActivity extends AppCompatActivity {
     }
     */
 }
->>>>>>> master
+
