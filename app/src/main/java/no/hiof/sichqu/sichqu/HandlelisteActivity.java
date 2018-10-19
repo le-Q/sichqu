@@ -14,7 +14,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.SearchView;
 import android.widget.TextView;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -24,9 +23,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
-
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -88,39 +85,6 @@ public class HandlelisteActivity extends AppCompatActivity {
         mAdapter = new ProductAdapter(this, productList);
         mRecyclerView.setAdapter(mAdapter);
         textView = findViewById(R.id.textView);
-
-        productList = new ArrayList<>();
-
-        mRecyclerView = findViewById(R.id.recyleViewListe);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setHasFixedSize(true);
-
-        mAdapter = new ProductAdapter(this, productList);
-        mRecyclerView.setAdapter(mAdapter);
-        textView = findViewById(R.id.textView);
-
-        productList = new ArrayList<>();
-
-        mRecyclerView = findViewById(R.id.recyleViewListe);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setHasFixedSize(true);
-
-        //productList.add(new Products("Melk"));
-        //productList.add(new Products("Salt"));
-
-        mAdapter = new ProductAdapter(this, productList);
-        mRecyclerView.setAdapter(mAdapter);
-        textView = findViewById(R.id.textView);
-
-        productList = new ArrayList<>();
-
-        mRecyclerView = findViewById(R.id.recyleViewListe);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setHasFixedSize(true);
-
-        mAdapter = new ProductAdapter(this, productList);
-        mRecyclerView.setAdapter(mAdapter);
-        textView = findViewById(R.id.textView);
     }
 
     @Override
@@ -152,6 +116,7 @@ public class HandlelisteActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    // Teste ved å legge til produkter da man trykker knappen
     public void hentAPI(View view) {
         getResponse(cider);
         //getName(iste);

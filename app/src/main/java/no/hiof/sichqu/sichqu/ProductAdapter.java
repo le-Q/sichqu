@@ -40,8 +40,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         Products product = productList.get(i);
 
         productViewHolder.textViewTitle.setText(product.getFull_name());
-        //Bitmap bitmap = ImageLoadTask("https://kolonial.no/media/uploads/public/140/274/970674-9ff95-product_detail.jpg");
-
         Picasso.get().load(product.getImages()[0].getThumbnail().getUrl()).into(productViewHolder.thumbnails);
     }
 
@@ -51,11 +49,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     }
 
     class ProductViewHolder extends RecyclerView.ViewHolder{
-
         TextView textViewTitle;
         ImageView thumbnails;
-        
-
 
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -66,6 +61,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         }
     }
 
+    //Sender inn en url og gjør det om til en bitmap
     public Bitmap ImageLoadTask(String url) {
         try {
             URL urlConnection = new URL(url);
@@ -73,7 +69,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             //connection.setDoInput(true);
             //connection.connect();
             //InputStream input = connection.getInputStream();
-
             Bitmap myBitmap = BitmapFactory.decodeStream(urlConnection.openConnection().getInputStream());
             return myBitmap;
         } catch (Exception e) {
