@@ -28,7 +28,6 @@
         <activity android:name=".HandlelisteActivity" />
         <activity android:name=".LoginActivity"></activity>
 
-        <activity android:name=".Main2Activity" />
         <activity android:name=".addNewItem"
             android:label="Add new">
         </activity>
