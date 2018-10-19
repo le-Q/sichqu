@@ -13,6 +13,10 @@
        android:orientation="vertical"
        android:layout_width="match_parent"
        android:layout_height="wrap_content">
+<<<<<<< HEAD
+
+=======
+>>>>>>> 837f178b180264038ffd74ea03c8f138f12d6027
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyleViewListe"
@@ -29,8 +33,13 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
         android:onClick="hentAPI"
+<<<<<<< HEAD
+        android:text="Button"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+=======
         android:text="Button" />
 
+>>>>>>> 837f178b180264038ffd74ea03c8f138f12d6027
 
        <TextView
            android:textAlignment="center"

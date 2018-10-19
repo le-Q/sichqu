@@ -78,6 +78,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        productList = new ArrayList<>();
+
+        mRecyclerView = findViewById(R.id.recyleViewListe);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setHasFixedSize(true);
+
+        //productList.add(new Products("Melk"));
+        //productList.add(new Products("Salt"));
+
+        mAdapter = new ProductAdapter(this, productList);
+        mRecyclerView.setAdapter(mAdapter);
+        textView = findViewById(R.id.textView);
+
+        productList = new ArrayList<>();
+
+        mRecyclerView = findViewById(R.id.recyleViewListe);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setHasFixedSize(true);
+
+        mAdapter = new ProductAdapter(this, productList);
+        mRecyclerView.setAdapter(mAdapter);
+        textView = findViewById(R.id.textView);
 
         productList = new ArrayList<>();
 
@@ -196,8 +218,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
+<<<<<<< HEAD
+
+    
+=======
 
 
+>>>>>>> 837f178b180264038ffd74ea03c8f138f12d6027
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
