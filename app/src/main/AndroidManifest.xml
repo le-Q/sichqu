@@ -3,14 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="no.hiof.sichqu.sichqu">
 
-<<<<<<< HEAD
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-feature android:name="android.hardware.camera2"/>
     <uses-feature android:name="android.hardware.camera2.autofocus"/>
-=======
     <uses-permission android:name="android.permission.INTERNET" />
->>>>>>> 22cab17e2aadabbb41c975fa2c767b1cc063b816
 
     <application
         android:allowBackup="true"
