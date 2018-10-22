@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">sichqu</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
     <string name="title">Title</string>
     <string name="description">Description</string>
     <string name="todo">TODO</string>

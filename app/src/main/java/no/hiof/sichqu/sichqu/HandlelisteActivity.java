@@ -2,6 +2,8 @@ package no.hiof.sichqu.sichqu;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -34,6 +36,9 @@ import no.hiof.sichqu.sichqu.Products.Produkt;
 
 public class HandlelisteActivity extends AppCompatActivity {
 
+    private DrawerLayout mDrawerkayout;
+    private ActionBarDrawerToggle mToggle;
+
     TextView textView;
     String iste = "Iste grønn te lime";
     String cider = "Grevens cider skogsbær";
@@ -53,11 +58,18 @@ public class HandlelisteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.handleliste_activity);
 
+        //Lager navigation drawer
+        mDrawerkayout = (DrawerLayout) findViewById(R.id.drawer);
+        mToggle = new ActionBarDrawerToggle(this, mDrawerkayout, R.string.open, R.string.close);
+        mDrawerkayout.addDrawerListener(mToggle);
+        mToggle.syncState();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if(firebaseAuth.getCurrentUser() == null){
+                if (firebaseAuth.getCurrentUser() == null) {
                     finish();
                     startActivity(new Intent(HandlelisteActivity.this, LoginActivity.class));
                 }
@@ -86,6 +98,32 @@ public class HandlelisteActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(mAdapter);
         textView = findViewById(R.id.textView);
     }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (mToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+            switch (item.getItemId()) {
+                case R.id.db:
+                    //Bare la til noe, skal vel endres senere til noe annet?
+                    return true;
+                case R.id.search:
+                    //Få lagt inn search mulighet her også?
+                    return true;
+                case R.id.settings:
+                    //Bare la til noe, skal vel endres senere til noe annet?
+                    return true;
+                case R.id.logOut:
+                    //skal få den til å logge ut, men ikke funnet ut hvordan ennå
+                    mAuth.signOut();
+                    return true;
+         default:
+        return super.onOptionsItemSelected(item);
+    }
+    }
+
 
     @Override
     protected void onStart() {
