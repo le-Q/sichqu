@@ -28,7 +28,11 @@
         <activity android:name=".LoginActivity"></activity>
 
         <activity android:name=".addNewItem"
-            android:label="Add new">
+            android:label="Add new"
+            android:parentActivityName=".HandlelisteActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".HandlelisteActivity" />
         </activity>
 
     </application>

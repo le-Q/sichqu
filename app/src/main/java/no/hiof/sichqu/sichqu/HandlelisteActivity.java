@@ -2,6 +2,7 @@ package no.hiof.sichqu.sichqu;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +13,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.SearchView;
 import android.widget.TextView;
 import com.android.volley.AuthFailureError;
@@ -22,6 +25,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import org.json.JSONObject;
 import java.util.ArrayList;
@@ -31,6 +39,7 @@ import java.util.Map;
 
 import no.hiof.sichqu.sichqu.Products.Products;
 import no.hiof.sichqu.sichqu.Products.Produkt;
+import okhttp3.internal.cache.DiskLruCache;
 
 public class HandlelisteActivity extends AppCompatActivity {
 
@@ -42,11 +51,16 @@ public class HandlelisteActivity extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
     SearchView searchBar;
 
+    private DatabaseReference databaseReference;
+    private ChildEventListener childEventListener;
+
     List<Products> productList;
 
     private Button logOutButton;
+    private ImageButton addNewButton;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +86,9 @@ public class HandlelisteActivity extends AppCompatActivity {
             }
         });
 
+        //New item button
+        addNewButton = (ImageButton) findViewById(R.id.addNewBtn);
+
         //RecycleView
         productList = new ArrayList<>();
 
@@ -85,12 +102,48 @@ public class HandlelisteActivity extends AppCompatActivity {
         mAdapter = new ProductAdapter(this, productList);
         mRecyclerView.setAdapter(mAdapter);
         textView = findViewById(R.id.textView);
+
+        databaseListener();
+    }
+
+    public void databaseListener() {
+
+        childEventListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Product product = dataSnapshot.getValue(Product.class);
+                productList.add(product);
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Product product = dataSnapshot.getValue(Product.class);
+                productList.add(product);
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
+
+
     }
 
     @Override
@@ -156,6 +209,14 @@ public class HandlelisteActivity extends AppCompatActivity {
         //request.setRetryPolicy(new DefaultRetryPolicy(15000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_MAX_RETRIES));
         queue.add(request);
     }
+
+    public void addNewItem(View v) {
+        if (v == addNewButton) {
+            Intent intent = new Intent(this, addNewItem.class);
+            startActivity(intent);
+        }
+    }
+
     /* SKU kode henter
     private void getName(String skuKode) {
         String URL = "https://api.upcdatabase.org/product/"+skuKode+"/9E29B3CE1CA7A534EF90DCEC796F94AD";

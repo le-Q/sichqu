@@ -1,23 +1,28 @@
 package no.hiof.sichqu.sichqu;
 
-public class Product {
+import no.hiof.sichqu.sichqu.Products.Products;
 
-    private int id;
-    private String title, shortDesc;
+public class Product extends Products {
+
+    private String id, title, shortDesc;
     private int price;
     private int bilde;
 
-    public Product(int id, String title, int bilde) {
+    public Product(String title) {
+        this.title = title;
+    }
+
+    public Product(String id, String title, int bilde) {
         this.id = id;
         this.title = title;
         this.bilde = bilde;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

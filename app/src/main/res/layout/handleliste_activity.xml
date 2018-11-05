@@ -42,5 +42,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Logout" />
+
+        <ImageButton
+            android:id="@+id/addNewBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="addNewItem"
+            app:srcCompat="@android:drawable/ic_input_add" />
+
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
