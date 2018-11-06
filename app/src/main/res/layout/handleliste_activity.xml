@@ -5,7 +5,8 @@
     android:id="@+id/drawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HandlelisteActivity">
+    tools:context=".HandlelisteActivity"
+    tools:openDrawer="start">
 
     <android.support.design.widget.NavigationView
         android:layout_width="wrap_content"
@@ -14,6 +15,8 @@
         app:itemTextColor="@android:color/darker_gray"
         app:itemIconTint="@android:color/darker_gray"
         app:menu="@menu/drawermenu"
+        android:id="@+id/nav_view"
+        app:headerLayout="@layout/nav_header"
         android:layout_gravity="start">
 
 
