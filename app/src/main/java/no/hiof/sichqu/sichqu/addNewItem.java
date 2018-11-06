@@ -50,7 +50,6 @@ public class addNewItem extends AppCompatActivity implements View.OnClickListene
 
         databaseReference.child(user.getUid()).child(id).setValue(product);
 
-
         Toast.makeText(this, "Varen lagt til..", Toast.LENGTH_LONG).show();
     }
 

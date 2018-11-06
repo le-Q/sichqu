@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 import com.android.volley.AuthFailureError;
@@ -23,16 +24,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import org.json.JSONObject;
 import java.util.ArrayList;
@@ -49,14 +46,14 @@ public class HandlelisteActivity extends AppCompatActivity {
     String cider = "Grevens cider skogsbær";
 
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
-    SearchView searchBar;
+    private ProductAdapter productAdapter;
+    private ChildEventListener childEventListener;
 
     private DatabaseReference databaseReference;
     private FirebaseDatabase firebaseDatabase;
-    private ChildEventListener childEventListener;
 
     private TextView productTitleTextView;
+    private ListView productListView;
 
     private List<Products> productList;
     private List<String> productListKeys;
@@ -101,23 +98,65 @@ public class HandlelisteActivity extends AppCompatActivity {
         productList = new ArrayList<>();
         productListKeys = new ArrayList<>();
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String uid = user.getUid();
-
         // Query til database
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("produkter");
 
 
-        productTitleTextView = findViewById(R.id.textViewTitle);
+        productTitleTextView = (TextView) findViewById(R.id.textViewTitle);
         
         recycleSetup();
+        databaseRead();
+    }
+
+    private void databaseRead(){
+        childEventListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Product product = dataSnapshot.getValue(Product.class);
+                String productKey = dataSnapshot.getKey();
+                product.setId(productKey);
+
+                if (!productList.contains(product)) {
+                    productList.add(product);
+                    productListKeys.add(productKey);
+                    productAdapter.notifyItemChanged(productList.size()-1);
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Product product = dataSnapshot.getValue(Product.class);
+                String productKey = dataSnapshot.getKey();
+                product.setId(productKey);
+
+                int position = productListKeys.indexOf(productKey);
+
+                productList.set(position, product);
+                productAdapter.notifyItemChanged(position);
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
     }
 
     private void recycleSetup() {
         mRecyclerView = findViewById(R.id.recyleViewListe);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setAdapter(productAdapter);
         mRecyclerView.setHasFixedSize(true);
     }
 
@@ -167,8 +206,8 @@ public class HandlelisteActivity extends AppCompatActivity {
                         Produkt produkt = gson.fromJson(response.toString(), Produkt.class);
                         productList.add(produkt.getProducts()[0]);
                         Log.e("Check Error", response.toString());
-                        mAdapter = new ProductAdapter(HandlelisteActivity.this, productList);
-                        mRecyclerView.setAdapter(mAdapter);
+                        productAdapter = new ProductAdapter(HandlelisteActivity.this, productList);
+                        mRecyclerView.setAdapter(productAdapter);
                         Log.e("Check Error", produkt.getProducts()[0].getImages()[0].getThumbnail().getUrl());
                     }
                 }, new Response.ErrorListener() {

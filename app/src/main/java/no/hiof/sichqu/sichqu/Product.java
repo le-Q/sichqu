@@ -6,12 +6,16 @@ public class Product extends Products {
 
     private String id, title;
 
-    public Product(String title) {
+    public Product() {
+        
+    }
+
+    public Product(String id, String title) {
+        this.id = id;
         this.title = title;
     }
 
-    public Product(String id, String title, int bilde) {
-        this.id = id;
+    public Product(String title) {
         this.title = title;
     }
 
