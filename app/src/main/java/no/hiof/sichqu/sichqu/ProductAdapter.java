@@ -20,6 +20,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     private Context mCtx;
     private List<Products> productList;
+    View mView;
 
     public ProductAdapter(Context mCtx, List<Products> productList) {
         this.mCtx = mCtx;

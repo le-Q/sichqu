@@ -23,12 +23,16 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import org.json.JSONObject;
 import java.util.ArrayList;
@@ -96,64 +100,25 @@ public class HandlelisteActivity extends AppCompatActivity {
 
         productList = new ArrayList<>();
         productListKeys = new ArrayList<>();
-        firebaseAuth = FirebaseAuth.getInstance();
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String uid = user.getUid();
+
+        // Query til database
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference("produkter");
 
 
         productTitleTextView = findViewById(R.id.textViewTitle);
-
-        databaseReader();
+        
         recycleSetup();
-    }
-
-    private void databaseReader() {
-        childEventListener = new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Product product = dataSnapshot.getValue(Product.class);
-                String productKey = dataSnapshot.getKey();
-                product.setId(productKey);
-
-                if (!productList.contains(product)) {
-                    productList.add(product);
-                    productListKeys.add(productKey);
-                    mAdapter.notifyItemInserted(productList.size()-1);
-                }
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Product product = dataSnapshot.getValue(Product.class);
-                String productKey = dataSnapshot.getKey();
-                product.setId(productKey);
-
-                int position = productListKeys.indexOf(productKey);
-
-                productList.set(position, product);
-                mAdapter.notifyItemChanged(position);
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        };
     }
 
     private void recycleSetup() {
         mRecyclerView = findViewById(R.id.recyleViewListe);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new ProductAdapter(this, productList);
         mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setHasFixedSize(true);
     }
 
     @Override
