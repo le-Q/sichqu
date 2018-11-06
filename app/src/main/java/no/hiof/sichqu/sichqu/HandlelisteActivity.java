@@ -13,7 +13,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -29,7 +28,7 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 import org.json.JSONObject;
 import java.util.ArrayList;
@@ -39,11 +38,9 @@ import java.util.Map;
 
 import no.hiof.sichqu.sichqu.Products.Products;
 import no.hiof.sichqu.sichqu.Products.Produkt;
-import okhttp3.internal.cache.DiskLruCache;
 
 public class HandlelisteActivity extends AppCompatActivity {
 
-    TextView textView;
     String iste = "Iste grønn te lime";
     String cider = "Grevens cider skogsbær";
 
@@ -52,14 +49,19 @@ public class HandlelisteActivity extends AppCompatActivity {
     SearchView searchBar;
 
     private DatabaseReference databaseReference;
+    private FirebaseDatabase firebaseDatabase;
     private ChildEventListener childEventListener;
 
-    List<Products> productList;
+    private TextView productTitleTextView;
+
+    private List<Products> productList;
+    private List<String> productListKeys;
 
     private Button logOutButton;
     private ImageButton addNewButton;
-    private FirebaseAuth mAuth;
+    private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+
 
 
     @Override
@@ -67,7 +69,7 @@ public class HandlelisteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.handleliste_activity);
 
-        mAuth = FirebaseAuth.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -82,43 +84,52 @@ public class HandlelisteActivity extends AppCompatActivity {
         logOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mAuth.signOut();
+                firebaseAuth.signOut();
             }
         });
 
         //New item button
         addNewButton = (ImageButton) findViewById(R.id.addNewBtn);
 
-        //RecycleView
-        productList = new ArrayList<>();
-
-        mRecyclerView = findViewById(R.id.recyleViewListe);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setHasFixedSize(true);
-
         //productList.add(new Products("Melk"));
         //productList.add(new Products("Salt"));
 
-        mAdapter = new ProductAdapter(this, productList);
-        mRecyclerView.setAdapter(mAdapter);
-        textView = findViewById(R.id.textView);
+        productList = new ArrayList<>();
+        productListKeys = new ArrayList<>();
+        firebaseAuth = FirebaseAuth.getInstance();
 
-        databaseListener();
+
+        productTitleTextView = findViewById(R.id.textViewTitle);
+
+        databaseReader();
+        recycleSetup();
     }
 
-    public void databaseListener() {
-
+    private void databaseReader() {
         childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Product product = dataSnapshot.getValue(Product.class);
-                productList.add(product);
+                String productKey = dataSnapshot.getKey();
+                product.setId(productKey);
+
+                if (!productList.contains(product)) {
+                    productList.add(product);
+                    productListKeys.add(productKey);
+                    mAdapter.notifyItemInserted(productList.size()-1);
+                }
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Product product = dataSnapshot.getValue(Product.class);
-                productList.add(product);
+                String productKey = dataSnapshot.getKey();
+                product.setId(productKey);
+
+                int position = productListKeys.indexOf(productKey);
+
+                productList.set(position, product);
+                mAdapter.notifyItemChanged(position);
             }
 
             @Override
@@ -138,12 +149,17 @@ public class HandlelisteActivity extends AppCompatActivity {
         };
     }
 
+    private void recycleSetup() {
+        mRecyclerView = findViewById(R.id.recyleViewListe);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mAdapter = new ProductAdapter(this, productList);
+        mRecyclerView.setAdapter(mAdapter);
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
-
-
+        firebaseAuth.addAuthStateListener(mAuthListener);
     }
 
     @Override

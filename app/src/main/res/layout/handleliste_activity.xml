@@ -14,14 +14,11 @@
         android:layout_height="wrap_content">
 
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyleViewListe"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        tools:listitem="@layout/recycler_view_item">
-
-    </android.support.v7.widget.RecyclerView>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyleViewListe"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp" />
     </LinearLayout>
 
     <LinearLayout
