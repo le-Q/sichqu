@@ -2,16 +2,34 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
-<group android:checkableBehavior="single">
-    <item android:id="@+id/nav_db" android:title="dashboard" android:icon="@drawable/ic_dashboard_black_24dp" />
-    <item android:id="@+id/nav_search" android:title="Search" android:icon="@drawable/ic_search" />
-    <item android:id="@+id/nav_settings" android:title="Settings" android:icon="@drawable/ic_settings_black_24dp" />
-    <item android:id="@+id/nav_logOut" android:title="Log out" android:icon="@drawable/ic_exit_to_app_black_24dp"/>
-</group>
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_db"
+            android:icon="@drawable/ic_dashboard_black_24dp"
+            android:title="dashboard" />
+        <item
+            android:id="@+id/nav_search"
+            android:icon="@drawable/ic_search"
+            android:title="Search" />
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_settings_black_24dp"
+            android:title="Settings" />
+        <item
+            android:id="@+id/nav_logOut"
+            android:icon="@drawable/ic_exit_to_app_black_24dp"
+            android:title="Log out" />
+    </group>
     <item android:title="Communicate">
         <menu>
-            <item android:id="@+id/nav_share" android:icon="@drawable/ic_share_black_24dp" android:title="Share"/>
-            <item android:id="@+id/nav_send" android:icon="@drawable/ic_send_black_24dp" android:title="Send"/>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_share_black_24dp"
+                android:title="Share" />
+            <item
+                android:id="@+id/nav_send"
+                android:icon="@drawable/ic_send_black_24dp"
+                android:title="Send" />
         </menu>
     </item>
 </menu>

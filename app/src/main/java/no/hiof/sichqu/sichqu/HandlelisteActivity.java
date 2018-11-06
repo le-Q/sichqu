@@ -39,11 +39,12 @@ import java.util.Map;
 import no.hiof.sichqu.sichqu.Products.Products;
 import no.hiof.sichqu.sichqu.Products.Produkt;
 
-public class HandlelisteActivity extends AppCompatActivity  {
+public class HandlelisteActivity extends AppCompatActivity {
     //implements NavigationView.OnNavigationItemSelectedListener
 
     private DrawerLayout mDrawerlayout;
     private ActionBarDrawerToggle mToggle;
+
 
     TextView textView;
     String iste = "Iste grønn te lime";
@@ -64,6 +65,7 @@ public class HandlelisteActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.handleliste_activity);
 
+
         //Lager navigation drawer
         mDrawerlayout = (DrawerLayout) findViewById(R.id.drawer);
         //NavigationView navigationView = findViewById(R.id.nav_view);
@@ -73,6 +75,7 @@ public class HandlelisteActivity extends AppCompatActivity  {
         mToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        //Sjekker om en bruker er logget inn, hvis ingen brukere er logget inn blir man sendt til loginactivty
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -84,6 +87,7 @@ public class HandlelisteActivity extends AppCompatActivity  {
             }
         };
 
+        //knappen for å logge ut
         logOutButton = (Button) findViewById(R.id.logOut);
         logOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,7 +111,8 @@ public class HandlelisteActivity extends AppCompatActivity  {
         textView = findViewById(R.id.textView);
     }
 
-   /* @Override
+    //Gir en handling til knappene inne i draweren
+   /*@Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
         switch (menuItem.getItemId()){
@@ -146,7 +151,8 @@ public class HandlelisteActivity extends AppCompatActivity  {
         }
     }
 
-    @Override
+    //Gir en handling til knappene inne i draweren
+   @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (mToggle.onOptionsItemSelected(item)) {
             return true;
@@ -184,6 +190,7 @@ public class HandlelisteActivity extends AppCompatActivity  {
         mAuth.addAuthStateListener(mAuthListener);
     }
 
+    //lager toolbar med søkemulighet
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
