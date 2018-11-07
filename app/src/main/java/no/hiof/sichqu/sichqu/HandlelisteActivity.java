@@ -84,14 +84,6 @@ public class HandlelisteActivity extends AppCompatActivity {
             }
         };
 
-        logOutButton = (Button) findViewById(R.id.logOut);
-        logOutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                firebaseAuth.signOut();
-            }
-        });
-
         //New item button
         addNewButton = (ImageButton) findViewById(R.id.addNewFloat);
 
@@ -221,6 +213,14 @@ public class HandlelisteActivity extends AppCompatActivity {
         });
 
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.optLogOut) {
+            firebaseAuth.signOut();
+        }
+        return true;
     }
 
     // Teste ved å legge til produkter da man trykker knappen
