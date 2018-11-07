@@ -17,6 +17,8 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -25,6 +27,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -41,6 +44,8 @@ import no.hiof.sichqu.sichqu.Products.Products;
 import no.hiof.sichqu.sichqu.Products.Produkt;
 
 public class HandlelisteActivity extends AppCompatActivity {
+    private static final String TAG = HandlelisteActivity.class.getSimpleName();
+    private static final int RC_SIGN_IN = 1;
 
     String iste = "Iste grønn te lime";
     String cider = "Grevens cider skogsbær";
@@ -53,16 +58,14 @@ public class HandlelisteActivity extends AppCompatActivity {
     private FirebaseDatabase firebaseDatabase;
 
     private TextView productTitleTextView;
-    private ListView productListView;
 
-    private List<Products> productList;
+    private List<Product> productList;
     private List<String> productListKeys;
 
     private Button logOutButton;
     private ImageButton addNewButton;
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-
 
 
     @Override
@@ -100,11 +103,10 @@ public class HandlelisteActivity extends AppCompatActivity {
 
         // Query til database
         firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference("produkter");
+        databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid());
 
+        productAdapter = new ProductAdapter(getApplicationContext(), productList);
 
-        productTitleTextView = (TextView) findViewById(R.id.textViewTitle);
-        
         recycleSetup();
         databaseRead();
     }
@@ -131,6 +133,7 @@ public class HandlelisteActivity extends AppCompatActivity {
                 product.setId(productKey);
 
                 int position = productListKeys.indexOf(productKey);
+                Log.d(TAG, "OnChildChanged fired");
 
                 productList.set(position, product);
                 productAdapter.notifyItemChanged(position);
@@ -151,13 +154,15 @@ public class HandlelisteActivity extends AppCompatActivity {
 
             }
         };
+        databaseReference.addChildEventListener(childEventListener);
     }
 
     private void recycleSetup() {
         mRecyclerView = findViewById(R.id.recyleViewListe);
+        productAdapter = new ProductAdapter(this, productList);
+
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(productAdapter);
-        mRecyclerView.setHasFixedSize(true);
     }
 
     @Override
@@ -166,6 +171,35 @@ public class HandlelisteActivity extends AppCompatActivity {
         firebaseAuth.addAuthStateListener(mAuthListener);
     }
 
+    /*@Override
+    protected void onResume() {
+        super.onResume();
+
+        if (mAuthListener != null) {
+            firebaseAuth.removeAuthStateListener(mAuthListener);
+        }
+
+        if (childEventListener != null) {
+            databaseReference.removeEventListener(childEventListener);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        if (mAuthListener != null) {
+            firebaseAuth.removeAuthStateListener(mAuthListener);
+        }
+
+        if (childEventListener != null) {
+            databaseReference.removeEventListener(childEventListener);
+        }
+
+        productList.clear();
+        productListKeys.clear();
+        productAdapter.notifyDataSetChanged();
+    }*/
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -176,7 +210,7 @@ public class HandlelisteActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                getResponse(query);
+                //getResponse(query);
                 return false;
             }
 
@@ -191,11 +225,26 @@ public class HandlelisteActivity extends AppCompatActivity {
 
     // Teste ved å legge til produkter da man trykker knappen
     public void hentAPI(View view) {
-        getResponse(cider);
+        //getResponse(cider);
         //getName(iste);
     }
 
-    private void getResponse(String produktNavn) {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RC_SIGN_IN) {
+            if (resultCode == RESULT_OK) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                Toast.makeText(this, "Signed in as " + user.getDisplayName(), Toast.LENGTH_SHORT);
+            } else if (resultCode == RESULT_CANCELED) {
+                Toast.makeText(this, "Sign in canceled", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        }
+    }
+
+    /*private void getResponse(String produktNavn) {
         String URL = "https://kolonial.no/api/v1/search/?q="+produktNavn;
         RequestQueue queue = Volley.newRequestQueue(this);
         JsonObjectRequest request = new JsonObjectRequest
@@ -228,7 +277,7 @@ public class HandlelisteActivity extends AppCompatActivity {
         };
         //request.setRetryPolicy(new DefaultRetryPolicy(15000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_MAX_RETRIES));
         queue.add(request);
-    }
+    }*/
 
     public void addNewItem(View v) {
         if (v == addNewButton) {

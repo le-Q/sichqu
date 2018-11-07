@@ -18,29 +18,30 @@ import no.hiof.sichqu.sichqu.Products.Products;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
 
-    private Context mCtx;
-    private List<Products> productList;
+    private List<Product> productList;
+    private LayoutInflater inflater;
 
-    public ProductAdapter(Context mCtx, List<Products> productList) {
-        this.mCtx = mCtx;
+    public ProductAdapter(Context mCtx, List<Product> productList) {
         this.productList = productList;
+        this.inflater = LayoutInflater.from(mCtx);
     }
 
     @NonNull
     @Override
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        LayoutInflater inflater = LayoutInflater.from(mCtx);
-        View view = inflater.inflate(R.layout.cardview, null);
+        View view = inflater.inflate(R.layout.cardview, viewGroup, false);
         ProductViewHolder holder = new ProductViewHolder(view);
+
         return holder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder productViewHolder, int i) {
-        Products product = productList.get(i);
+        Product product = productList.get(i);
+        productViewHolder.setData(product);
 
-        productViewHolder.textViewTitle.setText(product.getFull_name());
-        Picasso.get().load(product.getImages()[0].getThumbnail().getUrl()).into(productViewHolder.thumbnails);
+        //productViewHolder.textViewTitle.setText(product.getFull_name());
+        //Picasso.get().load(product.getImages()[0].getThumbnail().getUrl()).into(productViewHolder.thumbnails);
     }
 
     @Override
@@ -54,12 +55,18 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
-
             thumbnails = itemView.findViewById(R.id.thumb);
             textViewTitle = itemView.findViewById(R.id.textViewTitle);
+        }
 
+        public void setData(Product currentProd) {
+            this.textViewTitle.setText(currentProd.getTitle());
+
+            thumbnails.setImageResource(R.drawable.poster_placeholder);
         }
     }
+
+
 
     //Sender inn en url og gjør det om til en bitmap
     public Bitmap ImageLoadTask(String url) {
