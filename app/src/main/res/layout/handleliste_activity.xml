@@ -6,6 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".HandlelisteActivity">
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/addNewFloat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="addNewItem"
+        app:fabSize="normal"
+        app:layout_constraintBottom_toBottomOf="@+id/recyleViewListe"
+        app:layout_constraintEnd_toEndOf="@+id/recyleViewListe"
+        app:srcCompat="@android:drawable/ic_input_add" />
+
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="0dp"
@@ -30,15 +44,7 @@
             android:id="@+id/logOut"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Logout" />
-
-        <ImageButton
-            android:id="@+id/addNewBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="addNewItem"
-            app:srcCompat="@android:drawable/ic_input_add" />
+            android:text="@string/logout" />
 
     </LinearLayout>
 

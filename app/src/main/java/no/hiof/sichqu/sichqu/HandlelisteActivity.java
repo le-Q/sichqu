@@ -93,7 +93,7 @@ public class HandlelisteActivity extends AppCompatActivity {
         });
 
         //New item button
-        addNewButton = (ImageButton) findViewById(R.id.addNewBtn);
+        addNewButton = (ImageButton) findViewById(R.id.addNewFloat);
 
         //productList.add(new Products("Melk"));
         //productList.add(new Products("Salt"));

@@ -10,4 +10,6 @@
     <string name="description_input">Description</string>
     <string name="add_input">Legg til vare</string>
     <string name="s_k_p_varer">Søk på varer</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="logout">Logout</string>
 </resources>
