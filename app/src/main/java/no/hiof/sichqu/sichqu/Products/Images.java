@@ -19,19 +19,10 @@ public class Images
         this.thumbnail = thumbnail;
     }
 
-    public Large getLarge ()
-    {
-        return large;
-    }
-
-    public void setLarge (Large large)
-    {
-        this.large = large;
-    }
 
     @Override
     public String toString()
     {
-        return "ClassPojo [thumbnail = "+thumbnail+", large = "+large+"]";
+        return thumbnail.getUrl();
     }
 }

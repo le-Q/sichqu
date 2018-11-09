@@ -44,6 +44,7 @@ import com.google.zxing.integration.android.IntentResult;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -161,7 +162,6 @@ public class HandlelisteActivity extends AppCompatActivity {
 
         skuScan = new IntentIntegrator(this);
         recycleSetup();
-        databaseRead();
     }
 
     private void databaseRead(){
@@ -218,38 +218,6 @@ public class HandlelisteActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(productAdapter);
     }
 
-    //Gir en handling til knappene inne i draweren
-   /*@Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-
-        switch (menuItem.getItemId()){
-            case R.id.nav_db:
-                //Hvis vi ønsker å åpne dashboard så må vi først lage en fragment
-                //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container new DashboardFragment()).commit();
-                break;
-            case R.id.nav_search:
-
-                break;
-            case R.id.nav_settings:
-
-                break;
-            case R.id.nav_logOut:
-                mAuth.signOut();
-                break;
-            case R.id.nav_share:
-                Toast.makeText(this, "share", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.nav_send:
-                Toast.makeText(this, "send", Toast.LENGTH_SHORT).show();
-                break;
-
-        }
-
-        mDrawerlayout.closeDrawer(GravityCompat.START);
-        return true;
-    }*/
-
-   /*
     @Override
     public void onBackPressed() {
         if (mDrawerlayout.isDrawerOpen(GravityCompat.START)) {
@@ -258,7 +226,6 @@ public class HandlelisteActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
-*/
 
 
 
@@ -277,14 +244,7 @@ public class HandlelisteActivity extends AppCompatActivity {
         if (mAuthListener != null) {
             firebaseAuth.removeAuthStateListener(mAuthListener);
         }
-
-        //Fikse slik at den husker listen når man lukker appen og åpner den igjen
-        /*if (childEventListener != null) {
-            databaseReference.removeEventListener(childEventListener);
-        }*/
-        //Når man trykker run kommer listen opp 2 ganger, men når man lukker appen og åpner den igjen kommer bare listen 1 gang, så lage en if å sjekke om listen allerede ligger inne eller ikke?
-        databaseRead();
-
+            databaseRead();
     }
 
    protected void onPause() {
@@ -367,8 +327,8 @@ public class HandlelisteActivity extends AppCompatActivity {
 
     // Teste ved å legge til produkter da man trykker knappen
     public void hentAPI(View view) {
-        //getResponse(cider);
-        getSKU(iste);
+        getResponse(cider);
+        //getSKU(iste);
     }
 
     @Override
@@ -408,11 +368,11 @@ public class HandlelisteActivity extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         Gson gson = new Gson();
                         Produkt produkt = gson.fromJson(response.toString(), Produkt.class);
-                        Products nyPro = produkt.getProducts()[0];
-                        Log.e("Check Error", response.toString());
-                        addNewItem(nyPro);
-
-                        Log.e("Check Error", produkt.getProducts()[0].getImages()[0].getThumbnail().getUrl());
+                        Products nyProdukt = produkt.getProducts()[0];
+                        Log.e("Check Error", nyProdukt.getName());
+                        nyProdukt.setThumbnail(nyProdukt.getImages()[0].getThumbnail().getUrl());
+                        Log.e("Check Error", nyProdukt.getThumbnail());
+                        addNewItem(nyProdukt);
                     }
                 }, new Response.ErrorListener() {
                     @Override

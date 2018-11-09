@@ -1,11 +1,15 @@
 package no.hiof.sichqu.sichqu.Products;
 
 
+import com.google.firebase.database.Exclude;
+
 public class Products {
     private String id;
-    private String gross_price;
     private String name;
     private Images[] images;
+    private String thumbnail;
+
+
 
     public Products(){
     }
@@ -29,16 +33,6 @@ public class Products {
         this.id = id;
     }
 
-    public String getGross_price ()
-    {
-        return gross_price;
-    }
-
-    public void setGross_price (String gross_price)
-    {
-        this.gross_price = gross_price;
-    }
-
     public String getName ()
     {
         return name;
@@ -49,6 +43,7 @@ public class Products {
         this.name = name;
     }
 
+    @Exclude
     public Images[] getImages ()
     {
         return images;
@@ -57,5 +52,13 @@ public class Products {
     public void setImages (Images[] images)
     {
         this.images = images;
+    }
+
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
     }
 }
