@@ -1,9 +1,7 @@
 package no.hiof.sichqu.sichqu.Products;
 
-public class Produkt
-{
+public class Produkt {
     private String[] categories;
-
     private Products[] products;
 
     public String[] getCategories ()
@@ -24,11 +22,5 @@ public class Produkt
     public void setProducts (Products[] products)
     {
         this.products = products;
-    }
-
-    @Override
-    public String toString()
-    {
-        return "ClassPojo [categories = "+categories+", products = "+products+"]";
     }
 }

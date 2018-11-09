@@ -231,9 +231,9 @@ public class HandlelisteActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         firebaseAuth.addAuthStateListener(mAuthListener);
+
     }
 
-    //lager toolbar med søkemulighet
     @Override
     protected void onResume() {
         super.onResume();
@@ -242,10 +242,12 @@ public class HandlelisteActivity extends AppCompatActivity {
             firebaseAuth.removeAuthStateListener(mAuthListener);
         }
 
-        if (childEventListener != null) {
+        if (childEventListener == null) {
             databaseReference.removeEventListener(childEventListener);
         }
+
     }
+
 
     protected void onPause() {
         super.onPause();
@@ -253,11 +255,9 @@ public class HandlelisteActivity extends AppCompatActivity {
         if (mAuthListener != null) {
             firebaseAuth.removeAuthStateListener(mAuthListener);
         }
-
         if (childEventListener != null) {
             databaseReference.removeEventListener(childEventListener);
         }
-
         productList.clear();
         productListKeys.clear();
         productAdapter.notifyDataSetChanged();
@@ -313,7 +313,6 @@ public class HandlelisteActivity extends AppCompatActivity {
             case R.id.scan:
                 skuScan.setOrientationLocked(false);
                 skuScan.initiateScan();
-                Toast.makeText(this, "Dette funker?", Toast.LENGTH_LONG).show();
                 return true;
             case R.id.optLogOut:
                 firebaseAuth.signOut();
@@ -367,8 +366,10 @@ public class HandlelisteActivity extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         Gson gson = new Gson();
                         Produkt produkt = gson.fromJson(response.toString(), Produkt.class);
-                        addNewItem(produkt.getProducts()[0]);
+                        Products nyPro = produkt.getProducts()[0];
                         Log.e("Check Error", response.toString());
+                        addNewItem(nyPro);
+
                         Log.e("Check Error", produkt.getProducts()[0].getImages()[0].getThumbnail().getUrl());
                     }
                 }, new Response.ErrorListener() {
@@ -431,9 +432,8 @@ public class HandlelisteActivity extends AppCompatActivity {
     }
 
     private void addNewItem(Products produkt) {
-        //String id = databaseReference.push().getKey();
-        FirebaseUser user = firebaseAuth.getCurrentUser();
-        databaseReference.child(user.getUid()).setValue(produkt);
+        String id = databaseReference.push().getKey();
+        databaseReference.child(id).setValue(produkt);
 
         Toast.makeText(this, "Varen lagt til..", Toast.LENGTH_LONG).show();
     }
