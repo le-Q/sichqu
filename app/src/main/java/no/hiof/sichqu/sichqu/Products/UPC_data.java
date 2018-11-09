@@ -2,14 +2,6 @@ package no.hiof.sichqu.sichqu.Products;
 
 public class UPC_data
 {
-    private String newupc;
-
-    private String error;
-
-    private String status;
-
-    private String alias;
-
     private String upcnumber;
 
     private String type;
@@ -29,53 +21,6 @@ public class UPC_data
     private String color;
 
     private String description;
-
-    private String age;
-
-    private String brand;
-
-    private String gender;
-
-
-    public String getNewupc ()
-    {
-        return newupc;
-    }
-
-    public void setNewupc (String newupc)
-    {
-        this.newupc = newupc;
-    }
-
-    public String getError ()
-    {
-        return error;
-    }
-
-    public void setError (String error)
-    {
-        this.error = error;
-    }
-
-    public String getStatus ()
-    {
-        return status;
-    }
-
-    public void setStatus (String status)
-    {
-        this.status = status;
-    }
-
-    public String getAlias ()
-    {
-        return alias;
-    }
-
-    public void setAlias (String alias)
-    {
-        this.alias = alias;
-    }
 
     public String getUpcnumber ()
     {
@@ -177,40 +122,10 @@ public class UPC_data
         this.description = description;
     }
 
-    public String getAge ()
-    {
-        return age;
-    }
-
-    public void setAge (String age)
-    {
-        this.age = age;
-    }
-
-    public String getBrand ()
-    {
-        return brand;
-    }
-
-    public void setBrand (String brand)
-    {
-        this.brand = brand;
-    }
-
-    public String getGender ()
-    {
-        return gender;
-    }
-
-    public void setGender (String gender)
-    {
-        this.gender = gender;
-    }
-
 
     @Override
     public String toString()
     {
-        return "ClassPojo [newupc = "+newupc+", error = "+error+", status = "+status+", alias = "+alias+", upcnumber = "+upcnumber+", type = "+type+", size = "+size+", unit = "+unit+", st0s = "+st0s+", title = "+title+", category = "+category+", msrp = "+msrp+", color = "+color+", description = "+description+", age = "+age+", brand = "+brand+", gender = "+gender+"]";
+        return upcnumber;
     }
 }

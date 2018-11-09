@@ -37,7 +37,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         Products product = productList.get(i);
         productViewHolder.setData(product);
 
-        productViewHolder.textViewTitle.setText(product.getFull_name());
+        productViewHolder.textViewTitle.setText(product.getName());
         if (product.getImages() != null)
         Picasso.get().load(product.getImages()[0].getThumbnail().getUrl()).into(productViewHolder.thumbnails);
     }
@@ -58,7 +58,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         }
 
         public void setData(Products currentProd) {
-            this.textViewTitle.setText(currentProd.getFull_name());
+            this.textViewTitle.setText(currentProd.getName());
 
             thumbnails.setImageResource(R.drawable.poster_placeholder);
         }

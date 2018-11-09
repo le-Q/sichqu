@@ -49,6 +49,7 @@ import java.util.List;
 import java.util.Map;
 
 import no.hiof.sichqu.sichqu.Products.Products;
+import no.hiof.sichqu.sichqu.Products.Produkt;
 import no.hiof.sichqu.sichqu.Products.UPC_data;
 
 public class HandlelisteActivity extends AppCompatActivity {
@@ -325,8 +326,8 @@ public class HandlelisteActivity extends AppCompatActivity {
 
     // Teste ved å legge til produkter da man trykker knappen
     public void hentAPI(View view) {
-        //getResponse(cider);
-        getSKU(iste);
+        getResponse(cider);
+        //getSKU(iste);
     }
 
     @Override
@@ -357,7 +358,7 @@ public class HandlelisteActivity extends AppCompatActivity {
         }
     }
 
-    /*private void getResponse(String produktNavn) {
+    private void getResponse(String produktNavn) {
         String URL = "https://kolonial.no/api/v1/search/?q="+produktNavn;
         RequestQueue queue = Volley.newRequestQueue(this);
         JsonObjectRequest request = new JsonObjectRequest
@@ -390,7 +391,7 @@ public class HandlelisteActivity extends AppCompatActivity {
         };
         //request.setRetryPolicy(new DefaultRetryPolicy(15000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_MAX_RETRIES));
         queue.add(request);
-    }*/
+    }
 
     public void addNewItem(View v) {
         if (v == addNewButton) {
