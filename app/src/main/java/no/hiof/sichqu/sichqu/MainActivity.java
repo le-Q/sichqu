@@ -25,7 +25,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText editTextEmail;
     private EditText editTextPassword;
     private TextView textViewSignin;
-    private Button buttonSkip;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private ProgressDialog progressDialog;
@@ -52,11 +51,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         editTextEmail = (EditText) findViewById(R.id.editTextEmail);
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
         textViewSignin = (TextView) findViewById(R.id.textViewSignin);
-        buttonSkip = (Button) findViewById(R.id.buttonSkip);
 
         buttonRegister.setOnClickListener(this);
         textViewSignin.setOnClickListener(this);
-        buttonSkip.setOnClickListener(this);
 
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -122,16 +119,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(this, LoginActivity.class));
             }
 
-            if (v == buttonSkip) {
-                //Does not work yet
-                finish();
-                startActivity(new Intent(MainActivity.this, HandlelisteActivity.class));
-            }
         }
-
-
-
-
-
 }
 
