@@ -2,6 +2,7 @@ package no.hiof.sichqu.sichqu;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +15,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -23,6 +26,9 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+
 import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,11 +37,13 @@ import java.util.Map;
 
 import no.hiof.sichqu.sichqu.Products.Products;
 import no.hiof.sichqu.sichqu.Products.Produkt;
+import no.hiof.sichqu.sichqu.Products.UPC_data;
 
 public class HandlelisteActivity extends AppCompatActivity {
 
     TextView textView;
-    String iste = "Iste grønn te lime";
+    String iste = "7038010001215";
+    String iste2 = "Iste grønn te lime";
     String cider = "Grevens cider skogsbær";
 
     private RecyclerView mRecyclerView;
@@ -47,6 +55,7 @@ public class HandlelisteActivity extends AppCompatActivity {
     private Button logOutButton;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private IntentIntegrator skuScan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,12 +94,42 @@ public class HandlelisteActivity extends AppCompatActivity {
         mAdapter = new ProductAdapter(this, productList);
         mRecyclerView.setAdapter(mAdapter);
         textView = findViewById(R.id.textView);
+        skuScan = new IntentIntegrator(this);
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.scan:
+                skuScan.setOrientationLocked(false);
+                skuScan.initiateScan();
+                Toast.makeText(this, "Dette funker?", Toast.LENGTH_LONG).show();
+                return true;
+            default:
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (result != null) {
+            if (result.getContents() == null ) {
+                Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "Scanned " + result.getContents(), Toast.LENGTH_LONG).show();
+                getSKU(result.getContents());
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     @Override
@@ -113,13 +152,15 @@ public class HandlelisteActivity extends AppCompatActivity {
             }
         });
 
+
+
         return super.onCreateOptionsMenu(menu);
     }
 
     // Teste ved å legge til produkter da man trykker knappen
     public void hentAPI(View view) {
-        getResponse(cider);
-        //getName(iste);
+        //getResponse(cider);
+        getSKU(iste);
     }
 
     private void getResponse(String produktNavn) {
@@ -156,9 +197,9 @@ public class HandlelisteActivity extends AppCompatActivity {
         //request.setRetryPolicy(new DefaultRetryPolicy(15000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_MAX_RETRIES));
         queue.add(request);
     }
-    /* SKU kode henter
-    private void getName(String skuKode) {
-        String URL = "https://api.upcdatabase.org/product/"+skuKode+"/9E29B3CE1CA7A534EF90DCEC796F94AD";
+    /* SKU kode henter */
+    private void getSKU(String skuKode) {
+        String URL = "https://api.upcdatabase.org/product/"+skuKode+"/D12DA15919D28F8FD6C146D1F14268EA";
         RequestQueue queue = Volley.newRequestQueue(this);
         JsonObjectRequest request = new JsonObjectRequest
                 (Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
@@ -168,9 +209,10 @@ public class HandlelisteActivity extends AppCompatActivity {
                         Log.e("Check Error", response.toString());
                         Gson gson = new Gson();
                         UPC_data upc_produkt = gson.fromJson(response.toString(), UPC_data.class);
-                        Log.e("Check Error", upc_produkt.getUpcnumber());
-                        getResponse(upc_produkt.getTitle());
-
+                        //getResponse(upc_produkt.getTitle());
+                        productList.add(new Products(upc_produkt.getUpcnumber(), upc_produkt.getTitle()));
+                        mAdapter = new ProductAdapter(HandlelisteActivity.this, productList);
+                        mRecyclerView.setAdapter(mAdapter);
                     }
                 }, new Response.ErrorListener() {
                     @Override
@@ -183,12 +225,10 @@ public class HandlelisteActivity extends AppCompatActivity {
                 Map<String, String> map = new HashMap<>();
                 map.put("Content-Type", "application/json");
                 map.put("Accept", "application/json");
-                map.put("X-Client-Token", "9E29B3CE1CA7A534EF90DCEC796F94AD");
+                map.put("X-Client-Token", "D12DA15919D28F8FD6C146D1F14268EA");
                 return map;
             }
         };
-        //request.setRetryPolicy(new DefaultRetryPolicy(15000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_MAX_RETRIES));
         queue.add(request);
     }
-    */
 }

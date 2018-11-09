@@ -33,6 +33,11 @@ public class Products
 
     private String full_name;
 
+    public Products(String id, String name) {
+        this.id = id;
+        this.full_name = name;
+    }
+
     public String getGross_unit_price ()
     {
         return gross_unit_price;

@@ -40,6 +40,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         Products product = productList.get(i);
 
         productViewHolder.textViewTitle.setText(product.getFull_name());
+        if (product.getImages() != null)
         Picasso.get().load(product.getImages()[0].getThumbnail().getUrl()).into(productViewHolder.thumbnails);
     }
 

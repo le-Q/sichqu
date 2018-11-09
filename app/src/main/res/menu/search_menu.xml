@@ -14,6 +14,7 @@
         android:id="@+id/scan"
         android:title="Scan"
         android:icon="@drawable/ic_code"
+        app:actionViewClass="android.widget.ScanView"
         app:showAsAction="always">
 
     </item>
