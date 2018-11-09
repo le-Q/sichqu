@@ -33,13 +33,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".HandlelisteActivity" />
 
-        <activity
-            android:name=".HandlelisteActivity"></activity>
-
-        <activity android:name=".LoginActivity"></activity>
-
-        <activity android:name=".addNewItem"
-            android:label="Add new">
         </activity>
         <activity android:name="com.journeyapps.barcodescanner.CaptureActivity"
             android:screenOrientation="fullSensor"
