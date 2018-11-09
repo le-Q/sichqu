@@ -180,7 +180,6 @@ public class HandlelisteActivity extends AppCompatActivity {
         }
     }
 
-
     protected void onPause() {
         super.onPause();
 
