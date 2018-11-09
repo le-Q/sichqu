@@ -94,8 +94,41 @@ public class HandlelisteActivity extends AppCompatActivity {
 
         //Lager navigation drawer
         mDrawerlayout = (DrawerLayout) findViewById(R.id.drawer);
-        //NavigationView navigationView = findViewById(R.id.nav_view);
-        //navigationView.setNavigationItemSelectedListener(this);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                menuItem.setChecked(true);
+                mDrawerlayout.closeDrawers();
+
+                switch (menuItem.getItemId()) {
+                    case R.id.nav_db:
+                        //Hvis vi ønsker å åpne dashboard så må vi først lage en fragment
+                        //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container new DashboardFragment()).commit();
+                        break;
+                    case R.id.nav_search:
+
+                        break;
+                    case R.id.nav_settings:
+
+                        break;
+                    case R.id.nav_logOut:
+                        firebaseAuth.signOut();
+                        break;
+                    case R.id.nav_share:
+                        Toast.makeText(HandlelisteActivity.this, "share", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.nav_send:
+                        Toast.makeText(HandlelisteActivity.this, "send", Toast.LENGTH_SHORT).show();
+                        break;
+            }
+            return true;
+            }
+        });
+
+
+
         mToggle = new ActionBarDrawerToggle(this, mDrawerlayout, R.string.open, R.string.close);
         mDrawerlayout.addDrawerListener(mToggle);
         mToggle.syncState();
@@ -111,6 +144,8 @@ public class HandlelisteActivity extends AppCompatActivity {
                 }
             }
         };
+
+
 
         //New item button
         addNewButton = (ImageButton) findViewById(R.id.addNewFloat);
@@ -214,6 +249,7 @@ public class HandlelisteActivity extends AppCompatActivity {
         return true;
     }*/
 
+   /*
     @Override
     public void onBackPressed() {
         if (mDrawerlayout.isDrawerOpen(GravityCompat.START)) {
@@ -222,7 +258,7 @@ public class HandlelisteActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
-
+*/
 
 
 
@@ -242,18 +278,11 @@ public class HandlelisteActivity extends AppCompatActivity {
             firebaseAuth.removeAuthStateListener(mAuthListener);
         }
 
-        if (childEventListener == null) {
-            databaseReference.removeEventListener(childEventListener);
-        }
-
-    }
-
-
-    protected void onPause() {
         //Fikse slik at den husker listen når man lukker appen og åpner den igjen
         /*if (childEventListener != null) {
             databaseReference.removeEventListener(childEventListener);
         }*/
+
     }
 
    protected void onPause() {
@@ -269,6 +298,7 @@ public class HandlelisteActivity extends AppCompatActivity {
         productListKeys.clear();
         productAdapter.notifyDataSetChanged();
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -279,7 +309,7 @@ public class HandlelisteActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                //getResponse(query);
+                getResponse(query);
                 return false;
             }
 
@@ -296,6 +326,9 @@ public class HandlelisteActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             //Gir en handling til knappene inne i draweren
+            case android.R.id.home:
+                mDrawerlayout.openDrawer(GravityCompat.START);
+                return true;
             case R.id.nav_db:
                 //Hvis vi ønsker å åpne dashboard så må vi først lage en fragment
                 //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container new DashboardFragment()).commit();
