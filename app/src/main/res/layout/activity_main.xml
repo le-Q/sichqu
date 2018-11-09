@@ -53,13 +53,5 @@
            android:id="@+id/textViewSignin"
            android:layout_width="match_parent"
            android:layout_height="wrap_content" />
-
-       <Button
-           android:id="@+id/buttonSkip"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:layout_margin="15dp"
-           android:text="Skip Login"
-           android:textAlignment="center" />
        </LinearLayout>
 </RelativeLayout>
