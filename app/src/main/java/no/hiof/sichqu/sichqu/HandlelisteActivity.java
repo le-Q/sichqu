@@ -102,6 +102,7 @@ public class HandlelisteActivity extends AppCompatActivity {
 
         productAdapter = new ProductAdapter(getApplicationContext(), productList);
 
+        skuScan = new IntentIntegrator(this);
         recycleSetup();
         databaseRead();
     }
