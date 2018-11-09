@@ -4,6 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +21,7 @@ import android.widget.ImageButton;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -49,6 +54,11 @@ import no.hiof.sichqu.sichqu.Products.UPC_data;
 public class HandlelisteActivity extends AppCompatActivity {
     private static final String TAG = HandlelisteActivity.class.getSimpleName();
     private static final int RC_SIGN_IN = 1;
+    //implements NavigationView.OnNavigationItemSelectedListener
+
+    private DrawerLayout mDrawerlayout;
+    private ActionBarDrawerToggle mToggle;
+
 
     TextView textView;
     String iste = "7038010001215";
@@ -80,10 +90,22 @@ public class HandlelisteActivity extends AppCompatActivity {
         setContentView(R.layout.handleliste_activity);
 
         firebaseAuth = FirebaseAuth.getInstance();
+
+        //Lager navigation drawer
+        mDrawerlayout = (DrawerLayout) findViewById(R.id.drawer);
+        //NavigationView navigationView = findViewById(R.id.nav_view);
+        //navigationView.setNavigationItemSelectedListener(this);
+        mToggle = new ActionBarDrawerToggle(this, mDrawerlayout, R.string.open, R.string.close);
+        mDrawerlayout.addDrawerListener(mToggle);
+        mToggle.syncState();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        //Sjekker om en bruker er logget inn, hvis ingen brukere er logget inn blir man sendt til loginactivty
+        mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if(firebaseAuth.getCurrentUser() == null){
+                if (firebaseAuth.getCurrentUser() == null) {
                     finish();
                     startActivity(new Intent(HandlelisteActivity.this, LoginActivity.class));
                 }
@@ -161,12 +183,86 @@ public class HandlelisteActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(productAdapter);
     }
 
+    //Gir en handling til knappene inne i draweren
+   /*@Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+
+        switch (menuItem.getItemId()){
+            case R.id.nav_db:
+                //Hvis vi ønsker å åpne dashboard så må vi først lage en fragment
+                //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container new DashboardFragment()).commit();
+                break;
+            case R.id.nav_search:
+
+                break;
+            case R.id.nav_settings:
+
+                break;
+            case R.id.nav_logOut:
+                mAuth.signOut();
+                break;
+            case R.id.nav_share:
+                Toast.makeText(this, "share", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.nav_send:
+                Toast.makeText(this, "send", Toast.LENGTH_SHORT).show();
+                break;
+
+        }
+
+        mDrawerlayout.closeDrawer(GravityCompat.START);
+        return true;
+    }*/
+
+    @Override
+    public void onBackPressed() {
+        if (mDrawerlayout.isDrawerOpen(GravityCompat.START)) {
+            mDrawerlayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    //Gir en handling til knappene inne i draweren
+   @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (mToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+            switch (item.getItemId()) {
+                case R.id.nav_db:
+                    //Hvis vi ønsker å åpne dashboard så må vi først lage en fragment
+                    //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container new DashboardFragment()).commit();
+                    break;
+                case R.id.nav_search:
+
+                    break;
+                case R.id.nav_settings:
+
+                    break;
+                case R.id.nav_logOut:
+                    mAuth.signOut();
+                    break;
+                case R.id.nav_share:
+                    Toast.makeText(this, "share", Toast.LENGTH_SHORT).show();
+                    break;
+                case R.id.nav_send:
+                    Toast.makeText(this, "send", Toast.LENGTH_SHORT).show();
+                    break;
+
+    }
+        return super.onOptionsItemSelected(item);
+
+    }
+
+
     @Override
     protected void onStart() {
         super.onStart();
         firebaseAuth.addAuthStateListener(mAuthListener);
     }
 
+    //lager toolbar med søkemulighet
     @Override
     protected void onResume() {
         super.onResume();
