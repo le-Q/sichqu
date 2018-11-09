@@ -101,7 +101,6 @@ public class HandlelisteActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Sjekker om en bruker er logget inn, hvis ingen brukere er logget inn blir man sendt til loginactivty
-        mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -223,37 +222,8 @@ public class HandlelisteActivity extends AppCompatActivity {
         }
     }
 
-    //Gir en handling til knappene inne i draweren
-   @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (mToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-            switch (item.getItemId()) {
-                case R.id.nav_db:
-                    //Hvis vi ønsker å åpne dashboard så må vi først lage en fragment
-                    //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container new DashboardFragment()).commit();
-                    break;
-                case R.id.nav_search:
 
-                    break;
-                case R.id.nav_settings:
 
-                    break;
-                case R.id.nav_logOut:
-                    mAuth.signOut();
-                    break;
-                case R.id.nav_share:
-                    Toast.makeText(this, "share", Toast.LENGTH_SHORT).show();
-                    break;
-                case R.id.nav_send:
-                    Toast.makeText(this, "send", Toast.LENGTH_SHORT).show();
-                    break;
-
-    }
-        return super.onOptionsItemSelected(item);
-
-    }
 
 
     @Override
@@ -311,14 +281,34 @@ public class HandlelisteActivity extends AppCompatActivity {
             }
         });
 
-
-
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            //Gir en handling til knappene inne i draweren
+            case R.id.nav_db:
+                //Hvis vi ønsker å åpne dashboard så må vi først lage en fragment
+                //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container new DashboardFragment()).commit();
+                break;
+            case R.id.nav_search:
+
+                break;
+            case R.id.nav_settings:
+
+                break;
+            case R.id.nav_logOut:
+                firebaseAuth.signOut();
+                break;
+            case R.id.nav_share:
+                Toast.makeText(this, "share", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.nav_send:
+                Toast.makeText(this, "send", Toast.LENGTH_SHORT).show();
+                break;
+
+            // Handling av actionbar knapper
             case R.id.scan:
                 skuScan.setOrientationLocked(false);
                 skuScan.initiateScan();
@@ -330,6 +320,7 @@ public class HandlelisteActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+        return super.onOptionsItemSelected(item);
     }
 
     // Teste ved å legge til produkter da man trykker knappen
