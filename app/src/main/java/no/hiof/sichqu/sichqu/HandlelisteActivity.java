@@ -245,10 +245,9 @@ public class HandlelisteActivity extends AppCompatActivity {
             firebaseAuth.removeAuthStateListener(mAuthListener);
         }
 
-        //Fikse slik at den husker listen når man lukker appen og åpner den igjen
-        /*if (childEventListener != null) {
-            databaseReference.removeEventListener(childEventListener);
-        }*/
+        //Når man trykker run kommer listen opp 2 ganger, men når man lukker appen og åpner den igjen kommer bare listen 1 gang, så lage en if å sjekke om listen allerede ligger inne eller ikke?
+        databaseRead();
+
     }
 
    protected void onPause() {
