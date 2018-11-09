@@ -1,10 +1,10 @@
 package no.hiof.sichqu.sichqu;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,13 +37,13 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import no.hiof.sichqu.sichqu.Products.Products;
-import no.hiof.sichqu.sichqu.Products.Produkt;
 import no.hiof.sichqu.sichqu.Products.UPC_data;
 
 public class HandlelisteActivity extends AppCompatActivity {
@@ -65,7 +64,7 @@ public class HandlelisteActivity extends AppCompatActivity {
 
     private TextView productTitleTextView;
 
-    private List<Product> productList;
+    private List<Products> productList;
     private List<String> productListKeys;
 
     private Button logOutButton;
@@ -94,9 +93,6 @@ public class HandlelisteActivity extends AppCompatActivity {
         //New item button
         addNewButton = (ImageButton) findViewById(R.id.addNewFloat);
 
-        //productList.add(new Products("Melk"));
-        //productList.add(new Products("Salt"));
-
         productList = new ArrayList<>();
         productListKeys = new ArrayList<>();
 
@@ -114,7 +110,7 @@ public class HandlelisteActivity extends AppCompatActivity {
         childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Product product = dataSnapshot.getValue(Product.class);
+                Products product = dataSnapshot.getValue(Products.class);
                 String productKey = dataSnapshot.getKey();
                 product.setId(productKey);
 
@@ -127,7 +123,7 @@ public class HandlelisteActivity extends AppCompatActivity {
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Product product = dataSnapshot.getValue(Product.class);
+                Products product = dataSnapshot.getValue(Products.class);
                 String productKey = dataSnapshot.getKey();
                 product.setId(productKey);
 
@@ -146,13 +142,6 @@ public class HandlelisteActivity extends AppCompatActivity {
             @Override
             public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-<<<<<<< HEAD
-        mAdapter = new ProductAdapter(this, productList);
-        mRecyclerView.setAdapter(mAdapter);
-        textView = findViewById(R.id.textView);
-        skuScan = new IntentIntegrator(this);
-
-=======
             }
 
             @Override
@@ -169,7 +158,6 @@ public class HandlelisteActivity extends AppCompatActivity {
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(productAdapter);
->>>>>>> NewItem
     }
 
     @Override
@@ -178,7 +166,7 @@ public class HandlelisteActivity extends AppCompatActivity {
         firebaseAuth.addAuthStateListener(mAuthListener);
     }
 
-    /*@Override
+    @Override
     protected void onResume() {
         super.onResume();
 
@@ -191,35 +179,7 @@ public class HandlelisteActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.scan:
-                skuScan.setOrientationLocked(false);
-                skuScan.initiateScan();
-                Toast.makeText(this, "Dette funker?", Toast.LENGTH_LONG).show();
-                return true;
-            default:
-            return super.onOptionsItemSelected(item);
-        }
-    }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if (result != null) {
-            if (result.getContents() == null ) {
-                Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(this, "Scanned " + result.getContents(), Toast.LENGTH_LONG).show();
-                getSKU(result.getContents());
-            }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data);
-        }
-    }
-
-=======
     protected void onPause() {
         super.onPause();
 
@@ -234,8 +194,7 @@ public class HandlelisteActivity extends AppCompatActivity {
         productList.clear();
         productListKeys.clear();
         productAdapter.notifyDataSetChanged();
-    }*/
->>>>>>> NewItem
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -263,20 +222,24 @@ public class HandlelisteActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.optLogOut) {
-            firebaseAuth.signOut();
+        switch (item.getItemId()) {
+            case R.id.scan:
+                skuScan.setOrientationLocked(false);
+                skuScan.initiateScan();
+                Toast.makeText(this, "Dette funker?", Toast.LENGTH_LONG).show();
+                return true;
+            case R.id.optLogOut:
+                firebaseAuth.signOut();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return true;
     }
 
     // Teste ved å legge til produkter da man trykker knappen
     public void hentAPI(View view) {
         //getResponse(cider);
-<<<<<<< HEAD
         getSKU(iste);
-=======
-        //getName(iste);
->>>>>>> NewItem
     }
 
     @Override
@@ -291,6 +254,19 @@ public class HandlelisteActivity extends AppCompatActivity {
                 Toast.makeText(this, "Sign in canceled", Toast.LENGTH_SHORT).show();
                 finish();
             }
+        }
+
+        // Scan knapp trykket
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (result != null) {
+            if (result.getContents() == null ) {
+                Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "Scanned " + result.getContents(), Toast.LENGTH_LONG).show();
+                getSKU(result.getContents());
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
@@ -349,8 +325,8 @@ public class HandlelisteActivity extends AppCompatActivity {
                         UPC_data upc_produkt = gson.fromJson(response.toString(), UPC_data.class);
                         //getResponse(upc_produkt.getTitle());
                         productList.add(new Products(upc_produkt.getUpcnumber(), upc_produkt.getTitle()));
-                        mAdapter = new ProductAdapter(HandlelisteActivity.this, productList);
-                        mRecyclerView.setAdapter(mAdapter);
+                        productAdapter = new ProductAdapter(HandlelisteActivity.this, productList);
+                        mRecyclerView.setAdapter(productAdapter);
                     }
                 }, new Response.ErrorListener() {
                     @Override

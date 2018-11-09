@@ -1,8 +1,6 @@
 package no.hiof.sichqu.sichqu;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,17 +9,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.squareup.picasso.Picasso;
-import java.net.URL;
 import java.util.List;
 
 import no.hiof.sichqu.sichqu.Products.Products;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
 
-    private List<Product> productList;
+    private List<Products> productList;
     private LayoutInflater inflater;
 
-    public ProductAdapter(Context mCtx, List<Product> productList) {
+    public ProductAdapter(Context mCtx, List<Products> productList) {
         this.productList = productList;
         this.inflater = LayoutInflater.from(mCtx);
     }
@@ -37,17 +34,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder productViewHolder, int i) {
-        Product product = productList.get(i);
+        Products product = productList.get(i);
         productViewHolder.setData(product);
 
-<<<<<<< HEAD
         productViewHolder.textViewTitle.setText(product.getFull_name());
         if (product.getImages() != null)
         Picasso.get().load(product.getImages()[0].getThumbnail().getUrl()).into(productViewHolder.thumbnails);
-=======
-        //productViewHolder.textViewTitle.setText(product.getFull_name());
-        //Picasso.get().load(product.getImages()[0].getThumbnail().getUrl()).into(productViewHolder.thumbnails);
->>>>>>> NewItem
     }
 
     @Override
@@ -65,28 +57,10 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             textViewTitle = itemView.findViewById(R.id.textViewTitle);
         }
 
-        public void setData(Product currentProd) {
-            this.textViewTitle.setText(currentProd.getTitle());
+        public void setData(Products currentProd) {
+            this.textViewTitle.setText(currentProd.getFull_name());
 
             thumbnails.setImageResource(R.drawable.poster_placeholder);
-        }
-    }
-
-
-
-    //Sender inn en url og gjør det om til en bitmap
-    public Bitmap ImageLoadTask(String url) {
-        try {
-            URL urlConnection = new URL(url);
-            //HttpURLConnection connection = (HttpURLConnection) urlConnection.openConnection();
-            //connection.setDoInput(true);
-            //connection.connect();
-            //InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(urlConnection.openConnection().getInputStream());
-            return myBitmap;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
         }
     }
 }
