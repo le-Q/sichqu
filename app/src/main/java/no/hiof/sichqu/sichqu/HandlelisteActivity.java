@@ -250,6 +250,13 @@ public class HandlelisteActivity extends AppCompatActivity {
 
 
     protected void onPause() {
+        //Fikse slik at den husker listen når man lukker appen og åpner den igjen
+        /*if (childEventListener != null) {
+            databaseReference.removeEventListener(childEventListener);
+        }*/
+    }
+
+   protected void onPause() {
         super.onPause();
 
         if (mAuthListener != null) {
@@ -325,8 +332,8 @@ public class HandlelisteActivity extends AppCompatActivity {
 
     // Teste ved å legge til produkter da man trykker knappen
     public void hentAPI(View view) {
-        getResponse(cider);
-        //getSKU(iste);
+        //getResponse(cider);
+        getSKU(iste);
     }
 
     @Override
