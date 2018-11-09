@@ -367,10 +367,8 @@ public class HandlelisteActivity extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         Gson gson = new Gson();
                         Produkt produkt = gson.fromJson(response.toString(), Produkt.class);
-                        productList.add(produkt.getProducts()[0]);
+                        addNewItem(produkt.getProducts()[0]);
                         Log.e("Check Error", response.toString());
-                        productAdapter = new ProductAdapter(HandlelisteActivity.this, productList);
-                        mRecyclerView.setAdapter(productAdapter);
                         Log.e("Check Error", produkt.getProducts()[0].getImages()[0].getThumbnail().getUrl());
                     }
                 }, new Response.ErrorListener() {
@@ -412,9 +410,7 @@ public class HandlelisteActivity extends AppCompatActivity {
                         Gson gson = new Gson();
                         UPC_data upc_produkt = gson.fromJson(response.toString(), UPC_data.class);
                         //getResponse(upc_produkt.getTitle());
-                        productList.add(new Products(upc_produkt.getUpcnumber(), upc_produkt.getTitle()));
-                        productAdapter = new ProductAdapter(HandlelisteActivity.this, productList);
-                        mRecyclerView.setAdapter(productAdapter);
+                        addNewItem(new Products(upc_produkt.getUpcnumber(), upc_produkt.getTitle()));
                     }
                 }, new Response.ErrorListener() {
                     @Override
@@ -432,5 +428,13 @@ public class HandlelisteActivity extends AppCompatActivity {
             }
         };
         queue.add(request);
+    }
+
+    private void addNewItem(Products produkt) {
+        //String id = databaseReference.push().getKey();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        databaseReference.child(user.getUid()).setValue(produkt);
+
+        Toast.makeText(this, "Varen lagt til..", Toast.LENGTH_LONG).show();
     }
 }

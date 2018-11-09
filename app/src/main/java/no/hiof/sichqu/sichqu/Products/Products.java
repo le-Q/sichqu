@@ -7,6 +7,9 @@ public class Products {
     private String name;
     private Images[] images;
 
+    public Products(){
+    }
+
     public Products(String name) {
         this.name = name;
     }
