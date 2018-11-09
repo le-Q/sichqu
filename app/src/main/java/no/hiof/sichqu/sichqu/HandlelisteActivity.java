@@ -99,6 +99,8 @@ public class HandlelisteActivity extends AppCompatActivity {
         mToggle = new ActionBarDrawerToggle(this, mDrawerlayout, R.string.open, R.string.close);
         mDrawerlayout.addDrawerListener(mToggle);
         mToggle.syncState();
+        
+        //Knappen dukker opp, men fungerer ikke etter merge (må fysisk dra ut navigation draweren)
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Sjekker om en bruker er logget inn, hvis ingen brukere er logget inn blir man sendt til loginactivty
@@ -234,20 +236,22 @@ public class HandlelisteActivity extends AppCompatActivity {
     }
 
     //lager toolbar med søkemulighet
-    @Override
+   @Override
     protected void onResume() {
         super.onResume();
+
 
         if (mAuthListener != null) {
             firebaseAuth.removeAuthStateListener(mAuthListener);
         }
 
-        if (childEventListener != null) {
+        //Fikse slik at den husker listen når man lukker appen og åpner den igjen
+        /*if (childEventListener != null) {
             databaseReference.removeEventListener(childEventListener);
-        }
+        }*/
     }
 
-    protected void onPause() {
+   protected void onPause() {
         super.onPause();
 
         if (mAuthListener != null) {
@@ -326,8 +330,8 @@ public class HandlelisteActivity extends AppCompatActivity {
 
     // Teste ved å legge til produkter da man trykker knappen
     public void hentAPI(View view) {
-        getResponse(cider);
-        //getSKU(iste);
+        //getResponse(cider);
+        getSKU(iste);
     }
 
     @Override
