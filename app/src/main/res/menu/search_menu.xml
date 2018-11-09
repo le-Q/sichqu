@@ -3,18 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/optLogOut"
+        android:title="Logout" />
+    <item
         android:id="@+id/searchmenu"
-        android:title="Search"
         android:icon="@drawable/ic_search"
+        android:title="Search"
         app:actionViewClass="android.widget.SearchView"
         app:showAsAction="always">
 
     </item>
     <item
         android:id="@+id/scan"
-        android:title="Scan"
         android:icon="@drawable/ic_code"
         app:actionViewClass="android.widget.ScanView"
+        android:title="Scan"
         app:showAsAction="always">
 
     </item>

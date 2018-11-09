@@ -19,12 +19,10 @@ android {
 }
 
 dependencies {
-    implementation 'com.google.firebase:firebase-core:16.0.4'
-
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.google.firebase:firebase-core:16.0.5'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     //noinspection GradleCompatible
     implementation 'com.google.firebase:firebase-auth:16.0.5'
-
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
     //noinspection GradleCompatible
     implementation fileTree(include: ['*.jar'], dir: 'libs')
@@ -41,5 +39,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
+    implementation 'com.google.firebase:firebase-database:16.0.4'
+    implementation 'com.firebaseui:firebase-ui-database:2.1.0'
 }
 apply plugin: 'com.google.gms.google-services'
