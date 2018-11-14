@@ -271,7 +271,7 @@ public class HandlelisteActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                getResponse(query);
+                getProdukt(query, true);
                 return false;
             }
 
@@ -327,7 +327,7 @@ public class HandlelisteActivity extends AppCompatActivity {
 
     // Teste ved å legge til produkter da man trykker knappen
     public void hentAPI(View view) {
-        getResponse(cider);
+        getProdukt(cider, true);
         //getSKU(iste);
     }
 
@@ -352,46 +352,11 @@ public class HandlelisteActivity extends AppCompatActivity {
                 Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(this, "Scanned " + result.getContents(), Toast.LENGTH_LONG).show();
-                getSKU(result.getContents());
+                getProdukt(result.getContents(), false);
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
-    }
-
-    private void getResponse(String produktNavn) {
-        String URL = "https://kolonial.no/api/v1/search/?q="+produktNavn;
-        RequestQueue queue = Volley.newRequestQueue(this);
-        JsonObjectRequest request = new JsonObjectRequest
-                (Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Gson gson = new Gson();
-                        Produkt produkt = gson.fromJson(response.toString(), Produkt.class);
-                        Products nyProdukt = produkt.getProducts()[0];
-                        Log.e("Check Error", nyProdukt.getName());
-                        nyProdukt.setThumbnail(nyProdukt.getImages()[0].getThumbnail().getUrl());
-                        Log.e("Check Error", nyProdukt.getThumbnail());
-                        addNewItem(nyProdukt);
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("Check Error", "Error");
-                    }
-                }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> map = new HashMap<>();
-                map.put("Content-Type", "application/json");
-                map.put("Accept", "application/json");
-                map.put("User-Agent", "QuangLe_Test");
-                map.put("X-Client-Token", "Pcd4FnKoER3Bfk2trn38DHV8umdCYkteOlp55CH9q0PoCDa2xc");
-                return map;
-            }
-        };
-        //request.setRetryPolicy(new DefaultRetryPolicy(15000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_MAX_RETRIES));
-        queue.add(request);
     }
 
     public void addNewItem(View v) {
@@ -400,20 +365,29 @@ public class HandlelisteActivity extends AppCompatActivity {
             startActivity(intent);
         }
     }
-    /* SKU kode henter */
-    private void getSKU(String skuKode) {
-        String URL = "https://api.upcdatabase.org/product/"+skuKode+"/D12DA15919D28F8FD6C146D1F14268EA";
+
+    private void getProdukt(String produktKode, final Boolean kolonial) {
+        String URL;
+        if (kolonial) {
+            URL = "https://kolonial.no/api/v1/search/?q="+produktKode;
+        } else {
+            URL = "https://api.upcdatabase.org/product/" + produktKode + "/D12DA15919D28F8FD6C146D1F14268EA";
+        }
         RequestQueue queue = Volley.newRequestQueue(this);
         JsonObjectRequest request = new JsonObjectRequest
                 (Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        //textView.setText("Response : " + response.toString());
-                        Log.e("Check Error", response.toString());
                         Gson gson = new Gson();
-                        UPC_data upc_produkt = gson.fromJson(response.toString(), UPC_data.class);
-                        //getResponse(upc_produkt.getTitle());
-                        addNewItem(new Products(upc_produkt.getUpcnumber(), upc_produkt.getTitle()));
+                        if (kolonial) {
+                            Produkt produkt = gson.fromJson(response.toString(), Produkt.class);
+                            Products nyProdukt = produkt.getProducts()[0];
+                            nyProdukt.setThumbnail(nyProdukt.getImages()[0].getThumbnail().getUrl());
+                            addNewItem(nyProdukt);
+                        } else {
+                            UPC_data upc_produkt = gson.fromJson(response.toString(), UPC_data.class);
+                            addNewItem(new Products(upc_produkt.getUpcnumber(), upc_produkt.getTitle()));
+                        }
                     }
                 }, new Response.ErrorListener() {
                     @Override
@@ -426,13 +400,17 @@ public class HandlelisteActivity extends AppCompatActivity {
                 Map<String, String> map = new HashMap<>();
                 map.put("Content-Type", "application/json");
                 map.put("Accept", "application/json");
-                map.put("X-Client-Token", "D12DA15919D28F8FD6C146D1F14268EA");
+                if (kolonial) {
+                    map.put("User-Agent", "QuangLe_Test");
+                    map.put("X-Client-Token", "Pcd4FnKoER3Bfk2trn38DHV8umdCYkteOlp55CH9q0PoCDa2xc");
+                } else {
+                    map.put("X-Client-Token", "D12DA15919D28F8FD6C146D1F14268EA");
+                }
                 return map;
             }
         };
         queue.add(request);
     }
-
     private void addNewItem(Products produkt) {
         String id = databaseReference.push().getKey();
         databaseReference.child(id).setValue(produkt);
