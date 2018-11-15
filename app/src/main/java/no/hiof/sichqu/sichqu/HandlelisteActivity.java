@@ -105,8 +105,7 @@ public class HandlelisteActivity extends AppCompatActivity {
 
                 switch (menuItem.getItemId()) {
                     case R.id.nav_db:
-                        //Hvis vi ønsker å åpne dashboard så må vi først lage en fragment
-                        //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container new DashboardFragment()).commit();
+                        startActivity(new Intent(HandlelisteActivity.this, HvisListeneActivity.class));
                         break;
                     case R.id.nav_search:
 
@@ -292,8 +291,7 @@ public class HandlelisteActivity extends AppCompatActivity {
                 mDrawerlayout.openDrawer(GravityCompat.START);
                 return true;
             case R.id.nav_db:
-                //Hvis vi ønsker å åpne dashboard så må vi først lage en fragment
-                //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container new DashboardFragment()).commit();
+                startActivity(new Intent(HandlelisteActivity.this, HvisListeneActivity.class));
                 break;
             case R.id.nav_search:
 
