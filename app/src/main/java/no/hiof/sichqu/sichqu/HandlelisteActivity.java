@@ -413,7 +413,7 @@ public class HandlelisteActivity extends AppCompatActivity {
     }
     private void addNewItem(Products produkt) {
         String id = databaseReference.push().getKey();
-        databaseReference.child(id).setValue(produkt);
+        databaseReference.child("handleliste").child(id).setValue(produkt);
 
         Toast.makeText(this, "Varen lagt til..", Toast.LENGTH_LONG).show();
     }
