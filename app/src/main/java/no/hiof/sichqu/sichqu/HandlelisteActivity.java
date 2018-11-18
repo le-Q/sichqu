@@ -111,7 +111,7 @@ public class HandlelisteActivity extends AppCompatActivity {
 
                         break;
                     case R.id.nav_settings:
-
+                        startActivity(new Intent(HandlelisteActivity.this, settingsActivity.class));
                         break;
                     case R.id.nav_logOut:
                         firebaseAuth.signOut();
@@ -297,7 +297,7 @@ public class HandlelisteActivity extends AppCompatActivity {
 
                 break;
             case R.id.nav_settings:
-
+                startActivity(new Intent(HandlelisteActivity.this, settingsActivity.class));
                 break;
             case R.id.nav_logOut:
                 firebaseAuth.signOut();

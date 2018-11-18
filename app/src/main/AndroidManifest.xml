@@ -38,8 +38,12 @@
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
             android:screenOrientation="fullSensor"
             tools:replace="screenOrientation" />
-        <activity android:name=".HvisListeneActivity"
-            android:parentActivityName=".HandlelisteActivity"></activity>
+        <activity
+            android:name=".HvisListeneActivity"
+            android:parentActivityName=".HandlelisteActivity" />
+        <activity
+            android:name=".settingsActivity"
+            android:parentActivityName=".HandlelisteActivity"/>
     </application>
 
 </manifest>
