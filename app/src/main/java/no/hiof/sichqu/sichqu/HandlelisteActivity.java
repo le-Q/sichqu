@@ -107,14 +107,13 @@ public class HandlelisteActivity extends AppCompatActivity {
 
                 switch (menuItem.getItemId()) {
                     case R.id.nav_db:
-                        //Hvis vi ønsker å åpne dashboard så må vi først lage en fragment
-                        //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container new DashboardFragment()).commit();
+                        startActivity(new Intent(HandlelisteActivity.this, HvisListeneActivity.class));
                         break;
                     case R.id.nav_search:
 
                         break;
                     case R.id.nav_settings:
-
+                        startActivity(new Intent(HandlelisteActivity.this, settingsActivity.class));
                         break;
                     case R.id.nav_logOut:
                         firebaseAuth.signOut();
@@ -295,14 +294,13 @@ public class HandlelisteActivity extends AppCompatActivity {
                 mDrawerlayout.openDrawer(GravityCompat.START);
                 return true;
             case R.id.nav_db:
-                //Hvis vi ønsker å åpne dashboard så må vi først lage en fragment
-                //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container new DashboardFragment()).commit();
+                startActivity(new Intent(HandlelisteActivity.this, HvisListeneActivity.class));
                 break;
             case R.id.nav_search:
 
                 break;
             case R.id.nav_settings:
-
+                startActivity(new Intent(HandlelisteActivity.this, settingsActivity.class));
                 break;
             case R.id.nav_logOut:
                 firebaseAuth.signOut();
@@ -362,6 +360,12 @@ public class HandlelisteActivity extends AppCompatActivity {
         }
     }
 
+    // Knapp for floating action button
+    public void scanItem(View v){
+            skuScan.setOrientationLocked(false);
+            skuScan.initiateScan();
+        }
+    // Knapp for floating action button
     public void addNewItem(View v) {
         if (v == addNewButton) {
             Intent intent = new Intent(this, addNewItem.class);
