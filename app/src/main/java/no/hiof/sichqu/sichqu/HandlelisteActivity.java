@@ -66,12 +66,14 @@ public class HandlelisteActivity extends AppCompatActivity {
     String iste = "7038010001215";
     String iste2 = "Iste grønn te lime";
     String cider = "Grevens cider skogsbær";
+    String testHandleliste = "handleliste";
 
     private RecyclerView mRecyclerView;
     private ProductAdapter productAdapter;
     private ChildEventListener childEventListener;
 
     private DatabaseReference databaseReference;
+    private DatabaseReference databasePictureReference;
     private FirebaseDatabase firebaseDatabase;
 
     private TextView productTitleTextView;
@@ -156,8 +158,9 @@ public class HandlelisteActivity extends AppCompatActivity {
 
         // Query til database
         firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid());
-
+        databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(testHandleliste);
+        databasePictureReference = firebaseDatabase.getReference("bilder").child(firebaseAuth.getUid());
+        Log.e("Check Error", databasePictureReference.toString());
         productAdapter = new ProductAdapter(getApplicationContext(), productList);
 
         skuScan = new IntentIntegrator(this);
@@ -369,7 +372,7 @@ public class HandlelisteActivity extends AppCompatActivity {
     private void getProdukt(String produktKode, final Boolean kolonial) {
         String URL;
         if (kolonial) {
-            URL = "https://kolonial.no/api/v1/search/?q="+produktKode;
+            URL = "https://kolonial.no/api/v1/search/?q=" + produktKode;
         } else {
             URL = "https://api.upcdatabase.org/product/" + produktKode + "/D12DA15919D28F8FD6C146D1F14268EA";
         }
@@ -413,7 +416,7 @@ public class HandlelisteActivity extends AppCompatActivity {
     }
     private void addNewItem(Products produkt) {
         String id = databaseReference.push().getKey();
-        databaseReference.child("handleliste").child(id).setValue(produkt);
+        databaseReference.child(id).setValue(produkt);
 
         Toast.makeText(this, "Varen lagt til..", Toast.LENGTH_LONG).show();
     }

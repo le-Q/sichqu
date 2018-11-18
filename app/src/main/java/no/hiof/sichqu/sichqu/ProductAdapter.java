@@ -3,11 +3,15 @@ package no.hiof.sichqu.sichqu;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.squareup.picasso.Picasso;
 import java.util.List;
 
@@ -33,13 +37,22 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ProductViewHolder productViewHolder, int i) {
+    public void onBindViewHolder(@NonNull final ProductViewHolder productViewHolder, int i) {
         Products product = productList.get(i);
         productViewHolder.setData(product);
 
         productViewHolder.textViewTitle.setText(product.getName());
         if (product.getThumbnail() != null)
         Picasso.get().load(product.getThumbnail()).into(productViewHolder.thumbnails);
+
+        productViewHolder.thumbnails.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Log.e("Check Error", "long click");
+                ChangeImage(productViewHolder);
+                return true;
+            }
+        });
     }
 
     @Override
@@ -61,5 +74,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             this.textViewTitle.setText(currentProd.getName());
             thumbnails.setImageResource(R.drawable.poster_placeholder);
         }
+    }
+
+    public void ChangeImage(@NonNull ProductViewHolder productViewHolder) {
+        Picasso.get().load("https://scontent-arn2-1.xx.fbcdn.net/v/t1.15752-0/p480x480/46196159_251221868887493_5157878684496953344_n.png?_nc_cat=109&_nc_ht=scontent-arn2-1.xx&oh=4e9317019705e757bdd648fda6875aa7&oe=5C766D3D").into(productViewHolder.thumbnails);
     }
 }
