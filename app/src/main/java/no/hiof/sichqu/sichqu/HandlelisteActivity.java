@@ -357,6 +357,12 @@ public class HandlelisteActivity extends AppCompatActivity {
         }
     }
 
+    // Knapp for floating action button
+    public void scanItem(View v){
+            skuScan.setOrientationLocked(false);
+            skuScan.initiateScan();
+        }
+    // Knapp for floating action button
     public void addNewItem(View v) {
         if (v == addNewButton) {
             Intent intent = new Intent(this, addNewItem.class);
