@@ -1,6 +1,7 @@
 package no.hiof.sichqu.sichqu;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -66,12 +67,14 @@ public class HandlelisteActivity extends AppCompatActivity {
     String iste = "7038010001215";
     String iste2 = "Iste grønn te lime";
     String cider = "Grevens cider skogsbær";
+    String testHandleliste = "handleliste";
 
     private RecyclerView mRecyclerView;
     private ProductAdapter productAdapter;
     private ChildEventListener childEventListener;
 
     private DatabaseReference databaseReference;
+    private DatabaseReference databasePictureReference;
     private FirebaseDatabase firebaseDatabase;
 
     private TextView productTitleTextView;
@@ -84,10 +87,16 @@ public class HandlelisteActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private IntentIntegrator skuScan;
-
+    private DeltPreferanse sharedpref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        // Darkmode
+        sharedpref = new DeltPreferanse(this);
+        if(sharedpref.loadNightModeState())
+            setTheme(R.style.darktheme);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.handleliste_activity);
 
@@ -155,8 +164,9 @@ public class HandlelisteActivity extends AppCompatActivity {
 
         // Query til database
         firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid());
-
+        databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(testHandleliste);
+        databasePictureReference = firebaseDatabase.getReference("bilder").child(firebaseAuth.getUid());
+        Log.e("Check Error", databasePictureReference.toString());
         productAdapter = new ProductAdapter(getApplicationContext(), productList);
 
         skuScan = new IntentIntegrator(this);
@@ -373,7 +383,7 @@ public class HandlelisteActivity extends AppCompatActivity {
     private void getProdukt(String produktKode, final Boolean kolonial) {
         String URL;
         if (kolonial) {
-            URL = "https://kolonial.no/api/v1/search/?q="+produktKode;
+            URL = "https://kolonial.no/api/v1/search/?q=" + produktKode;
         } else {
             URL = "https://api.upcdatabase.org/product/" + produktKode + "/D12DA15919D28F8FD6C146D1F14268EA";
         }

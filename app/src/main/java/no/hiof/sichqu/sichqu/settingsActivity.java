@@ -17,57 +17,67 @@ public class settingsActivity extends AppCompatActivity {
 
     private Switch myswitch;
     private Button removedata;
+    private DeltPreferanse sharedpref;
+
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
 
-        if(AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_YES){
+        sharedpref = new DeltPreferanse(this);
+        //if(AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_YES){
+        if (sharedpref.loadNightModeState()) {
             setTheme(R.style.darktheme);
-        }
-        else setTheme(R.style.AppTheme);
+        } else setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        myswitch=findViewById(R.id.myswitch);
-        removedata=findViewById(R.id.removedata);
+        myswitch = findViewById(R.id.myswitch);
+        removedata = findViewById(R.id.removedata);
 
-        if (AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_YES){
-            myswitch.setChecked(true);
+        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
+
+            //if (AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_YES){
+            if (sharedpref.loadNightModeState()) {
+                myswitch.setChecked(true);
+            }
+            myswitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                        sharedpref.setNightModeState(true);
+                        restartApp();
+                    } else {
+                        //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                        sharedpref.setNightModeState(false);
+                        restartApp();
+                    }
+                }
+            });
+
+            removedata.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    fjernprodukter(); //(produkter)
+                }
+            });
+
+
         }
-        myswitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked){
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                    restartApp();
-                }
-                else{
-                   AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                   restartApp();
-                }
-            }
-        });
-
-        removedata.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fjernprodukter(); //(produkter)
-            }
-        });
 
 
     }
 
-    private void fjernprodukter() { //(String produkter)
+    private void restartApp() {
+        Intent i = new Intent(getApplicationContext(), settingsActivity.class);
+        startActivity(i);
+        finish();
+    }
+
+    private void fjernprodukter() {
         //funker nok ikke ennå bare en test
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("handleliste").child("id");
         databaseReference.removeValue();
 
         Toast.makeText(this, "Data deleted!", Toast.LENGTH_SHORT).show();
     }
-
-    public void restartApp (){
-        Intent i = new Intent(getApplicationContext(), settingsActivity.class);
-        startActivity(i);
-        finish();
-    }
-
 }
