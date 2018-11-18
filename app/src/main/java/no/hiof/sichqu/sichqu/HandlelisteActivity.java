@@ -1,6 +1,7 @@
 package no.hiof.sichqu.sichqu;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -86,10 +87,16 @@ public class HandlelisteActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private IntentIntegrator skuScan;
-
+    private DeltPreferanse sharedpref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        // Darkmode
+        sharedpref = new DeltPreferanse(this);
+        if(sharedpref.loadNightModeState())
+            setTheme(R.style.darktheme);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.handleliste_activity);
 
