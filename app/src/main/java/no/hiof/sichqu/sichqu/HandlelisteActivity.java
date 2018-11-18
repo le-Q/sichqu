@@ -10,6 +10,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.SearchView;
@@ -38,6 +40,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -82,7 +85,6 @@ public class HandlelisteActivity extends AppCompatActivity {
     private List<Products> productList;
     private List<String> productListKeys;
 
-    private Button logOutButton;
     private ImageButton addNewButton;
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -92,7 +94,7 @@ public class HandlelisteActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        // Darkmode
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         sharedpref = new DeltPreferanse(this);
         if(sharedpref.loadNightModeState())
             setTheme(R.style.darktheme);
@@ -156,6 +158,9 @@ public class HandlelisteActivity extends AppCompatActivity {
 
 
 
+
+
+
         //New item button
         addNewButton = (ImageButton) findViewById(R.id.addNewFloat);
 
@@ -166,11 +171,19 @@ public class HandlelisteActivity extends AppCompatActivity {
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(testHandleliste);
         databasePictureReference = firebaseDatabase.getReference("bilder").child(firebaseAuth.getUid());
-        Log.e("Check Error", databasePictureReference.toString());
+
+
+
+
+
         productAdapter = new ProductAdapter(getApplicationContext(), productList);
 
         skuScan = new IntentIntegrator(this);
         recycleSetup();
+
+
+
+
     }
 
     private void databaseRead(){
@@ -180,6 +193,8 @@ public class HandlelisteActivity extends AppCompatActivity {
                 Products product = dataSnapshot.getValue(Products.class);
                 String productKey = dataSnapshot.getKey();
                 product.setId(productKey);
+
+
 
                 if (!productList.contains(product)) {
                     productList.add(product);
@@ -272,6 +287,7 @@ public class HandlelisteActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.search_menu, menu);
         MenuItem menuItem = menu.findItem(R.id.searchmenu);
@@ -286,6 +302,9 @@ public class HandlelisteActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                if(newText.length() > 3){
+                    Toast.makeText(HandlelisteActivity.this, "share"+newText, Toast.LENGTH_SHORT).show();
+                }
                 return false;
             }
         });
@@ -323,9 +342,6 @@ public class HandlelisteActivity extends AppCompatActivity {
             case R.id.scan:
                 skuScan.setOrientationLocked(false);
                 skuScan.initiateScan();
-                return true;
-            case R.id.optLogOut:
-                firebaseAuth.signOut();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
