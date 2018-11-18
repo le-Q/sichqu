@@ -28,13 +28,12 @@ public class settingsActivity extends AppCompatActivity {
         if (sharedpref.loadNightModeState()) {
             setTheme(R.style.darktheme);
         } else setTheme(R.style.AppTheme);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
         myswitch = findViewById(R.id.myswitch);
         removedata = findViewById(R.id.removedata);
-
-        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
-
             //if (AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_YES){
             if (sharedpref.loadNightModeState()) {
                 myswitch.setChecked(true);
@@ -63,9 +62,6 @@ public class settingsActivity extends AppCompatActivity {
 
 
         }
-
-
-    }
 
     private void restartApp() {
         Intent i = new Intent(getApplicationContext(), settingsActivity.class);
