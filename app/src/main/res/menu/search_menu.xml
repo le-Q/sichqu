@@ -3,20 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/optLogOut"
-        android:title="Logout" />
+        android:id="@+id/spinner"
+        android:background="#ff00"
+        android:title="ActionBar Spinner"
+        android:visible="true"
+        app:actionViewClass="android.widget.Spinner"
+        app:showAsAction="always" />
     <item
         android:id="@+id/searchmenu"
         android:icon="@drawable/ic_search"
         android:title="Search"
         app:actionViewClass="android.widget.SearchView"
-        app:showAsAction="always">
-
-    </item>
-    <item
-        android:id="@+id/scan"
-        android:icon="@drawable/ic_code"
-        android:title="Scan"
         app:showAsAction="always">
 
     </item>

@@ -19,6 +19,8 @@ public class addNewItem extends AppCompatActivity implements View.OnClickListene
 
     DatabaseReference databaseReference;
     private FirebaseAuth firebaseAuth;
+    private FirebaseUser user;
+    private String id;
 
     private EditText editName;
     private Button addItem;
@@ -29,7 +31,8 @@ public class addNewItem extends AppCompatActivity implements View.OnClickListene
         setContentView(R.layout.activity_add_new_item);
 
         firebaseAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = firebaseAuth.getCurrentUser();
+        user = firebaseAuth.getCurrentUser();
+        id = databaseReference.push().getKey();
 
         databaseReference = FirebaseDatabase.getInstance().getReference("produkter");
 
@@ -43,11 +46,7 @@ public class addNewItem extends AppCompatActivity implements View.OnClickListene
     private void saveNewItem() {
         String name = editName.getText().toString().trim();
 
-        String id = databaseReference.push().getKey();
-
         Products product = new Products(name);
-
-        FirebaseUser user = firebaseAuth.getCurrentUser();
 
         databaseReference.child(user.getUid()).child(id).setValue(product);
 
