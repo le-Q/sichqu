@@ -85,7 +85,7 @@ public class HandlelisteActivity extends AppCompatActivity {
     private List<Products> productList;
     private List<String> productListKeys;
 
-    private ImageButton addNewButton;
+    private ImageButton addNewButton, removeButton;
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private IntentIntegrator skuScan;
@@ -142,8 +142,6 @@ public class HandlelisteActivity extends AppCompatActivity {
             }
         });
 
-
-
         mToggle = new ActionBarDrawerToggle(this, mDrawerlayout, R.string.open, R.string.close);
         mDrawerlayout.addDrawerListener(mToggle);
         mToggle.syncState();
@@ -162,6 +160,7 @@ public class HandlelisteActivity extends AppCompatActivity {
 
         //New item button
         addNewButton = (ImageButton) findViewById(R.id.addNewFloat);
+        removeButton = (ImageButton) findViewById(R.id.removeProd);
 
         productList = new ArrayList<>();
         productListKeys = new ArrayList<>();
@@ -208,7 +207,13 @@ public class HandlelisteActivity extends AppCompatActivity {
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
+                String key = dataSnapshot.getKey();
+                for (Products products : productList) {
+                    if (key.equals(products.getId())) {
+                        productList.remove(products);
+                        break;
+                    }
+                }
             }
 
             @Override
@@ -387,6 +392,11 @@ public class HandlelisteActivity extends AppCompatActivity {
         }
     }
 
+    public void removeItem(View v) {
+        if (v == removeButton) {
+        }
+    }
+
     private void getProdukt(String produktKode, final Boolean kolonial) {
         String URL;
         if (kolonial) {
@@ -437,5 +447,9 @@ public class HandlelisteActivity extends AppCompatActivity {
         databaseReference.child(id).setValue(produkt);
 
         Toast.makeText(this, "Varen lagt til..", Toast.LENGTH_LONG).show();
+    }
+
+    private void removeItem(Products produkt) {
+        databaseReference.child(produkt.getId()).removeValue();
     }
 }
