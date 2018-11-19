@@ -135,7 +135,11 @@ public class HandlelisteActivity extends AppCompatActivity {
                         firebaseAuth.signOut();
                         break;
                     case R.id.nav_share:
-                        Toast.makeText(HandlelisteActivity.this, "share", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(Intent.ACTION_SEND);
+                        intent.setType("text/plain");
+                        startActivity(Intent.createChooser(intent, "Share using"));
+
+                        //Toast.makeText(HandlelisteActivity.this, "share", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.nav_send:
                         Toast.makeText(HandlelisteActivity.this, "send", Toast.LENGTH_SHORT).show();
@@ -163,7 +167,10 @@ public class HandlelisteActivity extends AppCompatActivity {
             }
         };
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
         //New item button
         addNewButton = (ImageButton) findViewById(R.id.addNewFloat);
 
@@ -172,14 +179,21 @@ public class HandlelisteActivity extends AppCompatActivity {
 
         // Query til database
         firebaseDatabase = FirebaseDatabase.getInstance();
+<<<<<<< HEAD
 
         databasePictureReference = firebaseDatabase.getReference("bilder").child(firebaseAuth.getUid());
 
 
+=======
+        databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(testHandleliste);
+        databasePictureReference = firebaseDatabase.getReference("bilder").child(firebaseAuth.getUid());
+
+>>>>>>> master
         productAdapter = new ProductAdapter(getApplicationContext(), productList);
 
         skuScan = new IntentIntegrator(this);
         recycleSetup();
+<<<<<<< HEAD
 
 
         // Spinner
@@ -227,6 +241,8 @@ arrayHandleliste.add("første");
     }
 });
 
+=======
+>>>>>>> master
     }
 
     private void databaseRead(){
@@ -237,6 +253,10 @@ arrayHandleliste.add("første");
                 String productKey = dataSnapshot.getKey();
                 product.setId(productKey);
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
                 if (!productList.contains(product)) {
                     productList.add(product);
                     productListKeys.add(productKey);
@@ -293,9 +313,6 @@ arrayHandleliste.add("første");
         }
     }
 
-
-
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -345,7 +362,7 @@ arrayHandleliste.add("første");
             @Override
             public boolean onQueryTextChange(String newText) {
                 if(newText.length() > 3){
-                    Toast.makeText(HandlelisteActivity.this, "share"+newText, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(HandlelisteActivity.this, newText, Toast.LENGTH_SHORT).show();
                 }
                 return false;
             }
@@ -374,7 +391,11 @@ arrayHandleliste.add("første");
                 firebaseAuth.signOut();
                 break;
             case R.id.nav_share:
-                Toast.makeText(this, "share", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                startActivity(Intent.createChooser(intent, "Share using"));
+
+                //Toast.makeText(this, "share", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_send:
                 Toast.makeText(this, "send", Toast.LENGTH_SHORT).show();
