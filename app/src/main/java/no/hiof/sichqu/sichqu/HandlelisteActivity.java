@@ -184,7 +184,7 @@ public class HandlelisteActivity extends AppCompatActivity {
                 Products product = dataSnapshot.getValue(Products.class);
                 String productKey = dataSnapshot.getKey();
                 product.setId(productKey);
-                
+
 
                 if (!productList.contains(product)) {
                     productList.add(product);
@@ -240,9 +240,6 @@ public class HandlelisteActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
-
-
-
 
     @Override
     protected void onStart() {
