@@ -170,10 +170,7 @@ public class HandlelisteActivity extends AppCompatActivity {
             }
         };
 
-<<<<<<< HEAD
 
-=======
->>>>>>> 29b3b8a571ea27f93c62aeb642aee439bbda5137
         //New item button
         addNewButton = (ImageButton) findViewById(R.id.addNewFloat);
         removeButton = (ImageButton) findViewById(R.id.removeProd);
@@ -194,10 +191,7 @@ public class HandlelisteActivity extends AppCompatActivity {
 
         skuScan = new IntentIntegrator(this);
         recycleSetup();
-<<<<<<< HEAD
-=======
 
->>>>>>> 29b3b8a571ea27f93c62aeb642aee439bbda5137
 
         // Spinner
         // Hente handlelister
@@ -246,7 +240,6 @@ public class HandlelisteActivity extends AppCompatActivity {
     }
 });
 
-<<<<<<< HEAD
     }
 
     private void leggtilSlettDialog() {
@@ -255,10 +248,9 @@ public class HandlelisteActivity extends AppCompatActivity {
         Button addBtn = (Button) findViewById(R.id.addName);
         Button deleteBtn = (Button) findViewById(R.id.buttonDelete);
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("produkter");
-
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
+        databaseReference = FirebaseDatabase.getInstance().getReference("produkter");
         id = databaseReference.push().getKey();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(HandlelisteActivity.this);
@@ -274,15 +266,14 @@ public class HandlelisteActivity extends AppCompatActivity {
 
                 if (!TextUtils.isEmpty(name)) {
                     databaseReference.child(user.getUid()).child(id).setValue(product);
-                    //Toast.makeText(this, "Varen lagt til..", Toast.LENGTH_LONG).show();
+                    Toast.makeText(HandlelisteActivity.this, "Varen lagt til..", Toast.LENGTH_LONG).show();
                 } else {
-                    //Toast.makeText(this, "Skriv inn navn på produkt", Toast.LENGTH_LONG).show();
+                    Toast.makeText(HandlelisteActivity.this, "Skriv inn navn på produkt", Toast.LENGTH_LONG).show();
                 }
             }
         });
 
-=======
->>>>>>> 29b3b8a571ea27f93c62aeb642aee439bbda5137
+
     }
 
     private void databaseRead(){
@@ -293,10 +284,6 @@ public class HandlelisteActivity extends AppCompatActivity {
                 String productKey = dataSnapshot.getKey();
                 product.setId(productKey);
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 29b3b8a571ea27f93c62aeb642aee439bbda5137
                 if (!productList.contains(product)) {
                     productList.add(product);
                     productListKeys.add(productKey);
@@ -500,9 +487,9 @@ public class HandlelisteActivity extends AppCompatActivity {
     // Knapp for floating action button
     public void addNewItem(View v) {
         if (v == addNewButton) {
-            Intent intent = new Intent(this, addNewItem.class);
-            startActivity(intent);
-            //leggtilSlettDialog();
+            //Intent intent = new Intent(this, addNewItem.class);
+            //startActivity(intent);
+            leggtilSlettDialog();
         }
     }
 
