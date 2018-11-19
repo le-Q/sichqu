@@ -1,5 +1,6 @@
 package no.hiof.sichqu.sichqu;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -473,9 +474,32 @@ public class HandlelisteActivity extends AppCompatActivity {
     // Knapp for floating action button
     public void addNewItem(View v) {
         if (v == addNewButton) {
-            Intent intent = new Intent(this, addNewItem.class);
-            startActivity(intent);
+            //Intent intent = new Intent(this, addNewItem.class);
+            //startActivity(intent);
             //leggtilSlettDialog();
+            AlertDialog.Builder builder = new AlertDialog.Builder(HandlelisteActivity.this);
+            View view = getLayoutInflater().inflate(R.layout.leggtilvare_dialog, null);
+            EditText mEditText = (EditText) findViewById(R.id.productName);
+            Button leggtil = (Button) findViewById(R.id.buttonAdd);
+            Button slett = (Button) findViewById(R.id.buttonDelete);
+
+            /*leggtil.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(HandlelisteActivity.this, "legg til", Toast.LENGTH_SHORT).show();
+                }
+            });*/
+
+           /* slett.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(HandlelisteActivity.this, "slett", Toast.LENGTH_SHORT).show();
+                }
+            });*/
+
+            builder.setView(view);
+            AlertDialog ad = builder.create();
+            ad.show();
         }
     }
 
