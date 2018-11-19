@@ -59,6 +59,8 @@ public class HvisListeneActivity extends AppCompatActivity {
             }
         });
 
+        handleListeNavn.requestFocus();
+
 
 
     }
@@ -79,7 +81,6 @@ public void dataRead() {
         public void onDataChange(DataSnapshot dataSnapshot) {
             arrayList.clear();
                 for(DataSnapshot nameListShot : dataSnapshot.getChildren()){
-                    Log.e("Get Data", nameListShot.getKey());
                     arrayList.add(nameListShot.getKey());
                 }
             }

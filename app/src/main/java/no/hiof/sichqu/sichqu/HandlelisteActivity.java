@@ -167,10 +167,6 @@ public class HandlelisteActivity extends AppCompatActivity {
             }
         };
 
-<<<<<<< HEAD
-
-=======
->>>>>>> master
         //New item button
         addNewButton = (ImageButton) findViewById(R.id.addNewFloat);
 
@@ -179,21 +175,17 @@ public class HandlelisteActivity extends AppCompatActivity {
 
         // Query til database
         firebaseDatabase = FirebaseDatabase.getInstance();
-<<<<<<< HEAD
 
         databasePictureReference = firebaseDatabase.getReference("bilder").child(firebaseAuth.getUid());
 
 
-=======
         databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(testHandleliste);
         databasePictureReference = firebaseDatabase.getReference("bilder").child(firebaseAuth.getUid());
 
->>>>>>> master
         productAdapter = new ProductAdapter(getApplicationContext(), productList);
 
         skuScan = new IntentIntegrator(this);
         recycleSetup();
-<<<<<<< HEAD
 
 
         // Spinner
@@ -241,8 +233,6 @@ arrayHandleliste.add("første");
     }
 });
 
-=======
->>>>>>> master
     }
 
     private void databaseRead(){
@@ -253,10 +243,6 @@ arrayHandleliste.add("første");
                 String productKey = dataSnapshot.getKey();
                 product.setId(productKey);
 
-<<<<<<< HEAD
-=======
-
->>>>>>> master
                 if (!productList.contains(product)) {
                     productList.add(product);
                     productListKeys.add(productKey);
