@@ -23,6 +23,12 @@ public class Products {
         this.name = name;
     }
 
+    public Products(String name, String thumbnail, String id){
+        this.id = id;
+        this.name = name;
+        this.thumbnail = thumbnail;
+    }
+
     public String getId ()
     {
         return id;

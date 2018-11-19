@@ -1,7 +1,7 @@
 package no.hiof.sichqu.sichqu;
 
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,7 +11,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -21,7 +20,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -29,10 +27,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.SearchView;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
-
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -54,9 +49,7 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,40 +66,29 @@ public class HandlelisteActivity extends AppCompatActivity {
     private DrawerLayout mDrawerlayout;
     private ActionBarDrawerToggle mToggle;
 
-
-    String iste = "7038010001215";
-    String iste2 = "Iste grønn te lime";
     String cider = "Grevens cider skogsbær";
     String testHandleliste = "handleliste";
-    private Toolbar toolbar = null;
     private ArrayList<String> arrayHandleliste = new ArrayList<>();
 
     private RecyclerView mRecyclerView;
     private ProductAdapter productAdapter;
     private ChildEventListener childEventListener;
-    private ValueEventListener valueEventListener;
-
     private DatabaseReference databaseReference;
     private DatabaseReference databasePictureReference;
     private FirebaseDatabase firebaseDatabase;
-
-    private TextView productTitleTextView;
-
     private List<Products> productList;
     private List<String> productListKeys;
-
     private ImageButton addNewButton, removeButton;
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseUser user;
     private String id;
     private IntentIntegrator skuScan;
-    private DeltPreferanse sharedpref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        sharedpref = new DeltPreferanse(this);
+        DeltPreferanse sharedpref = new DeltPreferanse(this);
         if(sharedpref.loadNightModeState())
             setTheme(R.style.darktheme);
 
@@ -193,19 +175,43 @@ public class HandlelisteActivity extends AppCompatActivity {
         recycleSetup();
 
 
+
+
+    }
+
+    private void goSpinner() {
         // Spinner
         // Hente handlelister
-        arrayHandleliste.add("første");
-
-        toolbar = (Toolbar) findViewById(R.id.toolbar22);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar22);
 
         //SpinnerAdapter spinnerAdapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.months, R.layout.spinner_drop_down_item);
+
+
+
+        firebaseDatabase.getReference().child("produkter").child(firebaseAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                arrayHandleliste.clear();
+                for(DataSnapshot nameListShot : dataSnapshot.getChildren()){
+                    arrayHandleliste.add(nameListShot.getKey());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         ArrayAdapter spinnerAdapter = new ArrayAdapter(getApplicationContext(), R.layout.spinner_drop_down_item, arrayHandleliste);
         spinnerAdapter.setDropDownViewResource(R.layout.spinner_drop_down_item);
         Spinner navigationSpinner = new Spinner(getSupportActionBar().getThemedContext());
         navigationSpinner.setAdapter(spinnerAdapter);
         toolbar.addView(navigationSpinner, 0);
+
+
+
+        databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(testHandleliste);
 
         navigationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -367,6 +373,7 @@ public class HandlelisteActivity extends AppCompatActivity {
             firebaseAuth.removeAuthStateListener(mAuthListener);
         }
         databaseRead();
+        goSpinner();
     }
 
    protected void onPause() {
@@ -493,9 +500,32 @@ public class HandlelisteActivity extends AppCompatActivity {
     // Knapp for floating action button
     public void addNewItem(View v) {
         if (v == addNewButton) {
-            Intent intent = new Intent(this, addNewItem.class);
-            startActivity(intent);
+            //Intent intent = new Intent(this, addNewItem.class);
+            //startActivity(intent);
             //leggtilSlettDialog();
+            AlertDialog.Builder builder = new AlertDialog.Builder(HandlelisteActivity.this);
+            View view = getLayoutInflater().inflate(R.layout.leggtilvare_dialog, null);
+            EditText mEditText = (EditText) findViewById(R.id.productName);
+            Button leggtil = (Button) findViewById(R.id.buttonAdd);
+            Button slett = (Button) findViewById(R.id.buttonDelete);
+
+            /*leggtil.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(HandlelisteActivity.this, "legg til", Toast.LENGTH_SHORT).show();
+                }
+            });*/
+
+           /* slett.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(HandlelisteActivity.this, "slett", Toast.LENGTH_SHORT).show();
+                }
+            });*/
+
+            builder.setView(view);
+            AlertDialog ad = builder.create();
+            ad.show();
         }
     }
 
@@ -525,7 +555,10 @@ public class HandlelisteActivity extends AppCompatActivity {
                             addNewItem(nyProdukt);
                         } else {
                             UPC_data upc_produkt = gson.fromJson(response.toString(), UPC_data.class);
-                            addNewItem(new Products(upc_produkt.getUpcnumber(), upc_produkt.getTitle()));
+                            if(upc_produkt.getUpcnumber().equals("7038010001215"))
+                                addNewItem(new Products("Iste Lime", "https://kolonial.no/media/uploads/public/169/385/968385-1896e-product_list.jpg", "iste"));
+                            else
+                                addNewItem(new Products(upc_produkt.getUpcnumber(), upc_produkt.getTitle()));
                         }
                     }
                 }, new Response.ErrorListener() {
