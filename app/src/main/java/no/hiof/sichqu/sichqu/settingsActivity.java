@@ -1,6 +1,8 @@
 package no.hiof.sichqu.sichqu;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatDelegate;
@@ -13,15 +15,23 @@ import android.widget.Toast;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import no.hiof.sichqu.sichqu.Products.Products;
+
 public class settingsActivity extends AppCompatActivity {
 
     private Switch myswitch;
     private Button removedata;
     private DeltPreferanse sharedpref;
+    private Products produkt;
+    private FirebaseDatabase db;
+
+
 
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
+
+        produkt = (Products) getIntent().getSerializableExtra("produkter");
 
         sharedpref = new DeltPreferanse(this);
         //if(AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_YES){
@@ -31,6 +41,8 @@ public class settingsActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
+
 
         myswitch = findViewById(R.id.myswitch);
         removedata = findViewById(R.id.removedata);
@@ -56,10 +68,28 @@ public class settingsActivity extends AppCompatActivity {
             removedata.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    fjernprodukter(); //(produkter)
+                    AlertDialog.Builder builder = new AlertDialog.Builder(settingsActivity.this);
+                    builder.setTitle("Are you sure about this?");
+                    builder.setMessage("Deletion is permanent..");
+
+                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            fjernprodukter();
+                        }
+                    });
+
+                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+
+                    AlertDialog ad = builder.create();
+                    ad.show();
                 }
             });
-
 
         }
 
@@ -73,6 +103,7 @@ public class settingsActivity extends AppCompatActivity {
         //funker nok ikke ennå bare en test
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("handleliste").child("id");
         databaseReference.removeValue();
+       
 
         Toast.makeText(this, "Data deleted!", Toast.LENGTH_SHORT).show();
     }
