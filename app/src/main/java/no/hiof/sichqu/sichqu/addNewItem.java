@@ -32,9 +32,10 @@ public class addNewItem extends AppCompatActivity implements View.OnClickListene
 
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
-        id = databaseReference.push().getKey();
+
 
         databaseReference = FirebaseDatabase.getInstance().getReference("produkter");
+        id = databaseReference.push().getKey();
 
         editName = (EditText) findViewById(R.id.addName);
         addItem = (Button) findViewById(R.id.addNewBtn);
@@ -48,7 +49,7 @@ public class addNewItem extends AppCompatActivity implements View.OnClickListene
 
         Products product = new Products(name);
 
-        databaseReference.child(user.getUid()).child(id).setValue(product);
+        databaseReference.child(user.getUid()).child("handleliste").child(id).setValue(product);
 
         Toast.makeText(this, "Varen lagt til..", Toast.LENGTH_LONG).show();
     }
