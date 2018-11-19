@@ -13,18 +13,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.SearchView;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
+
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -66,15 +71,17 @@ public class HandlelisteActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mToggle;
 
 
-    TextView textView;
     String iste = "7038010001215";
     String iste2 = "Iste grønn te lime";
     String cider = "Grevens cider skogsbær";
     String testHandleliste = "handleliste";
+    private Toolbar toolbar = null;
+    private ArrayList<String> arrayHandleliste = new ArrayList<>();
 
     private RecyclerView mRecyclerView;
     private ProductAdapter productAdapter;
     private ChildEventListener childEventListener;
+    private ValueEventListener valueEventListener;
 
     private DatabaseReference databaseReference;
     private DatabaseReference databasePictureReference;
@@ -94,13 +101,13 @@ public class HandlelisteActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
         sharedpref = new DeltPreferanse(this);
         if(sharedpref.loadNightModeState())
             setTheme(R.style.darktheme);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.handleliste_activity);
+
 
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -158,6 +165,10 @@ public class HandlelisteActivity extends AppCompatActivity {
             }
         };
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> master
         //New item button
         addNewButton = (ImageButton) findViewById(R.id.addNewFloat);
         removeButton = (ImageButton) findViewById(R.id.removeProd);
@@ -167,13 +178,70 @@ public class HandlelisteActivity extends AppCompatActivity {
 
         // Query til database
         firebaseDatabase = FirebaseDatabase.getInstance();
+<<<<<<< HEAD
+
+        databasePictureReference = firebaseDatabase.getReference("bilder").child(firebaseAuth.getUid());
+
+
+=======
         databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(testHandleliste);
         databasePictureReference = firebaseDatabase.getReference("bilder").child(firebaseAuth.getUid());
 
+>>>>>>> master
         productAdapter = new ProductAdapter(getApplicationContext(), productList);
 
         skuScan = new IntentIntegrator(this);
         recycleSetup();
+<<<<<<< HEAD
+
+
+        // Spinner
+        // Hente handlelister
+arrayHandleliste.add("første");
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar22);
+
+        //SpinnerAdapter spinnerAdapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.months, R.layout.spinner_drop_down_item);
+
+        ArrayAdapter spinnerAdapter = new ArrayAdapter(getApplicationContext(), R.layout.spinner_drop_down_item, arrayHandleliste);
+        spinnerAdapter.setDropDownViewResource(R.layout.spinner_drop_down_item);
+        Spinner navigationSpinner = new Spinner(getSupportActionBar().getThemedContext());
+        navigationSpinner.setAdapter(spinnerAdapter);
+        toolbar.addView(navigationSpinner, 0);
+
+        navigationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(HandlelisteActivity.this, "you selected: " + arrayHandleliste.get(position), Toast.LENGTH_SHORT).show();
+                testHandleliste = arrayHandleliste.get(position);
+                Log.e("GetA",testHandleliste);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(testHandleliste);
+
+        firebaseDatabase.getReference().child("produkter").child(firebaseAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+    @Override
+    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+        arrayHandleliste.clear();
+        for(DataSnapshot nameListShot : dataSnapshot.getChildren()){
+            arrayHandleliste.add(nameListShot.getKey());
+        } Log.e("Get Data", arrayHandleliste.toString());
+    }
+
+    @Override
+    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+    }
+});
+
+=======
+>>>>>>> master
     }
 
     private void databaseRead(){
@@ -184,7 +252,10 @@ public class HandlelisteActivity extends AppCompatActivity {
                 String productKey = dataSnapshot.getKey();
                 product.setId(productKey);
 
+<<<<<<< HEAD
+=======
 
+>>>>>>> master
                 if (!productList.contains(product)) {
                     productList.add(product);
                     productListKeys.add(productKey);
@@ -229,6 +300,7 @@ public class HandlelisteActivity extends AppCompatActivity {
         databaseReference.addChildEventListener(childEventListener);
     }
 
+
     private void recycleSetup() {
         mRecyclerView = findViewById(R.id.recyleViewListe);
         productAdapter = new ProductAdapter(this, productList);
@@ -260,7 +332,7 @@ public class HandlelisteActivity extends AppCompatActivity {
         if (mAuthListener != null) {
             firebaseAuth.removeAuthStateListener(mAuthListener);
         }
-            databaseRead();
+        databaseRead();
     }
 
    protected void onPause() {
