@@ -170,7 +170,10 @@ public class HandlelisteActivity extends AppCompatActivity {
             }
         };
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 29b3b8a571ea27f93c62aeb642aee439bbda5137
         //New item button
         addNewButton = (ImageButton) findViewById(R.id.addNewFloat);
         removeButton = (ImageButton) findViewById(R.id.removeProd);
@@ -191,6 +194,10 @@ public class HandlelisteActivity extends AppCompatActivity {
 
         skuScan = new IntentIntegrator(this);
         recycleSetup();
+<<<<<<< HEAD
+=======
+
+>>>>>>> 29b3b8a571ea27f93c62aeb642aee439bbda5137
 
         // Spinner
         // Hente handlelister
@@ -239,6 +246,7 @@ public class HandlelisteActivity extends AppCompatActivity {
     }
 });
 
+<<<<<<< HEAD
     }
 
     private void leggtilSlettDialog() {
@@ -273,6 +281,8 @@ public class HandlelisteActivity extends AppCompatActivity {
             }
         });
 
+=======
+>>>>>>> 29b3b8a571ea27f93c62aeb642aee439bbda5137
     }
 
     private void databaseRead(){
@@ -283,7 +293,10 @@ public class HandlelisteActivity extends AppCompatActivity {
                 String productKey = dataSnapshot.getKey();
                 product.setId(productKey);
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 29b3b8a571ea27f93c62aeb642aee439bbda5137
                 if (!productList.contains(product)) {
                     productList.add(product);
                     productListKeys.add(productKey);
