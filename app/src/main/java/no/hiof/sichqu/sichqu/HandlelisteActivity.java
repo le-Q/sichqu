@@ -112,9 +112,6 @@ public class HandlelisteActivity extends AppCompatActivity {
                     case R.id.nav_db:
                         startActivity(new Intent(HandlelisteActivity.this, HvisListeneActivity.class));
                         break;
-                    case R.id.nav_search:
-
-                        break;
                     case R.id.nav_settings:
                         startActivity(new Intent(HandlelisteActivity.this, settingsActivity.class));
                         break;
@@ -127,9 +124,6 @@ public class HandlelisteActivity extends AppCompatActivity {
                         startActivity(Intent.createChooser(intent, "Share using"));
 
                         //Toast.makeText(HandlelisteActivity.this, "share", Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.nav_send:
-                        Toast.makeText(HandlelisteActivity.this, "send", Toast.LENGTH_SHORT).show();
                         break;
             }
             return true;
@@ -427,9 +421,6 @@ public class HandlelisteActivity extends AppCompatActivity {
             case R.id.nav_db:
                 startActivity(new Intent(HandlelisteActivity.this, HvisListeneActivity.class));
                 break;
-            case R.id.nav_search:
-
-                break;
             case R.id.nav_settings:
                 startActivity(new Intent(HandlelisteActivity.this, settingsActivity.class));
                 break;
@@ -442,9 +433,6 @@ public class HandlelisteActivity extends AppCompatActivity {
                 startActivity(Intent.createChooser(intent, "Share using"));
 
                 //Toast.makeText(this, "share", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.nav_send:
-                Toast.makeText(this, "send", Toast.LENGTH_SHORT).show();
                 break;
 
             // Handling av actionbar knapper

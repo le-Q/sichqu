@@ -6,10 +6,6 @@
             android:icon="@drawable/ic_dashboard_black_24dp"
             android:title="Alle listene" />
         <item
-            android:id="@+id/nav_search"
-            android:icon="@drawable/ic_search"
-            android:title="Search" />
-        <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings_black_24dp"
             android:title="Settings" />
@@ -24,10 +20,6 @@
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_share_black_24dp"
                 android:title="Share" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_send_black_24dp"
-                android:title="Send" />
         </menu>
     </item>
 </menu>
