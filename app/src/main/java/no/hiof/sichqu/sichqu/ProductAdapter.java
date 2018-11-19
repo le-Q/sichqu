@@ -7,9 +7,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 import java.util.List;
 
@@ -19,6 +23,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     private List<Products> productList;
     private LayoutInflater inflater;
+    private ImageButton deleteItem;
+    private DatabaseReference databaseReference;
 
     public ProductAdapter(Context mCtx, List<Products> productList) {
         this.productList = productList;
@@ -36,7 +42,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     @Override
     public void onBindViewHolder(@NonNull final ProductViewHolder productViewHolder, int i) {
-        Products product = productList.get(i);
+        final Products product = productList.get(i);
         productViewHolder.setData(product);
 
         productViewHolder.textViewTitle.setText(product.getName());
@@ -51,6 +57,16 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                 return true;
             }
         });
+
+
+        productViewHolder.deleteItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("Delete", "Delete");
+                //databaseReference = FirebaseDatabase.getInstance().getReference("produkter").child()
+            }
+        });
+
     }
 
     @Override
@@ -61,11 +77,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     class ProductViewHolder extends RecyclerView.ViewHolder{
         TextView textViewTitle;
         ImageView thumbnails;
+        ImageButton deleteItem;
 
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
             thumbnails = itemView.findViewById(R.id.thumb);
             textViewTitle = itemView.findViewById(R.id.textViewTitle);
+
+            deleteItem = (ImageButton) itemView.findViewById(R.id.removeProd);
         }
 
         public void setData(Products currentProd) {

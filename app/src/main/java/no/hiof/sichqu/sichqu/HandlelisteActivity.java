@@ -487,14 +487,15 @@ public class HandlelisteActivity extends AppCompatActivity {
     // Knapp for floating action button
     public void addNewItem(View v) {
         if (v == addNewButton) {
-            //Intent intent = new Intent(this, addNewItem.class);
-            //startActivity(intent);
-            leggtilSlettDialog();
+            Intent intent = new Intent(this, addNewItem.class);
+            startActivity(intent);
+            //leggtilSlettDialog();
         }
     }
 
     public void removeItem(View v) {
         if (v == removeButton) {
+
         }
     }
 
@@ -543,6 +544,7 @@ public class HandlelisteActivity extends AppCompatActivity {
         };
         queue.add(request);
     }
+
     private void addNewItem(Products produkt) {
         String id = databaseReference.push().getKey();
         databaseReference.child(id).setValue(produkt);

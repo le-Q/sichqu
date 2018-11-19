@@ -2,6 +2,7 @@ package no.hiof.sichqu.sichqu;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.provider.ContactsContract;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +13,8 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -24,6 +27,10 @@ public class settingsActivity extends AppCompatActivity {
     private DeltPreferanse sharedpref;
     private Products produkt;
     private FirebaseDatabase db;
+
+    private FirebaseAuth firebaseAuth;
+    private FirebaseUser user;
+    private DatabaseReference databaseReference;
 
 
 
@@ -101,7 +108,7 @@ public class settingsActivity extends AppCompatActivity {
 
     private void fjernprodukter() {
         //funker nok ikke ennå bare en test
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("handleliste").child("id");
+        databaseReference = FirebaseDatabase.getInstance().getReference("produkter").child(user.getUid());
         databaseReference.removeValue();
 
 
