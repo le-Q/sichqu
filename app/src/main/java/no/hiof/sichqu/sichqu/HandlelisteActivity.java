@@ -9,11 +9,13 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,6 +25,7 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.SearchView;
 import android.widget.Spinner;
@@ -95,6 +98,8 @@ public class HandlelisteActivity extends AppCompatActivity {
     private ImageButton addNewButton, removeButton;
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private FirebaseUser user;
+    private String id;
     private IntentIntegrator skuScan;
     private DeltPreferanse sharedpref;
 
@@ -165,10 +170,7 @@ public class HandlelisteActivity extends AppCompatActivity {
             }
         };
 
-<<<<<<< HEAD
 
-=======
->>>>>>> master
         //New item button
         addNewButton = (ImageButton) findViewById(R.id.addNewFloat);
         removeButton = (ImageButton) findViewById(R.id.removeProd);
@@ -178,26 +180,21 @@ public class HandlelisteActivity extends AppCompatActivity {
 
         // Query til database
         firebaseDatabase = FirebaseDatabase.getInstance();
-<<<<<<< HEAD
+
 
         databasePictureReference = firebaseDatabase.getReference("bilder").child(firebaseAuth.getUid());
 
-
-=======
         databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(testHandleliste);
         databasePictureReference = firebaseDatabase.getReference("bilder").child(firebaseAuth.getUid());
 
->>>>>>> master
         productAdapter = new ProductAdapter(getApplicationContext(), productList);
 
         skuScan = new IntentIntegrator(this);
         recycleSetup();
-<<<<<<< HEAD
-
 
         // Spinner
         // Hente handlelister
-arrayHandleliste.add("første");
+        arrayHandleliste.add("første");
 
         toolbar = (Toolbar) findViewById(R.id.toolbar22);
 
@@ -226,6 +223,8 @@ arrayHandleliste.add("første");
         databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(testHandleliste);
 
         firebaseDatabase.getReference().child("produkter").child(firebaseAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+
+
     @Override
     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
         arrayHandleliste.clear();
@@ -240,8 +239,40 @@ arrayHandleliste.add("første");
     }
 });
 
-=======
->>>>>>> master
+    }
+
+    private void leggtilSlettDialog() {
+
+        final EditText editName = (EditText) findViewById(R.id.productName);
+        Button addBtn = (Button) findViewById(R.id.addName);
+        Button deleteBtn = (Button) findViewById(R.id.buttonDelete);
+
+        databaseReference = FirebaseDatabase.getInstance().getReference("produkter");
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        user = firebaseAuth.getCurrentUser();
+        id = databaseReference.push().getKey();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(HandlelisteActivity.this);
+        builder.setTitle("Legg til vare");
+        AlertDialog b = builder.create();
+        b.show();
+
+        addBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String name = editName.getText().toString().trim();
+                Products product = new Products(name);
+
+                if (!TextUtils.isEmpty(name)) {
+                    databaseReference.child(user.getUid()).child(id).setValue(product);
+                    //Toast.makeText(this, "Varen lagt til..", Toast.LENGTH_LONG).show();
+                } else {
+                    //Toast.makeText(this, "Skriv inn navn på produkt", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
     }
 
     private void databaseRead(){
@@ -252,10 +283,7 @@ arrayHandleliste.add("første");
                 String productKey = dataSnapshot.getKey();
                 product.setId(productKey);
 
-<<<<<<< HEAD
-=======
 
->>>>>>> master
                 if (!productList.contains(product)) {
                     productList.add(product);
                     productListKeys.add(productKey);
@@ -461,6 +489,7 @@ arrayHandleliste.add("første");
         if (v == addNewButton) {
             Intent intent = new Intent(this, addNewItem.class);
             startActivity(intent);
+            //leggtilSlettDialog();
         }
     }
 

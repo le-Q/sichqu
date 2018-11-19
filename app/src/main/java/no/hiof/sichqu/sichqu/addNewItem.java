@@ -3,6 +3,7 @@ package no.hiof.sichqu.sichqu;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -44,13 +45,16 @@ public class addNewItem extends AppCompatActivity implements View.OnClickListene
     }
 
     private void saveNewItem() {
-        String name = editName.getText().toString().trim();
 
+        String name = editName.getText().toString().trim();
         Products product = new Products(name);
 
-        databaseReference.child(user.getUid()).child(id).setValue(product);
-
-        Toast.makeText(this, "Varen lagt til..", Toast.LENGTH_LONG).show();
+        if (!TextUtils.isEmpty(name)) {
+            databaseReference.child(user.getUid()).child(id).setValue(product);
+            Toast.makeText(this, "Varen lagt til..", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "Skriv inn navn på produkt", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
