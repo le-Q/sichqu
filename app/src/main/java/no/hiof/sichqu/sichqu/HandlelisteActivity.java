@@ -160,11 +160,6 @@ public class HandlelisteActivity extends AppCompatActivity {
             }
         };
 
-
-
-
-
-
         //New item button
         addNewButton = (ImageButton) findViewById(R.id.addNewFloat);
 
@@ -176,18 +171,10 @@ public class HandlelisteActivity extends AppCompatActivity {
         databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(testHandleliste);
         databasePictureReference = firebaseDatabase.getReference("bilder").child(firebaseAuth.getUid());
 
-
-
-
-
         productAdapter = new ProductAdapter(getApplicationContext(), productList);
 
         skuScan = new IntentIntegrator(this);
         recycleSetup();
-
-
-
-
     }
 
     private void databaseRead(){
@@ -197,8 +184,7 @@ public class HandlelisteActivity extends AppCompatActivity {
                 Products product = dataSnapshot.getValue(Products.class);
                 String productKey = dataSnapshot.getKey();
                 product.setId(productKey);
-
-
+                
 
                 if (!productList.contains(product)) {
                     productList.add(product);
@@ -307,7 +293,7 @@ public class HandlelisteActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
                 if(newText.length() > 3){
-                    Toast.makeText(HandlelisteActivity.this, "share"+newText, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(HandlelisteActivity.this, newText, Toast.LENGTH_SHORT).show();
                 }
                 return false;
             }
