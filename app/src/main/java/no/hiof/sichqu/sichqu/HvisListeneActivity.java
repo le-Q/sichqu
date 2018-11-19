@@ -1,5 +1,6 @@
 package no.hiof.sichqu.sichqu;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -56,6 +57,9 @@ public class HvisListeneActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(HvisListeneActivity.this, "Du trykket på: "+position+" "+arrayList.get(position), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(HvisListeneActivity.this, HandlelisteActivity.class);
+
+                startActivity(intent);
             }
         });
 

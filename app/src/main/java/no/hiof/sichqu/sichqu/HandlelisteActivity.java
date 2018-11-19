@@ -239,7 +239,13 @@ public class HandlelisteActivity extends AppCompatActivity {
 
     }
 });
-
+        mRecyclerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("View", "Hva er det?" + v);
+                Toast.makeText(HandlelisteActivity.this, "Hva er det?" + v, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void leggtilSlettDialog() {

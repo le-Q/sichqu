@@ -12,10 +12,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 import java.util.List;
+import java.util.Objects;
 
 import no.hiof.sichqu.sichqu.Products.Products;
 
@@ -25,6 +28,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     private LayoutInflater inflater;
     private ImageButton deleteItem;
     private DatabaseReference databaseReference;
+    private FirebaseUser user;
+
 
     public ProductAdapter(Context mCtx, List<Products> productList) {
         this.productList = productList;
@@ -63,9 +68,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             @Override
             public void onClick(View v) {
                 Log.e("Delete", "Delete");
-                //databaseReference = FirebaseDatabase.getInstance().getReference("produkter").child()
+                //DatabaseReference removalItem = FirebaseDatabase.getInstance().getReference("produkter").child(user.getUid()).child(databaseReference.getKey());
+                //removalItem.removeValue();
+                //Log.e("Removed", "Removed??");
             }
         });
+
 
     }
 
@@ -85,6 +93,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             textViewTitle = itemView.findViewById(R.id.textViewTitle);
 
             deleteItem = (ImageButton) itemView.findViewById(R.id.removeProd);
+
+            user = FirebaseAuth.getInstance().getCurrentUser();
         }
 
         public void setData(Products currentProd) {
