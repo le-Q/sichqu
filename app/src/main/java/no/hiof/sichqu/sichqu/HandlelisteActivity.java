@@ -13,18 +13,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.SearchView;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
+
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -71,6 +76,8 @@ public class HandlelisteActivity extends AppCompatActivity {
     String iste2 = "Iste grønn te lime";
     String cider = "Grevens cider skogsbær";
     String testHandleliste = "handleliste";
+    private Toolbar toolbar = null;
+    private String[] month = null;
 
     private RecyclerView mRecyclerView;
     private ProductAdapter productAdapter;
@@ -94,13 +101,37 @@ public class HandlelisteActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
         sharedpref = new DeltPreferanse(this);
         if(sharedpref.loadNightModeState())
             setTheme(R.style.darktheme);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.handleliste_activity);
+
+        // Spinner
+        month = getResources().getStringArray(R.array.months);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar22);
+
+        SpinnerAdapter spinnerAdapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.months, R.layout
+                .spinner_drop_down_item);
+        Spinner navigationSpinner = new Spinner(getSupportActionBar().getThemedContext());
+        navigationSpinner.setAdapter(spinnerAdapter);
+        toolbar.addView(navigationSpinner, 0);
+
+        navigationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(HandlelisteActivity.this,
+                        "you selected: " + month[position],
+                        Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -180,6 +211,8 @@ public class HandlelisteActivity extends AppCompatActivity {
 
         skuScan = new IntentIntegrator(this);
         recycleSetup();
+
+
 
 
 

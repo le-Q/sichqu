@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <item
-        android:id="@+id/spinner"
-        android:background="#ff00"
-        android:title="ActionBar Spinner"
-        android:visible="true"
-        app:actionViewClass="android.widget.Spinner"
-        app:showAsAction="always" />
     <item
         android:id="@+id/searchmenu"
         android:icon="@drawable/ic_search"
