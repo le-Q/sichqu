@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 package no.hiof.sichqu.sichqu;
 
 import android.content.Intent;
