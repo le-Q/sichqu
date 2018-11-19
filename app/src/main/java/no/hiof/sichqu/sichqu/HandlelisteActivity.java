@@ -128,7 +128,11 @@ public class HandlelisteActivity extends AppCompatActivity {
                         firebaseAuth.signOut();
                         break;
                     case R.id.nav_share:
-                        Toast.makeText(HandlelisteActivity.this, "share", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(Intent.ACTION_SEND);
+                        intent.setType("text/plain");
+                        startActivity(Intent.createChooser(intent, "Share using"));
+
+                        //Toast.makeText(HandlelisteActivity.this, "share", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.nav_send:
                         Toast.makeText(HandlelisteActivity.this, "send", Toast.LENGTH_SHORT).show();
@@ -332,7 +336,11 @@ public class HandlelisteActivity extends AppCompatActivity {
                 firebaseAuth.signOut();
                 break;
             case R.id.nav_share:
-                Toast.makeText(this, "share", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                startActivity(Intent.createChooser(intent, "Share using"));
+
+                //Toast.makeText(this, "share", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_send:
                 Toast.makeText(this, "send", Toast.LENGTH_SHORT).show();

@@ -103,7 +103,7 @@ public class settingsActivity extends AppCompatActivity {
         //funker nok ikke ennå bare en test
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("handleliste").child("id");
         databaseReference.removeValue();
-       
+
 
         Toast.makeText(this, "Data deleted!", Toast.LENGTH_SHORT).show();
     }
