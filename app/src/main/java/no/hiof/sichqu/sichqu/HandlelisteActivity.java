@@ -210,7 +210,7 @@ public class HandlelisteActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(HandlelisteActivity.this, "you selected: " + arrayHandleliste.get(position), Toast.LENGTH_SHORT).show();
-                testHandleliste = arrayHandleliste.get(position);
+                //testHandleliste = arrayHandleliste.get(position);
                 Log.e("GetA",testHandleliste);
             }
 
@@ -230,7 +230,7 @@ public class HandlelisteActivity extends AppCompatActivity {
         arrayHandleliste.clear();
         for(DataSnapshot nameListShot : dataSnapshot.getChildren()){
             arrayHandleliste.add(nameListShot.getKey());
-        } Log.e("Get Data", arrayHandleliste.toString());
+        }
     }
 
     @Override
