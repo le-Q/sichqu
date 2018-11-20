@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -26,6 +27,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.zxing.common.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -95,12 +97,6 @@ public class HvisListeneActivity extends AppCompatActivity {
 
         builder.setView(viewDialog);
         final AlertDialog dialog = builder.create();
-        dialog.show();
-<<<<<<< HEAD
-
-
-=======
->>>>>>> master
 
         leggTil.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,20 +104,17 @@ public class HvisListeneActivity extends AppCompatActivity {
                 final EditText editName = (EditText) viewDialog.findViewById(R.id.listName);
                 final String listenavn = editName.getText().toString();
 
-                dialog.cancel();
-                databaseReference.child(firebaseAuth.getUid()).child(listenavn).setValue(0);
-                Log.e("Listenavn", "**" + databaseReference.child(firebaseAuth.getUid()).child(listenavn));
-
-                dialog.cancel();
-
+                if (!TextUtils.isEmpty(listenavn)) {
+                    databaseReference.child(firebaseAuth.getUid()).child(listenavn).setValue(0);
+                    Toast.makeText(HvisListeneActivity.this, "Listen " + listenavn + " ble laget", Toast.LENGTH_LONG).show();
+                    dialog.cancel();
+                } else {
+                    Toast.makeText(HvisListeneActivity.this, "Skriv inn navn på handleliste", Toast.LENGTH_SHORT).show();
+                }
             }
         });
-<<<<<<< HEAD
 
-
-
-=======
->>>>>>> master
+        dialog.show();
     }
 
     public void dataRead() {

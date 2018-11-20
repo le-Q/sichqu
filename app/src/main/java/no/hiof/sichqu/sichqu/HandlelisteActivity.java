@@ -179,27 +179,22 @@ public class HandlelisteActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot snap : dataSnapshot.getChildren()) {
                     lister.add(snap.getKey());
-
                 }
+
                 if (!lister.isEmpty()) {
                     databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(lister.get(0));
                     Log.e("Handel", " Test -> " + lister.get(0) + testHandleliste + " " + databaseReference.toString());
-                }else {
+                } else {
                     firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid());
                 }
                 if (!lister.isEmpty()) {
                     databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(lister.get(0));
-
                 }
-
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
-
         databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid());
     }
 
@@ -230,28 +225,19 @@ public class HandlelisteActivity extends AppCompatActivity {
                                 }
                                 Log.d(TAG, "OnChildAdded fired");
                             }
-
                             @Override
                             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
                             }
-
                             @Override
                             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
                             }
-
                             @Override
                             public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
                             }
-
                             @Override
                             public void onCancelled(@NonNull DatabaseError databaseError) {
-
                             }
                         });
-
                 }
 
                 ArrayAdapter spinnerAdapter = new ArrayAdapter(getApplicationContext(), R.layout.spinner_drop_down_item, arrayHandleliste);
@@ -279,25 +265,19 @@ public class HandlelisteActivity extends AppCompatActivity {
                                     //Log.e("Spinner3", nameListShot.getChildren().toString());
 
                                 }
-
                                 testHandleliste = snap.getKey();
                                 productAdapter.setListData(lister);
                                 databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(testHandleliste);
                             }
-
                             @Override
                             public void onCancelled(@NonNull DatabaseError databaseError) { }
                         });
-
                     }
-
                     @Override
                     public void onNothingSelected(AdapterView<?> parent) {
 
                     }
                 });
-
-
             }
 
             @Override
@@ -329,7 +309,6 @@ public class HandlelisteActivity extends AppCompatActivity {
                 Toast.makeText(HandlelisteActivity.this, "Hva er det?" + v, Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
     private void recycleSetup() {
@@ -366,7 +345,7 @@ public class HandlelisteActivity extends AppCompatActivity {
         Log.e("Adapter", " - > " + productList);
     }
 
-   protected void onPause() {
+    protected void onPause() {
         super.onPause();
 
         if (mAuthListener != null) {
@@ -478,6 +457,7 @@ public class HandlelisteActivity extends AppCompatActivity {
             skuScan.initiateScan();
 
         }
+
     // Knapp for floating action button
     public void addNewItem(View v) {
         if (v == addNewButton) {
@@ -490,6 +470,9 @@ public class HandlelisteActivity extends AppCompatActivity {
         final View view = getLayoutInflater().inflate(R.layout.leggtilvare_dialog, null);
         Button leggTil = (Button) view.findViewById(R.id.leggTilBtn);
         final EditText editName = (EditText) view.findViewById(R.id.productName);
+
+        final AlertDialog dialog = builder.create();
+
 
         leggTil.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -504,14 +487,13 @@ public class HandlelisteActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(HandlelisteActivity.this, "Skriv inn navn på produkt", Toast.LENGTH_LONG).show();
                 }
+                dialog.cancel();
             }
 
         });
 
-        builder.setView(view);
-        builder.show();
+        dialog.show();
     }
-
 
     private void getProdukt(String produktKode, final Boolean kolonial) {
         String URL;
