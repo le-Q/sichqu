@@ -354,6 +354,7 @@ public class HandlelisteActivity extends AppCompatActivity {
         if (mAuthListener != null) {
             firebaseAuth.removeAuthStateListener(mAuthListener);
         }
+        productAdapter.notifyDataSetChanged();
     }
 
    protected void onPause() {
