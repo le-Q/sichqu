@@ -515,9 +515,7 @@ public class HandlelisteActivity extends AppCompatActivity {
                 id = databaseReference.push().getKey();
 
                 if (!TextUtils.isEmpty(name)) {
-                    databaseReference.child(id).setValue(product);
-                    Toast.makeText(HandlelisteActivity.this, "Varen lagt til.. " + editName.getText().toString().trim(), Toast.LENGTH_LONG).show();
-
+                    addNewItem(product);
                 } else {
                     Toast.makeText(HandlelisteActivity.this, "Skriv inn navn på produkt", Toast.LENGTH_LONG).show();
                 }
