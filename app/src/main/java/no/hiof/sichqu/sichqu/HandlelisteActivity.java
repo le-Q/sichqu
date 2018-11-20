@@ -248,11 +248,10 @@ public class HandlelisteActivity extends AppCompatActivity {
         });
     }
 
-    private void leggtilSlettDialog() {
+    /*private void leggtilSlettDialog() {
 
         final EditText editName = (EditText) findViewById(R.id.productName);
         Button addBtn = (Button) findViewById(R.id.addName);
-        Button deleteBtn = (Button) findViewById(R.id.buttonDelete);
 
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
@@ -280,7 +279,7 @@ public class HandlelisteActivity extends AppCompatActivity {
         });
 
 
-    }
+    }*/
 
     private void databaseRead(){
         childEventListener = new ChildEventListener() {
@@ -488,33 +487,26 @@ public class HandlelisteActivity extends AppCompatActivity {
     // Knapp for floating action button
     public void addNewItem(View v) {
         if (v == addNewButton) {
-            //Intent intent = new Intent(this, addNewItem.class);
-            //startActivity(intent);
-            //leggtilSlettDialog();
-            AlertDialog.Builder builder = new AlertDialog.Builder(HandlelisteActivity.this);
-            View view = getLayoutInflater().inflate(R.layout.leggtilvare_dialog, null);
-            EditText mEditText = (EditText) findViewById(R.id.productName);
-            Button leggtil = (Button) findViewById(R.id.buttonAdd);
-            Button slett = (Button) findViewById(R.id.buttonDelete);
-
-            /*leggtil.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(HandlelisteActivity.this, "legg til", Toast.LENGTH_SHORT).show();
-                }
-            });*/
-
-           /* slett.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(HandlelisteActivity.this, "slett", Toast.LENGTH_SHORT).show();
-                }
-            });*/
-
-            builder.setView(view);
-            AlertDialog ad = builder.create();
-            ad.show();
+            dialogAddnew();
         }
+    }
+
+    public void dialogAddnew() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(HandlelisteActivity.this);
+        View view = getLayoutInflater().inflate(R.layout.leggtilvare_dialog, null);
+        EditText mEditText = (EditText) findViewById(R.id.productName);
+        Button leggTil = (Button) findViewById(R.id.buttonAdd);
+
+        leggTil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        builder.setView(view);
+        AlertDialog ad = builder.create();
+        ad.show();
     }
 
     public void removeItem(View v) {

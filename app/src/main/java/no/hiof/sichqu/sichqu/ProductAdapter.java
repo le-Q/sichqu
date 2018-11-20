@@ -30,6 +30,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     private DatabaseReference databaseReference;
     private FirebaseUser user;
 
+    private View.OnClickListener clickListener;
+
+    public void setOnItemClickListener(View.OnClickListener clickListener) {
+        this.clickListener = clickListener;
+    }
+
 
     public ProductAdapter(Context mCtx, List<Products> productList) {
         this.productList = productList;
@@ -47,8 +53,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     @Override
     public void onBindViewHolder(@NonNull final ProductViewHolder productViewHolder, int i) {
-        final Products product = productList.get(i);
+        Products product = productList.get(i);
         productViewHolder.setData(product);
+
+        if (clickListener != null) {
+            productViewHolder.itemView.setOnClickListener(clickListener);
+        }
 
         productViewHolder.textViewTitle.setText(product.getName());
         if (product.getThumbnail() != null)
@@ -82,7 +92,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         return productList.size();
     }
 
-    class ProductViewHolder extends RecyclerView.ViewHolder{
+    class ProductViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView textViewTitle;
         ImageView thumbnails;
         ImageButton deleteItem;
@@ -100,6 +110,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         public void setData(Products currentProd) {
             this.textViewTitle.setText(currentProd.getName());
             thumbnails.setImageResource(R.drawable.poster_placeholder);
+        }
+
+        @Override
+        public void onClick(View v) {
+
         }
     }
 
