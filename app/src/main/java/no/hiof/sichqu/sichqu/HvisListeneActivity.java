@@ -64,9 +64,6 @@ public class HvisListeneActivity extends AppCompatActivity {
         });
 
         handleListeNavn.requestFocus();
-
-
-
     }
 
     public void leggTilListe(View view) {
@@ -76,6 +73,10 @@ public class HvisListeneActivity extends AppCompatActivity {
         //listActive.put("Active", "true");
         databaseReference.child(user.getUid()).child(listenavn).setValue(0);
         dataRead();
+    }
+
+    public void dialogAddListe() {
+        
     }
 
 

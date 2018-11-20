@@ -319,13 +319,7 @@ public class HandlelisteActivity extends AppCompatActivity {
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                String key = dataSnapshot.getKey();
-                for (Products products : productList) {
-                    if (key.equals(products.getId())) {
-                        productList.remove(products);
-                        break;
-                    }
-                }
+
             }
 
             @Override
@@ -341,7 +335,6 @@ public class HandlelisteActivity extends AppCompatActivity {
         databaseReference.child(testHandleliste).addChildEventListener(childEventListener);
         Log.d(TAG, "OnChi fired : "+ testHandleliste);
     }
-
 
     private void recycleSetup() {
         mRecyclerView = findViewById(R.id.recyleViewListe);
@@ -501,7 +494,7 @@ public class HandlelisteActivity extends AppCompatActivity {
     }
 
     public void dialogAddNew() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(HandlelisteActivity.this);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(HandlelisteActivity.this);
         final View view = getLayoutInflater().inflate(R.layout.leggtilvare_dialog, null);
         Button leggTil = (Button) view.findViewById(R.id.leggTilBtn);
         final EditText editName = (EditText) view.findViewById(R.id.productName);
@@ -516,6 +509,8 @@ public class HandlelisteActivity extends AppCompatActivity {
 
                 if (!TextUtils.isEmpty(name)) {
                     addNewItem(product);
+                    databaseRead();
+
                 } else {
                     Toast.makeText(HandlelisteActivity.this, "Skriv inn navn på produkt", Toast.LENGTH_LONG).show();
                 }
@@ -524,8 +519,7 @@ public class HandlelisteActivity extends AppCompatActivity {
         });
 
         builder.setView(view);
-        AlertDialog ad = builder.create();
-        ad.show();
+        builder.show();
     }
 
 
@@ -583,9 +577,5 @@ public class HandlelisteActivity extends AppCompatActivity {
         databaseReference.child(id).setValue(produkt);
 
         Toast.makeText(this, "Varen lagt til..", Toast.LENGTH_LONG).show();
-    }
-
-    private void removeItem(Products produkt) {
-        databaseReference.child(produkt.getId()).removeValue();
     }
 }
