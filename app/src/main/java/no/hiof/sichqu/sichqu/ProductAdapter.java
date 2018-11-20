@@ -69,6 +69,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     }
 
+    public void setListData(List<Products> newData) {
+        this.productList.clear();
+        productList.addAll(newData);
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemCount() {
         return productList.size();

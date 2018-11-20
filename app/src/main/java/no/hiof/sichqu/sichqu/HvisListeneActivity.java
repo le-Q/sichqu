@@ -68,9 +68,9 @@ public class HvisListeneActivity extends AppCompatActivity {
     public void leggTilListe(View view) {
         user = firebaseAuth.getCurrentUser();
         String listenavn = handleListeNavn.getText().toString();
-        Map<String, String> listActive = new HashMap<>();
-        listActive.put("Active", "true");
-        databaseReference.child(user.getUid()).child(listenavn).setValue(listActive);
+        //Map<String, String> listActive = new HashMap<>();
+        //listActive.put("Active", "true");
+        databaseReference.child(user.getUid()).child(listenavn).setValue(0);
         dataRead();
     }
 

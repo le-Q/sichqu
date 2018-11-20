@@ -66,7 +66,7 @@ public class HandlelisteActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mToggle;
 
     String cider = "Grevens cider skogsbær";
-    String testHandleliste = "handleliste";
+    String testHandleliste ="Handleliste";
     private ArrayList<String> arrayHandleliste = new ArrayList<>();
 
     private RecyclerView mRecyclerView;
@@ -162,10 +162,6 @@ public class HandlelisteActivity extends AppCompatActivity {
         // Query til database
         firebaseDatabase = FirebaseDatabase.getInstance();
 
-
-        databasePictureReference = firebaseDatabase.getReference("bilder").child(firebaseAuth.getUid());
-
-        databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(testHandleliste);
         databasePictureReference = firebaseDatabase.getReference("bilder").child(firebaseAuth.getUid());
 
         productAdapter = new ProductAdapter(getApplicationContext(), productList);
@@ -173,20 +169,14 @@ public class HandlelisteActivity extends AppCompatActivity {
         skuScan = new IntentIntegrator(this);
         recycleSetup();
 
-
-
-
+        goSpinner();
+        databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(testHandleliste);
     }
 
     private void goSpinner() {
         // Spinner
         // Hente handlelister
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar22);
-
-        //SpinnerAdapter spinnerAdapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.months, R.layout.spinner_drop_down_item);
-
-
-
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar22);
         firebaseDatabase.getReference().child("produkter").child(firebaseAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -194,6 +184,50 @@ public class HandlelisteActivity extends AppCompatActivity {
                 for(DataSnapshot nameListShot : dataSnapshot.getChildren()){
                     arrayHandleliste.add(nameListShot.getKey());
                 }
+
+                ArrayAdapter spinnerAdapter = new ArrayAdapter(getApplicationContext(), R.layout.spinner_drop_down_item, arrayHandleliste);
+                spinnerAdapter.setDropDownViewResource(R.layout.spinner_drop_down_item);
+                Spinner navigationSpinner = new Spinner(getSupportActionBar().getThemedContext());
+                navigationSpinner.setAdapter(spinnerAdapter);
+                toolbar.addView(navigationSpinner, 0);
+
+                navigationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        Toast.makeText(HandlelisteActivity.this, "you selected: " + arrayHandleliste.get(position), Toast.LENGTH_SHORT).show();
+                        testHandleliste = arrayHandleliste.get(position);
+                        Log.e("GetA",testHandleliste+ " <- " + arrayHandleliste.get(position));
+
+                        firebaseDatabase.getReference().child("produkter").child(firebaseAuth.getUid()).child(testHandleliste).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot snap) {
+                                Log.e("Spinner",snap.getKey() + " -> " + snap.getChildren());
+
+                                ArrayList<Products> lister = new ArrayList<>();
+                                for(DataSnapshot nameListShot : snap.getChildren()){
+                                    Products product = nameListShot.getValue(Products.class);
+                                    lister.add(product);
+                                    //Log.e("Spinner3", nameListShot.getChildren().toString());
+
+                                }
+                                testHandleliste = snap.getKey();
+                                productAdapter.setListData(lister);
+                                databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(testHandleliste);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) { }
+                        });
+
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
+
+
             }
 
             @Override
@@ -202,29 +236,6 @@ public class HandlelisteActivity extends AppCompatActivity {
             }
         });
 
-        ArrayAdapter spinnerAdapter = new ArrayAdapter(getApplicationContext(), R.layout.spinner_drop_down_item, arrayHandleliste);
-        spinnerAdapter.setDropDownViewResource(R.layout.spinner_drop_down_item);
-        Spinner navigationSpinner = new Spinner(getSupportActionBar().getThemedContext());
-        navigationSpinner.setAdapter(spinnerAdapter);
-        toolbar.addView(navigationSpinner, 0);
-
-
-
-        databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(testHandleliste);
-
-        navigationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(HandlelisteActivity.this, "you selected: " + arrayHandleliste.get(position), Toast.LENGTH_SHORT).show();
-                //testHandleliste = arrayHandleliste.get(position);
-                Log.e("GetA",testHandleliste);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
     }
 
     private void leggtilSlettDialog() {
@@ -235,7 +246,6 @@ public class HandlelisteActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
-        databaseReference = FirebaseDatabase.getInstance().getReference("produkter");
         id = databaseReference.push().getKey();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(HandlelisteActivity.this);
@@ -274,6 +284,7 @@ public class HandlelisteActivity extends AppCompatActivity {
                     productListKeys.add(productKey);
                     productAdapter.notifyItemChanged(productList.size()-1);
                 }
+                Log.d(TAG, "OnChildAdded fired");
             }
 
             @Override
@@ -283,7 +294,8 @@ public class HandlelisteActivity extends AppCompatActivity {
                 product.setId(productKey);
 
                 int position = productListKeys.indexOf(productKey);
-                Log.d(TAG, "OnChildChanged fired");
+                Log.d(TAG, "OnChildChanged fired"+" -> " + testHandleliste + " " + product);
+
 
                 productList.set(position, product);
                 productAdapter.notifyItemChanged(position);
@@ -310,7 +322,8 @@ public class HandlelisteActivity extends AppCompatActivity {
 
             }
         };
-        databaseReference.addChildEventListener(childEventListener);
+        databaseReference.child(testHandleliste).addChildEventListener(childEventListener);
+        Log.d(TAG, "OnChi fired : "+ testHandleliste);
     }
 
 
@@ -346,7 +359,7 @@ public class HandlelisteActivity extends AppCompatActivity {
             firebaseAuth.removeAuthStateListener(mAuthListener);
         }
         databaseRead();
-        goSpinner();
+
     }
 
    protected void onPause() {

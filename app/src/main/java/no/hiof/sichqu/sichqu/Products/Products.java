@@ -67,4 +67,9 @@ public class Products {
     public void setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }
