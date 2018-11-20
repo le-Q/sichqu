@@ -101,5 +101,4 @@ public void dataRead() {
         super.onResume();
         dataRead();
     }
-    /*dfg */
 }

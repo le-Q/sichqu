@@ -3,6 +3,8 @@ package no.hiof.sichqu.sichqu;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -154,7 +156,7 @@ public class HandlelisteActivity extends AppCompatActivity {
         //New item button
         addNewButton = (ImageButton) findViewById(R.id.addNewFloat);
 
-        productList = new ArrayList<>();
+        productList = DataHolder.getInstance().currentProducts;
         productListKeys = new ArrayList<>();
 
         // Query til database
@@ -360,6 +362,7 @@ public class HandlelisteActivity extends AppCompatActivity {
             firebaseAuth.removeAuthStateListener(mAuthListener);
         }
         productAdapter.notifyDataSetChanged();
+        Log.e("Adapter", " - > " + productList);
     }
 
    protected void onPause() {
@@ -371,7 +374,7 @@ public class HandlelisteActivity extends AppCompatActivity {
         if (childEventListener != null) {
             databaseReference.removeEventListener(childEventListener);
         }
-        productList.clear();
+        //productList.clear();
         productListKeys.clear();
         productAdapter.notifyDataSetChanged();
     }
@@ -427,11 +430,6 @@ public class HandlelisteActivity extends AppCompatActivity {
                 //Toast.makeText(this, "share", Toast.LENGTH_SHORT).show();
                 break;
 
-            // Handling av actionbar knapper
-            case R.id.scan:
-                skuScan.setOrientationLocked(false);
-                skuScan.initiateScan();
-                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -442,6 +440,7 @@ public class HandlelisteActivity extends AppCompatActivity {
     public void hentAPI(View view) {
         getProdukt(cider, true);
         //getSKU(iste);
+        Log.e("Adapter", productList.toString());
     }
 
     @Override
@@ -476,6 +475,7 @@ public class HandlelisteActivity extends AppCompatActivity {
     public void scanItem(View v){
             skuScan.setOrientationLocked(false);
             skuScan.initiateScan();
+
         }
     // Knapp for floating action button
     public void addNewItem(View v) {
