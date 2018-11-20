@@ -78,7 +78,7 @@ public class HandlelisteActivity extends AppCompatActivity {
     private FirebaseDatabase firebaseDatabase;
     private List<Products> productList;
     private List<String> productListKeys;
-    private ImageButton addNewButton, removeButton;
+    private ImageButton addNewButton;
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseUser user;

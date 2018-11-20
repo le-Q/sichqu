@@ -1,5 +1,6 @@
 package no.hiof.sichqu.sichqu;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -10,9 +11,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.github.clans.fab.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -33,6 +36,7 @@ public class HvisListeneActivity extends AppCompatActivity {
     private FirebaseDatabase firebaseDatabase;
     private ArrayList<String> arrayList = new ArrayList<>();
     private ArrayAdapter arrayAdapter;
+    private ImageButton newListBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,7 @@ public class HvisListeneActivity extends AppCompatActivity {
 
         listView = findViewById(R.id.AlleListene);
         handleListeNavn = findViewById(R.id.listName);
+        newListBtn = findViewById(R.id.addNewFloatBtn);
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference("produkter");
@@ -69,6 +74,7 @@ public class HvisListeneActivity extends AppCompatActivity {
     }
 
     public void leggTilListe(View view) {
+        if (view == newListBtn) {
         /*user = firebaseAuth.getCurrentUser();
         String listenavn = handleListeNavn.getText().toString();
         //Map<String, String> listActive = new HashMap<>();
@@ -77,6 +83,7 @@ public class HvisListeneActivity extends AppCompatActivity {
         dataRead();*/
 
         leggTilListeDialog();
+        }
     }
 
     public void leggTilListeDialog() {
@@ -84,6 +91,9 @@ public class HvisListeneActivity extends AppCompatActivity {
         final View viewDialog = getLayoutInflater().inflate(R.layout.addlist_dialog, null);
         Button leggTil = (Button) viewDialog.findViewById(R.id.addListBtn);
 
+        builder.setView(viewDialog);
+        final AlertDialog dialog = builder.create();
+        dialog.show();
 
         leggTil.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,15 +101,12 @@ public class HvisListeneActivity extends AppCompatActivity {
                 final EditText editName = (EditText) viewDialog.findViewById(R.id.listName);
                 final String listenavn = editName.getText().toString();
 
+                dialog.cancel();
                 databaseReference.child(firebaseAuth.getUid()).child(listenavn).setValue(0);
                 Log.e("Listenavn", "**" + databaseReference.child(firebaseAuth.getUid()).child(listenavn));
 
             }
         });
-
-        builder.setView(viewDialog);
-        AlertDialog dialog = builder.create();
-        dialog.show();
     }
 
     public void dataRead() {
