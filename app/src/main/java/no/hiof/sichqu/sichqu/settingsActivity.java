@@ -108,9 +108,9 @@ public class settingsActivity extends AppCompatActivity {
 
     private void fjernprodukter() {
         //funker nok ikke ennå bare en test
-        databaseReference = FirebaseDatabase.getInstance().getReference("produkter").child(user.getUid());
-        databaseReference.removeValue();
-
+        //databaseReference = FirebaseDatabase.getInstance().getReference("produkter").child(user.getUid());
+        //databaseReference.removeValue();
+        FirebaseDatabase.getInstance().getReference("produkter").child(FirebaseAuth.getInstance().getUid()).setValue(null);
 
         Toast.makeText(this, "Data deleted!", Toast.LENGTH_SHORT).show();
     }
