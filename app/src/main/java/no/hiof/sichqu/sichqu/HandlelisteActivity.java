@@ -474,6 +474,7 @@ public class HandlelisteActivity extends AppCompatActivity {
         Button leggTil = (Button) view.findViewById(R.id.leggTilBtn);
         final EditText editName = (EditText) view.findViewById(R.id.productName);
 
+        builder.setView(view);
         final AlertDialog dialog = builder.create();
         builder.setView(view);
 
