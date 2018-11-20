@@ -165,6 +165,7 @@ public class HandlelisteActivity extends AppCompatActivity {
         user = FirebaseAuth.getInstance().getCurrentUser();
 
         databasePictureReference = firebaseDatabase.getReference("bilder").child(firebaseAuth.getUid());
+        databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(testHandleliste);
 
         productAdapter = new ProductAdapter(getApplicationContext(), productList);
 
@@ -173,21 +174,17 @@ public class HandlelisteActivity extends AppCompatActivity {
 
 
         goSpinner();
+        // Hente handlelisten
         firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot snap : dataSnapshot.getChildren()) {
                     lister.add(snap.getKey());
-                    Log.e("Handel", " Test -> " + snap.getKey());
 
                 }
-<<<<<<< Updated upstream
                 if (!lister.isEmpty())
                 databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(lister.get(0));
-=======
-//                databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(lister.get(0));
-                Log.e("Handel", " Test -> " + lister.get(0));
->>>>>>> Stashed changes
+                Log.e("Handel", " Test -> " + lister.get(0) + testHandleliste + " " + databaseReference.toString());
             }
 
             @Override
@@ -196,10 +193,10 @@ public class HandlelisteActivity extends AppCompatActivity {
             }
         });
 
-        databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(testHandleliste);
+        databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid());
     }
 
-    private void goSpinner() {
+    private void goSpinner(){
         // Spinner
         // Hente handlelister
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar22);
@@ -209,6 +206,42 @@ public class HandlelisteActivity extends AppCompatActivity {
                 arrayHandleliste.clear();
                 for(DataSnapshot nameListShot : dataSnapshot.getChildren()){
                     arrayHandleliste.add(nameListShot.getKey());
+
+                    databaseReference.child(nameListShot.getKey()).addChildEventListener(new ChildEventListener() {
+                        @Override
+                        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                            Products product = dataSnapshot.getValue(Products.class);
+                            String productKey = dataSnapshot.getKey();
+                            product.setId(productKey);
+
+                            if (!productList.contains(product)) {
+                                productList.add(product);
+                                productListKeys.add(productKey);
+                                productAdapter.notifyItemChanged(productList.size()-1);
+                            }
+                            Log.d(TAG, "OnChildAdded fired");
+                        }
+
+                        @Override
+                        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                        }
+
+                        @Override
+                        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                        }
+
+                        @Override
+                        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
                 }
 
                 ArrayAdapter spinnerAdapter = new ArrayAdapter(getApplicationContext(), R.layout.spinner_drop_down_item, arrayHandleliste);
@@ -236,6 +269,7 @@ public class HandlelisteActivity extends AppCompatActivity {
                                     //Log.e("Spinner3", nameListShot.getChildren().toString());
 
                                 }
+
                                 testHandleliste = snap.getKey();
                                 productAdapter.setListData(lister);
                                 databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(testHandleliste);
@@ -262,11 +296,9 @@ public class HandlelisteActivity extends AppCompatActivity {
             }
         });
 
-        databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(testHandleliste);
+        databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid());
 
         firebaseDatabase.getReference().child("produkter").child(firebaseAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-
-
     @Override
     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
         arrayHandleliste.clear();
@@ -291,6 +323,7 @@ public class HandlelisteActivity extends AppCompatActivity {
     }
 
     private void databaseRead(){
+        /*
         childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -313,7 +346,7 @@ public class HandlelisteActivity extends AppCompatActivity {
                 product.setId(productKey);
 
                 int position = productListKeys.indexOf(productKey);
-                Log.d(TAG, "OnChildChanged fired"+" -> " + testHandleliste + " " + product);
+                Log.d(TAG, "OnChildChanged fired"+" -> " + " " + product);
 
                 productList.set(position, product);
                 productAdapter.notifyItemChanged(position);
@@ -340,7 +373,43 @@ public class HandlelisteActivity extends AppCompatActivity {
 
             }
         };
-        databaseReference.addChildEventListener(childEventListener);
+        databaseReference.child(testHandleliste).addChildEventListener(childEventListener);
+        */
+        databaseReference.child(testHandleliste).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Products product = dataSnapshot.getValue(Products.class);
+                String productKey = dataSnapshot.getKey();
+                product.setId(productKey);
+
+                if (!productList.contains(product)) {
+                    productList.add(product);
+                    productListKeys.add(productKey);
+                    productAdapter.notifyItemChanged(productList.size()-1);
+                }
+                Log.d(TAG, "OnChildAdded fired");
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
 
@@ -517,8 +586,8 @@ public class HandlelisteActivity extends AppCompatActivity {
                 id = databaseReference.push().getKey();
 
                 if (!TextUtils.isEmpty(name)) {
-                    //addnewItemRef.child(user.getUid()).child(id).setValue(product);
-                    Log.e("getUID", "Uid: " + user.getUid() + "***Liste: " + databaseReference.child(firebaseAuth.getUid()) + " -VS- " + addnewItemRef.child(lister.get(0)));
+                    addNewItem(product);
+                    Log.e("getUID", "Uid: " + user.getUid() + "***Liste: " + databaseReference.child(firebaseAuth.getUid()) + " -VS- ");
                     Toast.makeText(HandlelisteActivity.this, "Varen lagt til.. " + editName.getText().toString().trim(), Toast.LENGTH_LONG).show();
 
                 } else {
