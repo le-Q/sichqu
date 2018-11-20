@@ -1,6 +1,5 @@
 package no.hiof.sichqu.sichqu.Products;
 
-
 import com.google.firebase.database.Exclude;
 
 public class Products {

@@ -20,12 +20,12 @@
             android:layout_width="match_parent"
             android:background="?attr/colorPrimary">
 
-            <Button
+            <!--Button
                 android:id="@+id/button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="hentAPI"
-                android:text="Button" />
+                android:text="Button" /-->
 
         </android.support.v7.widget.Toolbar>
 
