@@ -102,7 +102,7 @@ public class HandlelisteActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-        getSupportActionBar().getTitle();
+        getSupportActionBar().setTitle("HuskMat!");
 
         //Lager navigation drawer
         mDrawerlayout = (DrawerLayout) findViewById(R.id.drawer);
