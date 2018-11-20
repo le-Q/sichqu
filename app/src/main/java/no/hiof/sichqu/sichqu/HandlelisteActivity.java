@@ -181,6 +181,7 @@ public class HandlelisteActivity extends AppCompatActivity {
                 for(DataSnapshot snap : dataSnapshot.getChildren()) {
                     lister.add(snap.getKey());
                 }
+                if (!lister.isEmpty())
                 databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(lister.get(0));
             }
 
