@@ -184,7 +184,7 @@ public class HandlelisteActivity extends AppCompatActivity {
                 databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(lister.get(0));
                 Log.e("Handel", " Test -> " + lister.get(0) + testHandleliste + " " + databaseReference.toString());
 
-                
+
             }
 
             @Override
@@ -207,41 +207,42 @@ public class HandlelisteActivity extends AppCompatActivity {
                 for(DataSnapshot nameListShot : dataSnapshot.getChildren()){
                     arrayHandleliste.add(nameListShot.getKey());
 
-                    databaseReference.child(nameListShot.getKey()).addChildEventListener(new ChildEventListener() {
-                        @Override
-                        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                            Products product = dataSnapshot.getValue(Products.class);
-                            String productKey = dataSnapshot.getKey();
-                            product.setId(productKey);
+                        databaseReference.child(nameListShot.getKey()).addChildEventListener(new ChildEventListener() {
+                            @Override
+                            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                                Products product = dataSnapshot.getValue(Products.class);
+                                String productKey = dataSnapshot.getKey();
+                                product.setId(productKey);
 
-                            if (!productList.contains(product)) {
-                                productList.add(product);
-                                productListKeys.add(productKey);
-                                productAdapter.notifyItemChanged(productList.size()-1);
+                                if (!productList.contains(product)) {
+                                    productList.add(product);
+                                    productListKeys.add(productKey);
+                                    productAdapter.notifyItemChanged(productList.size() - 1);
+                                }
+                                Log.d(TAG, "OnChildAdded fired");
                             }
-                            Log.d(TAG, "OnChildAdded fired");
-                        }
 
-                        @Override
-                        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                            @Override
+                            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-                        }
+                            }
 
-                        @Override
-                        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                            @Override
+                            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
 
-                        }
+                            }
 
-                        @Override
-                        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                            @Override
+                            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-                        }
+                            }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                        }
-                    });
+                            }
+                        });
+
                 }
 
                 ArrayAdapter spinnerAdapter = new ArrayAdapter(getApplicationContext(), R.layout.spinner_drop_down_item, arrayHandleliste);
@@ -322,44 +323,6 @@ public class HandlelisteActivity extends AppCompatActivity {
 
     }
 
-    private void databaseRead(){
-        databaseReference.child(testHandleliste).addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Products product = dataSnapshot.getValue(Products.class);
-                String productKey = dataSnapshot.getKey();
-                product.setId(productKey);
-
-                if (!productList.contains(product)) {
-                    productList.add(product);
-                    productListKeys.add(productKey);
-                    productAdapter.notifyItemChanged(productList.size()-1);
-                }
-                Log.d(TAG, "OnChildAdded fired");
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-
     private void recycleSetup() {
         mRecyclerView = findViewById(R.id.recyleViewListe);
         productAdapter = new ProductAdapter(this, productList);
@@ -391,8 +354,6 @@ public class HandlelisteActivity extends AppCompatActivity {
         if (mAuthListener != null) {
             firebaseAuth.removeAuthStateListener(mAuthListener);
         }
-        databaseRead();
-
     }
 
    protected void onPause() {
