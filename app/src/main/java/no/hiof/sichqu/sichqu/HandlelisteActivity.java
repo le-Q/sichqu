@@ -157,6 +157,16 @@ public class HandlelisteActivity extends AppCompatActivity {
         // Query til database
         firebaseDatabase = FirebaseDatabase.getInstance();
 
+<<<<<<< HEAD
+=======
+        // Nåværende bruker
+        user = FirebaseAuth.getInstance().getCurrentUser();
+
+
+        databasePictureReference = firebaseDatabase.getReference("bilder").child(firebaseAuth.getUid());
+
+        databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(testHandleliste);
+>>>>>>> master
         databasePictureReference = firebaseDatabase.getReference("bilder").child(firebaseAuth.getUid());
 
         productAdapter = new ProductAdapter(getApplicationContext(), productList);
@@ -164,8 +174,11 @@ public class HandlelisteActivity extends AppCompatActivity {
         skuScan = new IntentIntegrator(this);
         recycleSetup();
 
+<<<<<<< HEAD
         goSpinner();
         databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(testHandleliste);
+=======
+>>>>>>> master
     }
 
     private void goSpinner() {
@@ -261,6 +274,7 @@ public class HandlelisteActivity extends AppCompatActivity {
 >>>>>>> master
     }
 
+<<<<<<< HEAD
     /*private void leggtilSlettDialog() {
 
         final EditText editName = (EditText) findViewById(R.id.productName);
@@ -292,6 +306,8 @@ public class HandlelisteActivity extends AppCompatActivity {
 
 
     }*/
+=======
+>>>>>>> master
 
     private void databaseRead(){
         childEventListener = new ChildEventListener() {
@@ -472,7 +488,7 @@ public class HandlelisteActivity extends AppCompatActivity {
 
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == RESULT_OK) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
+                user = firebaseAuth.getCurrentUser();
                 Toast.makeText(this, "Signed in as " + user.getDisplayName(), Toast.LENGTH_SHORT);
             } else if (resultCode == RESULT_CANCELED) {
                 Toast.makeText(this, "Sign in canceled", Toast.LENGTH_SHORT).show();
@@ -502,21 +518,33 @@ public class HandlelisteActivity extends AppCompatActivity {
     // Knapp for floating action button
     public void addNewItem(View v) {
         if (v == addNewButton) {
-            dialogAddnew();
+            dialogAddNew();
         }
     }
 
-    public void dialogAddnew() {
+    public void dialogAddNew() {
         AlertDialog.Builder builder = new AlertDialog.Builder(HandlelisteActivity.this);
         View view = getLayoutInflater().inflate(R.layout.leggtilvare_dialog, null);
-        EditText mEditText = (EditText) findViewById(R.id.productName);
-        Button leggTil = (Button) findViewById(R.id.buttonAdd);
+        Button leggTil = (Button) view.findViewById(R.id.leggTilBtn);
+        final EditText editName = (EditText) view.findViewById(R.id.productName);
 
         leggTil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                String name = editName.getText().toString().trim();
+                Products product = new Products(name);
+                id = databaseReference.push().getKey();
+
+                if (!TextUtils.isEmpty(name)) {
+                    //databaseReference.child(user.getUid()).child(id).setValue(product);
+                    Log.e("getUID", "Uid: " + user.getUid() + databaseReference.child(user.getUid()).child(id) + "***ID: " + id);
+                    Toast.makeText(HandlelisteActivity.this, "Varen lagt til.. " + editName.getText().toString().trim(), Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(HandlelisteActivity.this, "Skriv inn navn på produkt", Toast.LENGTH_LONG).show();
+                }
             }
+
         });
 
         builder.setView(view);

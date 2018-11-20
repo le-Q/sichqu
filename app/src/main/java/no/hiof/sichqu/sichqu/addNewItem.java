@@ -31,8 +31,7 @@ public class addNewItem extends AppCompatActivity implements View.OnClickListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_item);
 
-        firebaseAuth = FirebaseAuth.getInstance();
-        user = firebaseAuth.getCurrentUser();
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
 
         databaseReference = FirebaseDatabase.getInstance().getReference("produkter");
