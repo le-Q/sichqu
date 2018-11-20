@@ -198,15 +198,41 @@ public class HandlelisteActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
-        databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid());
-
         productAdapter.setOnItemClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int position = mRecyclerView.getChildAdapterPosition(v);
+                final int position = mRecyclerView.getChildAdapterPosition(v);
                 Toast.makeText(HandlelisteActivity.this, "Delete " + position, Toast.LENGTH_SHORT).show();
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(HandlelisteActivity.this);
+                builder.setTitle("Are you sure about this?");
+                builder.setMessage("Deletion is permanent..");
+
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(lister.get(0)).child(productListKeys.get(position));
+                        databaseReference.removeValue();
+                        Toast.makeText(HandlelisteActivity.this, "Produkter å slette: " + databaseReference, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+
+                AlertDialog ad = builder.create();
+                ad.show();
+                productAdapter.notifyDataSetChanged();
             }
         });
+
+        databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid());
+
+
     }
 
     private void goSpinner(){
