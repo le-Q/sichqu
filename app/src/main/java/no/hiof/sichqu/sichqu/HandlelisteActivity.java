@@ -529,7 +529,7 @@ public class HandlelisteActivity extends AppCompatActivity {
         AlertDialog ad = builder.create();
         ad.show();
     }
-    
+
 
     private void getProdukt(String produktKode, final Boolean kolonial) {
         String URL;
