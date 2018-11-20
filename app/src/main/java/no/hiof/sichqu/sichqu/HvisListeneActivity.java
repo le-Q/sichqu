@@ -45,6 +45,10 @@ public class HvisListeneActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        DeltPreferanse sharedpref = new DeltPreferanse(this);
+        if(sharedpref.loadNightModeState())
+            setTheme(R.style.darktheme);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hvis_listene);
 
@@ -73,30 +77,17 @@ public class HvisListeneActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-//        handleListeNavn.requestFocus();
     }
+
 
     public void leggTilListe(View view) {
-        if (view == newListBtn) {
-        /*user = firebaseAuth.getCurrentUser();
-        String listenavn = handleListeNavn.getText().toString();
-        //Map<String, String> listActive = new HashMap<>();
-        //listActive.put("Active", "true");
-        databaseReference.child(user.getUid()).child(listenavn).setValue(0);
-        dataRead();*/
-
-        leggTilListeDialog();
-        }
-    }
-
-    public void leggTilListeDialog() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(HvisListeneActivity.this);
         final View viewDialog = getLayoutInflater().inflate(R.layout.addlist_dialog, null);
         Button leggTil = (Button) viewDialog.findViewById(R.id.addListBtn);
 
         builder.setView(viewDialog);
         final AlertDialog dialog = builder.create();
+        dialog.show();
 
         leggTil.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,7 +104,6 @@ public class HvisListeneActivity extends AppCompatActivity {
                 }
             }
         });
-
         dialog.show();
     }
 
@@ -135,21 +125,6 @@ public class HvisListeneActivity extends AppCompatActivity {
 
             }
         });
-        /*
-    ValueEventListener valueEventListener = new ValueEventListener() {
-        @Override
-        public void onDataChange(DataSnapshot dataSnapshot) {
-            arrayList.clear();
-                for(DataSnapshot nameListShot : dataSnapshot.getChildren()){
-                    arrayList.add(nameListShot.getKey());
-                }
-            }
-
-        @Override
-        public void onCancelled(DatabaseError databaseError) {}
-    };
-    databaseReference.child(Objects.requireNonNull(user.getUid())).addListenerForSingleValueEvent(valueEventListener);
-    */
     }
 
     @Override

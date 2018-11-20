@@ -199,7 +199,7 @@ public class HandlelisteActivity extends AppCompatActivity {
             }
         });
         databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid());
-                
+
         productAdapter.setOnItemClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
