@@ -1,6 +1,8 @@
 package no.hiof.sichqu.sichqu;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -48,7 +51,6 @@ public class HvisListeneActivity extends AppCompatActivity {
         user = firebaseAuth.getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference("produkter");
         firebaseDatabase = FirebaseDatabase.getInstance();
-        dataRead();
 
 
         arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayList);
@@ -84,6 +86,11 @@ public class HvisListeneActivity extends AppCompatActivity {
         final View viewDialog = getLayoutInflater().inflate(R.layout.addlist_dialog, null);
         Button leggTil = (Button) viewDialog.findViewById(R.id.addListBtn);
 
+        builder.setView(viewDialog);
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+
+
 
         leggTil.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,15 +101,34 @@ public class HvisListeneActivity extends AppCompatActivity {
                 databaseReference.child(firebaseAuth.getUid()).child(listenavn).setValue(0);
                 Log.e("Listenavn", "**" + databaseReference.child(firebaseAuth.getUid()).child(listenavn));
 
+                dialog.cancel();
+
             }
         });
 
-        builder.setView(viewDialog);
-        AlertDialog dialog = builder.create();
-        dialog.show();
+
+
     }
 
     public void dataRead() {
+        databaseReference.child(user.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                arrayList.clear();
+                for(DataSnapshot nameListShot : dataSnapshot.getChildren()){
+                    arrayList.add(nameListShot.getKey());
+                    Log.e("Historikk", "->" + nameListShot.getKey());
+                }
+                Log.e("Historikk", "-> " + arrayList);
+                arrayAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        /*
     ValueEventListener valueEventListener = new ValueEventListener() {
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -116,6 +142,7 @@ public class HvisListeneActivity extends AppCompatActivity {
         public void onCancelled(DatabaseError databaseError) {}
     };
     databaseReference.child(Objects.requireNonNull(user.getUid())).addListenerForSingleValueEvent(valueEventListener);
+    */
     }
 
     @Override

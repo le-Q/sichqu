@@ -1,12 +1,8 @@
 package no.hiof.sichqu.sichqu.Products;
 
-
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import com.google.firebase.database.Exclude;
 
-public class Products implements Parcelable {
+public class Products {
     private String id;
     private String name;
     private Images[] images;
@@ -74,17 +70,5 @@ public class Products implements Parcelable {
     @Override
     public String toString() {
         return name;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(id);
-        dest.writeString(name);
-        dest.writeString(thumbnail);
     }
 }
