@@ -85,6 +85,8 @@ public class HandlelisteActivity extends AppCompatActivity {
     private String id;
     private IntentIntegrator skuScan;
 
+    private ArrayList<String> lister = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -97,6 +99,8 @@ public class HandlelisteActivity extends AppCompatActivity {
 
 
         firebaseAuth = FirebaseAuth.getInstance();
+
+        getSupportActionBar().getTitle();
 
         //Lager navigation drawer
         mDrawerlayout = (DrawerLayout) findViewById(R.id.drawer);
@@ -177,7 +181,6 @@ public class HandlelisteActivity extends AppCompatActivity {
         firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ArrayList<String> lister = new ArrayList<>();
                 for(DataSnapshot snap : dataSnapshot.getChildren()) {
                     lister.add(snap.getKey());
                 }
@@ -503,6 +506,7 @@ public class HandlelisteActivity extends AppCompatActivity {
         View view = getLayoutInflater().inflate(R.layout.leggtilvare_dialog, null);
         Button leggTil = (Button) view.findViewById(R.id.leggTilBtn);
         final EditText editName = (EditText) view.findViewById(R.id.productName);
+        final DatabaseReference addnewItemRef = firebaseDatabase.getReference("produkter").child(user.getUid());
 
         leggTil.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -513,9 +517,10 @@ public class HandlelisteActivity extends AppCompatActivity {
                 id = databaseReference.push().getKey();
 
                 if (!TextUtils.isEmpty(name)) {
-                    //databaseReference.child(user.getUid()).child(id).setValue(product);
-                    Log.e("getUID", "Uid: " + user.getUid() + databaseReference.child(user.getUid()).child(id) + "***ID: " + id);
+                    //addnewItemRef.child(user.getUid()).child(id).setValue(product);
+                    Log.e("getUID", "Uid: " + user.getUid() + "***Liste: " + databaseReference.child(firebaseAuth.getUid()) + " -VS- " + addnewItemRef.child(lister.get(0)));
                     Toast.makeText(HandlelisteActivity.this, "Varen lagt til.. " + editName.getText().toString().trim(), Toast.LENGTH_LONG).show();
+
                 } else {
                     Toast.makeText(HandlelisteActivity.this, "Skriv inn navn på produkt", Toast.LENGTH_LONG).show();
                 }

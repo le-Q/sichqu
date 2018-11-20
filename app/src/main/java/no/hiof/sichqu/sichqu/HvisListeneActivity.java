@@ -74,7 +74,7 @@ public class HvisListeneActivity extends AppCompatActivity {
         String listenavn = handleListeNavn.getText().toString();
         //Map<String, String> listActive = new HashMap<>();
         //listActive.put("Active", "true");
-        databaseReference.child(user.getUid()).child(listenavn).setValue(0);
+        databaseReference.child(user.getUid()).child(listenavn).setValue(listenavn);
         dataRead();
     }
 
