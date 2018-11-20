@@ -179,16 +179,12 @@ public class HandlelisteActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot snap : dataSnapshot.getChildren()) {
                     lister.add(snap.getKey());
-
                 }
                 if (!lister.isEmpty())
                 databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(lister.get(0));
                 Log.e("Handel", " Test -> " + lister.get(0) + testHandleliste + " " + databaseReference.toString());
-=======
-                if (!lister.isEmpty()) {
-                    databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(lister.get(0));
 
-                }
+                
             }
 
             @Override
@@ -537,12 +533,8 @@ public class HandlelisteActivity extends AppCompatActivity {
 
                 if (!TextUtils.isEmpty(name)) {
                     addNewItem(product);
-<<<<<<< HEAD
                     Log.e("getUID", "Uid: " + user.getUid() + "***Liste: " + databaseReference.child(firebaseAuth.getUid()) + " -VS- ");
                     Toast.makeText(HandlelisteActivity.this, "Varen lagt til.. " + editName.getText().toString().trim(), Toast.LENGTH_LONG).show();
-
-=======
->>>>>>> master
                 } else {
                     Toast.makeText(HandlelisteActivity.this, "Skriv inn navn på produkt", Toast.LENGTH_LONG).show();
                 }
