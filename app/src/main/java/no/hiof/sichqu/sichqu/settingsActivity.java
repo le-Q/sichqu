@@ -7,6 +7,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatDelegate;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -108,9 +109,7 @@ public class settingsActivity extends AppCompatActivity {
 
     private void fjernprodukter() {
         //funker nok ikke ennå bare en test
-        databaseReference = FirebaseDatabase.getInstance().getReference("produkter").child(user.getUid());
-        databaseReference.removeValue();
-
+        FirebaseDatabase.getInstance().getReference("produkter").child(FirebaseAuth.getInstance().getUid()).setValue(null);
 
         Toast.makeText(this, "Data deleted!", Toast.LENGTH_SHORT).show();
     }

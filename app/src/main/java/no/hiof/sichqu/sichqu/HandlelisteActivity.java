@@ -100,7 +100,6 @@ public class HandlelisteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.handleliste_activity);
 
-
         firebaseAuth = FirebaseAuth.getInstance();
 
         getSupportActionBar().getTitle();
@@ -188,6 +187,7 @@ public class HandlelisteActivity extends AppCompatActivity {
                 } else {
                     firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid());
 
+                    startActivity(new Intent(HandlelisteActivity.this, HvisListeneActivity.class));
                 }
 
                 if (!lister.isEmpty()) {
@@ -199,6 +199,18 @@ public class HandlelisteActivity extends AppCompatActivity {
             }
         });
         databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid());
+                
+        productAdapter.setOnItemClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int position = mRecyclerView.getChildAdapterPosition(v);
+                Toast.makeText(HandlelisteActivity.this, "Delete " + position, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void onLongClickDel() {
+
     }
 
     private void goSpinner(){

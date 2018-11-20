@@ -1,7 +1,10 @@
 package no.hiof.sichqu.sichqu;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -52,8 +55,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ProductViewHolder productViewHolder, int i) {
-        Products product = productList.get(i);
+    public void onBindViewHolder(@NonNull final ProductViewHolder productViewHolder, final int i) {
+        final Products product = productList.get(i);
         productViewHolder.setData(product);
 
         if (clickListener != null) {
@@ -88,12 +91,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     class ProductViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView textViewTitle;
         ImageView thumbnails;
-        ImageButton deleteItem;
+        CardView cardView;
 
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
             thumbnails = itemView.findViewById(R.id.thumb);
             textViewTitle = itemView.findViewById(R.id.textViewTitle);
+            cardView = itemView.findViewById(R.id.cardViewId);
 
             user = FirebaseAuth.getInstance().getCurrentUser();
         }
