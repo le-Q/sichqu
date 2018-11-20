@@ -90,7 +90,7 @@ public class settingsActivity extends AppCompatActivity {
                     builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-
+                            Toast.makeText(settingsActivity.this, "Not Deleted ", Toast.LENGTH_SHORT).show();
                         }
                     });
 
