@@ -220,7 +220,7 @@ public class HandlelisteActivity extends AppCompatActivity {
                 builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
+                        Toast.makeText(HandlelisteActivity.this, "Not Deleted " + position, Toast.LENGTH_SHORT).show();
                     }
                 });
 
