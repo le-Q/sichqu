@@ -213,7 +213,8 @@ public class HandlelisteActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(lister.get(0)).child(productListKeys.get(position));
                         databaseReference.removeValue();
-                        Toast.makeText(HandlelisteActivity.this, "Produkter å slette: " + databaseReference, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(HandlelisteActivity.this, "Produkter å slette: " + databaseReference, Toast.LENGTH_SHORT).show();
+                        productAdapter.notifyDataSetChanged();
                     }
                 });
 
@@ -226,7 +227,6 @@ public class HandlelisteActivity extends AppCompatActivity {
 
                 AlertDialog ad = builder.create();
                 ad.show();
-                productAdapter.notifyDataSetChanged();
             }
         });
 
