@@ -153,7 +153,6 @@ public class HandlelisteActivity extends AppCompatActivity {
 
         //New item button
         addNewButton = (ImageButton) findViewById(R.id.addNewFloat);
-        removeButton = (ImageButton) findViewById(R.id.removeProd);
 
         productList = new ArrayList<>();
         productListKeys = new ArrayList<>();
@@ -184,8 +183,9 @@ public class HandlelisteActivity extends AppCompatActivity {
                 for(DataSnapshot snap : dataSnapshot.getChildren()) {
                     lister.add(snap.getKey());
                 }
-                if (!lister.isEmpty())
-                databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(lister.get(0));
+                if (!lister.isEmpty()) {
+                    databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(lister.get(0));
+                }
             }
 
             @Override
@@ -301,7 +301,6 @@ public class HandlelisteActivity extends AppCompatActivity {
                     productListKeys.add(productKey);
                     productAdapter.notifyItemChanged(productList.size()-1);
                 }
-                Log.d(TAG, "OnChildAdded fired");
             }
 
             @Override
@@ -503,10 +502,9 @@ public class HandlelisteActivity extends AppCompatActivity {
 
     public void dialogAddNew() {
         AlertDialog.Builder builder = new AlertDialog.Builder(HandlelisteActivity.this);
-        View view = getLayoutInflater().inflate(R.layout.leggtilvare_dialog, null);
+        final View view = getLayoutInflater().inflate(R.layout.leggtilvare_dialog, null);
         Button leggTil = (Button) view.findViewById(R.id.leggTilBtn);
         final EditText editName = (EditText) view.findViewById(R.id.productName);
-        final DatabaseReference addnewItemRef = firebaseDatabase.getReference("produkter").child(user.getUid());
 
         leggTil.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -517,8 +515,7 @@ public class HandlelisteActivity extends AppCompatActivity {
                 id = databaseReference.push().getKey();
 
                 if (!TextUtils.isEmpty(name)) {
-                    //addnewItemRef.child(user.getUid()).child(id).setValue(product);
-                    Log.e("getUID", "Uid: " + user.getUid() + "***Liste: " + databaseReference.child(firebaseAuth.getUid()) + " -VS- " + addnewItemRef.child(lister.get(0)));
+                    databaseReference.child(id).setValue(product);
                     Toast.makeText(HandlelisteActivity.this, "Varen lagt til.. " + editName.getText().toString().trim(), Toast.LENGTH_LONG).show();
 
                 } else {
@@ -532,12 +529,7 @@ public class HandlelisteActivity extends AppCompatActivity {
         AlertDialog ad = builder.create();
         ad.show();
     }
-
-    public void removeItem(View v) {
-        if (v == removeButton) {
-
-        }
-    }
+    
 
     private void getProdukt(String produktKode, final Boolean kolonial) {
         String URL;

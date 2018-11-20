@@ -108,8 +108,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             thumbnails = itemView.findViewById(R.id.thumb);
             textViewTitle = itemView.findViewById(R.id.textViewTitle);
 
-            deleteItem = (ImageButton) itemView.findViewById(R.id.removeProd);
-
             user = FirebaseAuth.getInstance().getCurrentUser();
         }
 
