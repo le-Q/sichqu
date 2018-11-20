@@ -209,10 +209,6 @@ public class HandlelisteActivity extends AppCompatActivity {
         });
     }
 
-    private void onLongClickDel() {
-
-    }
-
     private void goSpinner(){
         // Spinner
         // Hente handlelister
@@ -470,7 +466,6 @@ public class HandlelisteActivity extends AppCompatActivity {
     public void scanItem(View v){
             skuScan.setOrientationLocked(false);
             skuScan.initiateScan();
-
         }
 
     // Knapp for floating action button

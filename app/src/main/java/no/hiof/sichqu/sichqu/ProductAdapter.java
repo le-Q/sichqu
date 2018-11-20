@@ -114,7 +114,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     }
 
     public void ChangeImage(@NonNull ProductViewHolder productViewHolder) {
-        Picasso.get().load("https://scontent-arn2-1.xx.fbcdn.net/v/t1.15752-0/p480x480/46196159_251221868887493_5157878684496953344_n.png?_nc_cat=109&_nc_ht=scontent-arn2-1.xx&oh=4e9317019705e757bdd648fda6875aa7&oe=5C766D3D").into(productViewHolder.thumbnails);
+        Picasso.get().load(R.drawable.poster_placeholder).into(productViewHolder.thumbnails);
     }
 
     public List<Products> getList() {
