@@ -157,8 +157,6 @@ public class HandlelisteActivity extends AppCompatActivity {
         // Query til database
         firebaseDatabase = FirebaseDatabase.getInstance();
 
-<<<<<<< HEAD
-=======
         // Nåværende bruker
         user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -166,7 +164,7 @@ public class HandlelisteActivity extends AppCompatActivity {
         databasePictureReference = firebaseDatabase.getReference("bilder").child(firebaseAuth.getUid());
 
         databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(testHandleliste);
->>>>>>> master
+
         databasePictureReference = firebaseDatabase.getReference("bilder").child(firebaseAuth.getUid());
 
         productAdapter = new ProductAdapter(getApplicationContext(), productList);
@@ -174,11 +172,9 @@ public class HandlelisteActivity extends AppCompatActivity {
         skuScan = new IntentIntegrator(this);
         recycleSetup();
 
-<<<<<<< HEAD
+
         goSpinner();
         databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(testHandleliste);
-=======
->>>>>>> master
     }
 
     private void goSpinner() {
@@ -244,8 +240,6 @@ public class HandlelisteActivity extends AppCompatActivity {
             }
         });
 
-<<<<<<< HEAD
-=======
         databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(testHandleliste);
 
         firebaseDatabase.getReference().child("produkter").child(firebaseAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -271,43 +265,8 @@ public class HandlelisteActivity extends AppCompatActivity {
                 Toast.makeText(HandlelisteActivity.this, "Hva er det?" + v, Toast.LENGTH_SHORT).show();
             }
         });
->>>>>>> master
+
     }
-
-<<<<<<< HEAD
-    /*private void leggtilSlettDialog() {
-
-        final EditText editName = (EditText) findViewById(R.id.productName);
-        Button addBtn = (Button) findViewById(R.id.addName);
-
-        firebaseAuth = FirebaseAuth.getInstance();
-        user = firebaseAuth.getCurrentUser();
-        id = databaseReference.push().getKey();
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(HandlelisteActivity.this);
-        builder.setTitle("Legg til vare");
-        AlertDialog b = builder.create();
-        b.show();
-
-        addBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String name = editName.getText().toString().trim();
-                Products product = new Products(name);
-
-                if (!TextUtils.isEmpty(name)) {
-                    databaseReference.child(user.getUid()).child(id).setValue(product);
-                    Toast.makeText(HandlelisteActivity.this, "Varen lagt til..", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(HandlelisteActivity.this, "Skriv inn navn på produkt", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-
-    }*/
-=======
->>>>>>> master
 
     private void databaseRead(){
         childEventListener = new ChildEventListener() {
