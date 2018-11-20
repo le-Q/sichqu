@@ -72,19 +72,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                 return true;
             }
         });
-
-
-        productViewHolder.deleteItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.e("Delete", "Delete");
-                //DatabaseReference removalItem = FirebaseDatabase.getInstance().getReference("produkter").child(user.getUid()).child(databaseReference.getKey());
-                //removalItem.removeValue();
-                //Log.e("Removed", "Removed??");
-            }
-        });
-
-
     }
 
     public void setListData(List<Products> newData) {
@@ -107,8 +94,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             super(itemView);
             thumbnails = itemView.findViewById(R.id.thumb);
             textViewTitle = itemView.findViewById(R.id.textViewTitle);
-
-            deleteItem = (ImageButton) itemView.findViewById(R.id.removeProd);
 
             user = FirebaseAuth.getInstance().getCurrentUser();
         }
