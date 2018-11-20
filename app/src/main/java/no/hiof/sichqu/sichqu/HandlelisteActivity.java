@@ -1,5 +1,6 @@
 package no.hiof.sichqu.sichqu;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -111,9 +112,6 @@ public class HandlelisteActivity extends AppCompatActivity {
                     case R.id.nav_db:
                         startActivity(new Intent(HandlelisteActivity.this, HvisListeneActivity.class));
                         break;
-                    case R.id.nav_search:
-
-                        break;
                     case R.id.nav_settings:
                         startActivity(new Intent(HandlelisteActivity.this, settingsActivity.class));
                         break;
@@ -126,9 +124,6 @@ public class HandlelisteActivity extends AppCompatActivity {
                         startActivity(Intent.createChooser(intent, "Share using"));
 
                         //Toast.makeText(HandlelisteActivity.this, "share", Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.nav_send:
-                        Toast.makeText(HandlelisteActivity.this, "send", Toast.LENGTH_SHORT).show();
                         break;
             }
             return true;
@@ -236,13 +231,40 @@ public class HandlelisteActivity extends AppCompatActivity {
             }
         });
 
+<<<<<<< HEAD
+=======
+        databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(testHandleliste);
+
+        firebaseDatabase.getReference().child("produkter").child(firebaseAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+
+
+    @Override
+    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+        arrayHandleliste.clear();
+        for(DataSnapshot nameListShot : dataSnapshot.getChildren()){
+            arrayHandleliste.add(nameListShot.getKey());
+        }
     }
 
-    private void leggtilSlettDialog() {
+    @Override
+    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+    }
+});
+        mRecyclerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("View", "Hva er det?" + v);
+                Toast.makeText(HandlelisteActivity.this, "Hva er det?" + v, Toast.LENGTH_SHORT).show();
+            }
+        });
+>>>>>>> master
+    }
+
+    /*private void leggtilSlettDialog() {
 
         final EditText editName = (EditText) findViewById(R.id.productName);
         Button addBtn = (Button) findViewById(R.id.addName);
-        Button deleteBtn = (Button) findViewById(R.id.buttonDelete);
 
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
@@ -269,7 +291,7 @@ public class HandlelisteActivity extends AppCompatActivity {
         });
 
 
-    }
+    }*/
 
     private void databaseRead(){
         childEventListener = new ChildEventListener() {
@@ -413,9 +435,6 @@ public class HandlelisteActivity extends AppCompatActivity {
             case R.id.nav_db:
                 startActivity(new Intent(HandlelisteActivity.this, HvisListeneActivity.class));
                 break;
-            case R.id.nav_search:
-
-                break;
             case R.id.nav_settings:
                 startActivity(new Intent(HandlelisteActivity.this, settingsActivity.class));
                 break;
@@ -428,9 +447,6 @@ public class HandlelisteActivity extends AppCompatActivity {
                 startActivity(Intent.createChooser(intent, "Share using"));
 
                 //Toast.makeText(this, "share", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.nav_send:
-                Toast.makeText(this, "send", Toast.LENGTH_SHORT).show();
                 break;
 
             // Handling av actionbar knapper
@@ -486,10 +502,26 @@ public class HandlelisteActivity extends AppCompatActivity {
     // Knapp for floating action button
     public void addNewItem(View v) {
         if (v == addNewButton) {
-            Intent intent = new Intent(this, addNewItem.class);
-            startActivity(intent);
-            //leggtilSlettDialog();
+            dialogAddnew();
         }
+    }
+
+    public void dialogAddnew() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(HandlelisteActivity.this);
+        View view = getLayoutInflater().inflate(R.layout.leggtilvare_dialog, null);
+        EditText mEditText = (EditText) findViewById(R.id.productName);
+        Button leggTil = (Button) findViewById(R.id.buttonAdd);
+
+        leggTil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        builder.setView(view);
+        AlertDialog ad = builder.create();
+        ad.show();
     }
 
     public void removeItem(View v) {
