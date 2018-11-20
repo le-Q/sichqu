@@ -1,12 +1,14 @@
 package no.hiof.sichqu.sichqu;
 
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -20,8 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Objects;
 
 public class HvisListeneActivity extends AppCompatActivity {
     private EditText handleListeNavn;
@@ -42,11 +43,12 @@ public class HvisListeneActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         listView = findViewById(R.id.AlleListene);
-        handleListeNavn = findViewById(R.id.txt_listeNavn);
+        handleListeNavn = findViewById(R.id.listName);
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference("produkter");
         firebaseDatabase = FirebaseDatabase.getInstance();
+        dataRead();
 
 
         arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayList);
@@ -63,24 +65,44 @@ public class HvisListeneActivity extends AppCompatActivity {
             }
         });
 
-        handleListeNavn.requestFocus();
+//        handleListeNavn.requestFocus();
     }
 
     public void leggTilListe(View view) {
-        user = firebaseAuth.getCurrentUser();
+        /*user = firebaseAuth.getCurrentUser();
         String listenavn = handleListeNavn.getText().toString();
         //Map<String, String> listActive = new HashMap<>();
         //listActive.put("Active", "true");
         databaseReference.child(user.getUid()).child(listenavn).setValue(0);
-        dataRead();
+        dataRead();*/
+
+        leggTilListeDialog();
     }
 
-    public void dialogAddListe() {
+    public void leggTilListeDialog() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(HvisListeneActivity.this);
+        final View viewDialog = getLayoutInflater().inflate(R.layout.addlist_dialog, null);
+        Button leggTil = (Button) viewDialog.findViewById(R.id.addListBtn);
 
+
+        leggTil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final EditText editName = (EditText) viewDialog.findViewById(R.id.listName);
+                final String listenavn = editName.getText().toString();
+
+                databaseReference.child(firebaseAuth.getUid()).child(listenavn).setValue(0);
+                Log.e("Listenavn", "**" + databaseReference.child(firebaseAuth.getUid()).child(listenavn));
+
+            }
+        });
+
+        builder.setView(viewDialog);
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
-
-public void dataRead() {
+    public void dataRead() {
     ValueEventListener valueEventListener = new ValueEventListener() {
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -93,7 +115,7 @@ public void dataRead() {
         @Override
         public void onCancelled(DatabaseError databaseError) {}
     };
-    databaseReference.child(firebaseAuth.getUid()).addListenerForSingleValueEvent(valueEventListener);
+    databaseReference.child(Objects.requireNonNull(user.getUid())).addListenerForSingleValueEvent(valueEventListener);
     }
 
     @Override
@@ -101,5 +123,4 @@ public void dataRead() {
         super.onResume();
         dataRead();
     }
-    /*dfg */
 }
