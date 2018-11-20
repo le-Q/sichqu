@@ -174,7 +174,23 @@ public class HandlelisteActivity extends AppCompatActivity {
 
 
         goSpinner();
-        databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(testHandleliste);
+        firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ArrayList<String> lister = new ArrayList<>();
+                for(DataSnapshot snap : dataSnapshot.getChildren()) {
+                    lister.add(snap.getKey());
+                }
+                databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(lister.get(0));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        //databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(testHandleliste);
     }
 
     private void goSpinner() {
