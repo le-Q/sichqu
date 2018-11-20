@@ -67,7 +67,7 @@ public class HandlelisteActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mToggle;
 
     String cider = "Grevens cider skogsbær";
-    String testHandleliste ="Handleliste";
+    String testHandleliste = "Handleliste";
     private ArrayList<String> arrayHandleliste = new ArrayList<>();
 
     private RecyclerView mRecyclerView;
@@ -164,11 +164,6 @@ public class HandlelisteActivity extends AppCompatActivity {
         // Nåværende bruker
         user = FirebaseAuth.getInstance().getCurrentUser();
 
-
-        databasePictureReference = firebaseDatabase.getReference("bilder").child(firebaseAuth.getUid());
-
-        databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(testHandleliste);
-
         databasePictureReference = firebaseDatabase.getReference("bilder").child(firebaseAuth.getUid());
 
         productAdapter = new ProductAdapter(getApplicationContext(), productList);
@@ -183,9 +178,16 @@ public class HandlelisteActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot snap : dataSnapshot.getChildren()) {
                     lister.add(snap.getKey());
+                    Log.e("Handel", " Test -> " + snap.getKey());
+
                 }
+<<<<<<< Updated upstream
                 if (!lister.isEmpty())
                 databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(lister.get(0));
+=======
+//                databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(lister.get(0));
+                Log.e("Handel", " Test -> " + lister.get(0));
+>>>>>>> Stashed changes
             }
 
             @Override
@@ -194,7 +196,7 @@ public class HandlelisteActivity extends AppCompatActivity {
             }
         });
 
-        //databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(testHandleliste);
+        databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(testHandleliste);
     }
 
     private void goSpinner() {
@@ -313,7 +315,6 @@ public class HandlelisteActivity extends AppCompatActivity {
                 int position = productListKeys.indexOf(productKey);
                 Log.d(TAG, "OnChildChanged fired"+" -> " + testHandleliste + " " + product);
 
-
                 productList.set(position, product);
                 productAdapter.notifyItemChanged(position);
             }
@@ -339,8 +340,7 @@ public class HandlelisteActivity extends AppCompatActivity {
 
             }
         };
-        databaseReference.child(testHandleliste).addChildEventListener(childEventListener);
-        Log.d(TAG, "OnChi fired : "+ testHandleliste);
+        databaseReference.addChildEventListener(childEventListener);
     }
 
 
