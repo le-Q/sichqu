@@ -18,6 +18,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -186,7 +187,9 @@ public class HandlelisteActivity extends AppCompatActivity {
                     Log.e("Handel", " Test -> " + lister.get(0) + testHandleliste + " " + databaseReference.toString());
                 } else {
                     firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid());
+
                 }
+
                 if (!lister.isEmpty()) {
                     databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(lister.get(0));
                 }
@@ -472,6 +475,7 @@ public class HandlelisteActivity extends AppCompatActivity {
         final EditText editName = (EditText) view.findViewById(R.id.productName);
 
         final AlertDialog dialog = builder.create();
+        builder.setView(view);
 
 
         leggTil.setOnClickListener(new View.OnClickListener() {
