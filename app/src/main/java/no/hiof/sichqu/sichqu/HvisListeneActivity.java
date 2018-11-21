@@ -81,8 +81,8 @@ public class HvisListeneActivity extends AppCompatActivity {
 
         mToggle = new ActionBarDrawerToggle(this, mDrawerlayout, R.string.open, R.string.close);
         mDrawerlayout.addDrawerListener(mToggle);
-        mToggle.syncState();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);*/
+        mToggle.syncState();*/
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         getSupportActionBar().setTitle("Handlelister");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -93,7 +93,7 @@ public class HvisListeneActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference("produkter");
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        //FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
 
 
         arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayList);

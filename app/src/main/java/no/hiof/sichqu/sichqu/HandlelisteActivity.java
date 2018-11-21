@@ -121,15 +121,16 @@ public class HandlelisteActivity extends AppCompatActivity {
         user = FirebaseAuth.getInstance().getCurrentUser();
 
         DatabaseReference databasePictureReference = firebaseDatabase.getReference("bilder").child(firebaseAuth.getUid());
-        //databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(testHandleliste);
+        databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(testHandleliste);
 
         productAdapter = new ProductAdapter(getApplicationContext(), productList);
 
         skuScan = new IntentIntegrator(this);
         recycleSetup();
+        //dbListener();
 
 
-        //goSpinner();
+        goSpinner();
         // Hente handlelisten
         firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -280,6 +281,53 @@ public class HandlelisteActivity extends AppCompatActivity {
                 Toast.makeText(HandlelisteActivity.this, "Hva er det?" + v, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void dbListener() {
+        childEventListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Products product = dataSnapshot.getValue(Products.class);
+                String productKey = dataSnapshot.getKey();
+                if (product != null) {
+                    product.setId(productKey);
+                }
+
+                if (!productList.contains(product)) {
+                    productList.add(product);
+                    productListKeys.add(productKey);
+                    productAdapter.notifyItemChanged(productList.size() - 1);
+                }
+                Log.d(TAG, "OnChildAdded fired");
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                Products removedProduct = dataSnapshot.getValue(Products.class);
+                String producktKey = dataSnapshot.getKey();
+                removedProduct.setId(producktKey);
+
+                int position = productListKeys.indexOf(producktKey);
+                productList.remove(removedProduct);
+                productListKeys.remove(position);
+                productAdapter.notifyItemRemoved(position);
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }};
+        databaseReference.addChildEventListener(childEventListener);
     }
 
     private void recycleSetup() {
