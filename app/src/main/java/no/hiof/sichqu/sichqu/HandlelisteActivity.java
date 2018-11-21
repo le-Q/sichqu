@@ -64,6 +64,7 @@ import no.hiof.sichqu.sichqu.Products.UPC_data;
 public class HandlelisteActivity extends AppCompatActivity {
     private static final String TAG = HandlelisteActivity.class.getSimpleName();
     private static final int RC_SIGN_IN = 1;
+    public static final String PRODUCT_UID = "product_uid";
 
     String cider = "Grevens cider skogsbær";
     String testHandleliste = "Handleliste";

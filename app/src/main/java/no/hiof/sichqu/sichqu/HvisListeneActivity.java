@@ -32,7 +32,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class HvisListeneActivity extends AppCompatActivity {
-    DatabaseReference databaseReference;
+    private FirebaseDatabase databaseReference;
+    private DatabaseReference productDatabaseReference;
     private FirebaseAuth firebaseAuth;
     private FirebaseUser user;
     ListView listView;
@@ -91,10 +92,12 @@ public class HvisListeneActivity extends AppCompatActivity {
         listView = findViewById(R.id.AlleListene);
         EditText handleListeNavn = findViewById(R.id.listName);
         ImageButton newListBtn = findViewById(R.id.addNewFloatBtn);
+
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
-        databaseReference = FirebaseDatabase.getInstance().getReference("produkter");
-        //FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+
+        databaseReference = FirebaseDatabase.getInstance();
+        productDatabaseReference = databaseReference.getReference("produkter").child(user.getUid());
 
 
         arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayList);
@@ -129,7 +132,7 @@ public class HvisListeneActivity extends AppCompatActivity {
                 final String listenavn = editName.getText().toString();
 
                 if (!TextUtils.isEmpty(listenavn)) {
-                    databaseReference.child(firebaseAuth.getUid()).child(listenavn).setValue(0);
+                    productDatabaseReference.child(listenavn).setValue(0);
                     Toast.makeText(HvisListeneActivity.this, "Listen " + listenavn + " ble laget", Toast.LENGTH_LONG).show();
                     dialog.cancel();
                 } else {
@@ -141,7 +144,7 @@ public class HvisListeneActivity extends AppCompatActivity {
     }
 
     public void dataRead() {
-        databaseReference.child(user.getUid()).addValueEventListener(new ValueEventListener() {
+        productDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 arrayList.clear();
