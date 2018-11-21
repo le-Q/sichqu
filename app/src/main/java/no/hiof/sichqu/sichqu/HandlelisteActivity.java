@@ -129,7 +129,7 @@ public class HandlelisteActivity extends AppCompatActivity {
         recycleSetup();
 
 
-        goSpinner();
+        //goSpinner();
         // Hente handlelisten
         firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

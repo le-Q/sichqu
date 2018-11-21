@@ -39,6 +39,7 @@ public class HvisListeneActivity extends AppCompatActivity {
     private ArrayList<String> arrayList = new ArrayList<>();
     private ArrayAdapter arrayAdapter;
     private DrawerLayout mDrawerlayout;
+    private ActionBarDrawerToggle mToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +50,7 @@ public class HvisListeneActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hvis_listene);
 
-        //Lager navigation drawer
+        /*//Lager navigation drawer
         mDrawerlayout = (DrawerLayout) findViewById(R.id.drawer);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(
@@ -78,10 +79,10 @@ public class HvisListeneActivity extends AppCompatActivity {
                     }
                 });
 
-        ActionBarDrawerToggle mToggle = new ActionBarDrawerToggle(this, mDrawerlayout, R.string.open, R.string.close);
+        mToggle = new ActionBarDrawerToggle(this, mDrawerlayout, R.string.open, R.string.close);
         mDrawerlayout.addDrawerListener(mToggle);
         mToggle.syncState();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);*/
 
         getSupportActionBar().setTitle("Handlelister");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -162,15 +163,6 @@ public class HvisListeneActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         dataRead();
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (mDrawerlayout.isDrawerOpen(GravityCompat.START)) {
-            mDrawerlayout.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
     }
 
     @Override
