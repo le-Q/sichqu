@@ -64,10 +64,6 @@ import no.hiof.sichqu.sichqu.Products.UPC_data;
 public class HandlelisteActivity extends AppCompatActivity {
     private static final String TAG = HandlelisteActivity.class.getSimpleName();
     private static final int RC_SIGN_IN = 1;
-    //implements NavigationView.OnNavigationItemSelectedListener
-
-    private DrawerLayout mDrawerlayout;
-    private ActionBarDrawerToggle mToggle;
 
     String cider = "Grevens cider skogsbær";
     String testHandleliste = "Handleliste";
@@ -77,7 +73,6 @@ public class HandlelisteActivity extends AppCompatActivity {
     private ProductAdapter productAdapter;
     private ChildEventListener childEventListener;
     private DatabaseReference databaseReference;
-    private DatabaseReference databasePictureReference;
     private FirebaseDatabase firebaseDatabase;
     private List<Products> productList;
     private List<String> productListKeys;
@@ -85,7 +80,6 @@ public class HandlelisteActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseUser user;
-    private String id;
     private IntentIntegrator skuScan;
 
     private ArrayList<String> lister = new ArrayList<>();
@@ -103,43 +97,6 @@ public class HandlelisteActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
 
         getSupportActionBar().setTitle("HuskMat!");
-
-        //Lager navigation drawer
-        mDrawerlayout = (DrawerLayout) findViewById(R.id.drawer);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                menuItem.setChecked(true);
-                mDrawerlayout.closeDrawers();
-
-                switch (menuItem.getItemId()) {
-                    case R.id.nav_db:
-                        startActivity(new Intent(HandlelisteActivity.this, HvisListeneActivity.class));
-                        break;
-                    case R.id.nav_settings:
-                        startActivity(new Intent(HandlelisteActivity.this, settingsActivity.class));
-                        break;
-                    case R.id.nav_logOut:
-                        firebaseAuth.signOut();
-                        break;
-                    case R.id.nav_share:
-                        Intent intent = new Intent(Intent.ACTION_SEND);
-                        intent.setType("text/plain");
-                        startActivity(Intent.createChooser(intent, "Share using"));
-
-                        //Toast.makeText(HandlelisteActivity.this, "share", Toast.LENGTH_SHORT).show();
-                        break;
-            }
-            return true;
-            }
-        });
-
-        mToggle = new ActionBarDrawerToggle(this, mDrawerlayout, R.string.open, R.string.close);
-        mDrawerlayout.addDrawerListener(mToggle);
-        mToggle.syncState();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Sjekker om en bruker er logget inn, hvis ingen brukere er logget inn blir man sendt til loginactivty
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -163,8 +120,8 @@ public class HandlelisteActivity extends AppCompatActivity {
         // Nåværende bruker
         user = FirebaseAuth.getInstance().getCurrentUser();
 
-        databasePictureReference = firebaseDatabase.getReference("bilder").child(firebaseAuth.getUid());
-        databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(testHandleliste);
+        DatabaseReference databasePictureReference = firebaseDatabase.getReference("bilder").child(firebaseAuth.getUid());
+        //databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(testHandleliste);
 
         productAdapter = new ProductAdapter(getApplicationContext(), productList);
 
@@ -196,37 +153,6 @@ public class HandlelisteActivity extends AppCompatActivity {
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
-        productAdapter.setOnItemClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final int position = mRecyclerView.getChildAdapterPosition(v);
-                Toast.makeText(HandlelisteActivity.this, "Delete " + position, Toast.LENGTH_SHORT).show();
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(HandlelisteActivity.this);
-                builder.setTitle("Are you sure about this?");
-                builder.setMessage("Deletion is permanent..");
-
-                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(lister.get(0)).child(productListKeys.get(position));
-                        databaseReference.removeValue();
-                        //Toast.makeText(HandlelisteActivity.this, "Produkter å slette: " + databaseReference, Toast.LENGTH_SHORT).show();
-                        productAdapter.notifyItemRemoved(position);
-                    }
-                });
-
-                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                });
-
-                AlertDialog ad = builder.create();
-                ad.show();
             }
         });
 
@@ -267,6 +193,14 @@ public class HandlelisteActivity extends AppCompatActivity {
                             }
                             @Override
                             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                                Products removedProduct = dataSnapshot.getValue(Products.class);
+                                String producktKey = dataSnapshot.getKey();
+                                removedProduct.setId(producktKey);
+
+                                int position = productListKeys.indexOf(producktKey);
+                                productList.remove(removedProduct);
+                                productListKeys.remove(position);
+                                productAdapter.notifyItemRemoved(position);
                             }
                             @Override
                             public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -354,15 +288,38 @@ public class HandlelisteActivity extends AppCompatActivity {
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(productAdapter);
-    }
 
-    @Override
-    public void onBackPressed() {
-        if (mDrawerlayout.isDrawerOpen(GravityCompat.START)) {
-            mDrawerlayout.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
+        productAdapter.setOnItemClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final int position = mRecyclerView.getChildAdapterPosition(v);
+                Toast.makeText(HandlelisteActivity.this, "Delete " + position, Toast.LENGTH_SHORT).show();
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(HandlelisteActivity.this);
+                builder.setTitle("Are you sure about this?");
+                builder.setMessage("Deletion is permanent..");
+
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(lister.get(0)).child(productListKeys.get(position));
+                        databaseReference.removeValue();
+                        //Toast.makeText(HandlelisteActivity.this, "Produkter å slette: " + databaseReference, Toast.LENGTH_SHORT).show();
+                        productAdapter.notifyItemRemoved(position);
+                    }
+                });
+
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+
+                AlertDialog ad = builder.create();
+                ad.show();
+            }
+        });
     }
 
     @Override
@@ -421,36 +378,6 @@ public class HandlelisteActivity extends AppCompatActivity {
         });
 
         return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            //Gir en handling til knappene inne i draweren
-            case android.R.id.home:
-                mDrawerlayout.openDrawer(GravityCompat.START);
-                return true;
-            case R.id.nav_db:
-                startActivity(new Intent(HandlelisteActivity.this, HvisListeneActivity.class));
-                break;
-            case R.id.nav_settings:
-                startActivity(new Intent(HandlelisteActivity.this, settingsActivity.class));
-                break;
-            case R.id.nav_logOut:
-                firebaseAuth.signOut();
-                break;
-            case R.id.nav_share:
-                Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.setType("text/plain");
-                startActivity(Intent.createChooser(intent, "Share using"));
-
-                //Toast.makeText(this, "share", Toast.LENGTH_SHORT).show();
-                break;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     // Teste ved å legge til produkter da man trykker knappen
@@ -518,7 +445,7 @@ public class HandlelisteActivity extends AppCompatActivity {
 
                 String name = editName.getText().toString().trim();
                 Products product = new Products(name);
-                id = databaseReference.push().getKey();
+                String id = databaseReference.push().getKey();
 
                 if (!TextUtils.isEmpty(name)) {
                     addNewItem(product);

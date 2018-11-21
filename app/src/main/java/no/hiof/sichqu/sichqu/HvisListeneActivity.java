@@ -1,14 +1,17 @@
 package no.hiof.sichqu.sichqu;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -18,30 +21,24 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.github.clans.fab.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.zxing.common.StringUtils;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class HvisListeneActivity extends AppCompatActivity {
-    private EditText handleListeNavn;
     DatabaseReference databaseReference;
     private FirebaseAuth firebaseAuth;
     private FirebaseUser user;
     ListView listView;
-    private FirebaseDatabase firebaseDatabase;
     private ArrayList<String> arrayList = new ArrayList<>();
     private ArrayAdapter arrayAdapter;
-    private ImageButton newListBtn;
+    private DrawerLayout mDrawerlayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,16 +49,50 @@ public class HvisListeneActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hvis_listene);
 
+        //Lager navigation drawer
+        mDrawerlayout = (DrawerLayout) findViewById(R.id.drawer);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                        menuItem.setChecked(true);
+                        mDrawerlayout.closeDrawers();
+                        switch (menuItem.getItemId()) {
+                            case R.id.nav_settings:
+                                startActivity(new Intent(HvisListeneActivity.this, settingsActivity.class));
+                                break;
+                            case R.id.nav_logOut:
+                                firebaseAuth.signOut();
+                                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                                break;
+                            case R.id.nav_share:
+                                Intent intent = new Intent(Intent.ACTION_SEND);
+                                intent.setType("text/plain");
+                                startActivity(Intent.createChooser(intent, "Share using"));
+
+                                //Toast.makeText(HandlelisteActivity.this, "share", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                        return true;
+                    }
+                });
+
+        ActionBarDrawerToggle mToggle = new ActionBarDrawerToggle(this, mDrawerlayout, R.string.open, R.string.close);
+        mDrawerlayout.addDrawerListener(mToggle);
+        mToggle.syncState();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         getSupportActionBar().setTitle("Handlelister");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         listView = findViewById(R.id.AlleListene);
-        handleListeNavn = findViewById(R.id.listName);
-        newListBtn = findViewById(R.id.addNewFloatBtn);
+        EditText handleListeNavn = findViewById(R.id.listName);
+        ImageButton newListBtn = findViewById(R.id.addNewFloatBtn);
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference("produkter");
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
 
 
         arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayList);
@@ -131,5 +162,41 @@ public class HvisListeneActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         dataRead();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mDrawerlayout.isDrawerOpen(GravityCompat.START)) {
+            mDrawerlayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            //Gir en handling til knappene inne i draweren
+            case android.R.id.home:
+                mDrawerlayout.openDrawer(GravityCompat.START);
+                return true;
+            case R.id.nav_settings:
+                startActivity(new Intent(HvisListeneActivity.this, settingsActivity.class));
+                break;
+            case R.id.nav_logOut:
+                firebaseAuth.signOut();
+                break;
+            case R.id.nav_share:
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                startActivity(Intent.createChooser(intent, "Share using"));
+
+                //Toast.makeText(this, "share", Toast.LENGTH_SHORT).show();
+                break;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

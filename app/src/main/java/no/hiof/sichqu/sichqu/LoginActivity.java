@@ -56,7 +56,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if(firebaseAuth.getCurrentUser() != null){
             //account activity
             finish();
-            startActivity(new Intent(getApplicationContext(), HandlelisteActivity.class));
+            startActivity(new Intent(getApplicationContext(), HvisListeneActivity.class));
         }
 
         editTextEmail = (EditText) findViewById(R.id.editTextEmail);
@@ -97,7 +97,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if(firebaseAuth.getCurrentUser() != null){
-                    startActivity(new Intent(LoginActivity.this, HandlelisteActivity.class));
+                    startActivity(new Intent(LoginActivity.this, HvisListeneActivity.class));
                 }
             }
         };
@@ -179,7 +179,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         if(task.isSuccessful()){
                             //start account activity
                             finish();
-                            startActivity(new Intent(getApplicationContext(), HandlelisteActivity.class));
+                            startActivity(new Intent(getApplicationContext(), HvisListeneActivity.class));
                         }
                     }
                 });

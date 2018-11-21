@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if(firebaseAuth.getCurrentUser() != null){
-                    startActivity(new Intent(MainActivity.this, HandlelisteActivity.class));
+                    startActivity(new Intent(MainActivity.this, HvisListeneActivity.class));
                 }
             }
         };
@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()) {
                                 finish();
-                                startActivity(new Intent(getApplicationContext(), HandlelisteActivity.class));
+                                startActivity(new Intent(getApplicationContext(), HvisListeneActivity.class));
                         }else{
                                 Toast.makeText(MainActivity.this, "Could not register... Please try agian", Toast.LENGTH_SHORT).show();
                             }
@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         public void onClick (View v){
             if (v == buttonRegister) {
                 registerUser();
-                startActivity(new Intent(MainActivity.this, HandlelisteActivity.class));
+                startActivity(new Intent(MainActivity.this, HvisListeneActivity.class));
             }
 
             if (v == textViewSignin) {

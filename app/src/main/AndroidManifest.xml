@@ -24,27 +24,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".HandlelisteActivity">
+        <activity android:name=".HandlelisteActivity"
+            android:parentActivityName=".HvisListeneActivity">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
         </activity>
         <activity android:name=".LoginActivity" />
         <activity
-            android:name=".addNewItem"
-            android:label="Add new"
-            android:parentActivityName=".HandlelisteActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".HandlelisteActivity" />
-        </activity>
-        <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
             android:screenOrientation="fullSensor"
             tools:replace="screenOrientation" />
         <activity
-            android:name=".HvisListeneActivity"
-            android:parentActivityName=".HandlelisteActivity" />
+            android:name=".HvisListeneActivity" />
         <activity
             android:name=".settingsActivity"
             android:parentActivityName=".HandlelisteActivity"/>
