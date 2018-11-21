@@ -36,7 +36,8 @@
             android:screenOrientation="fullSensor"
             tools:replace="screenOrientation" />
         <activity
-            android:name=".HvisListeneActivity" />
+            android:name=".HvisListeneActivity"
+            android:parentActivityName=".HandlelisteActivity"/>
         <activity
             android:name=".settingsActivity"
             android:parentActivityName=".HandlelisteActivity"/>
