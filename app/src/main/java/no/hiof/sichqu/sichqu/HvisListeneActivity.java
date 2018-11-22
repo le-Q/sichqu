@@ -104,23 +104,31 @@ public class HvisListeneActivity extends AppCompatActivity {
         user = firebaseAuth.getCurrentUser();
 
         databaseReference = FirebaseDatabase.getInstance();
-        productDatabaseReference = databaseReference.getReference("produkter").child(user.getUid());
+        if (user != null) {
+            productDatabaseReference = databaseReference.getReference("produkter").child(user.getUid());
+        } else {
+            productDatabaseReference = databaseReference.getReference("produkter");
+        }
 
 
         arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayList);
         listView.setAdapter(arrayAdapter);
 
+        goToList();
 
+
+    }
+
+    public void goToList() {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(HvisListeneActivity.this, "Du trykket på: "+position+" "+arrayList.get(position), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(HvisListeneActivity.this, "Du trykket på: "+position+" "+arrayList.get(position), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(HvisListeneActivity.this, HandlelisteActivity.class);
 
                 startActivity(intent);
             }
         });
-
     }
 
 
@@ -131,6 +139,7 @@ public class HvisListeneActivity extends AppCompatActivity {
 
         builder.setView(viewDialog);
         final AlertDialog dialog = builder.create();
+        dialog.setTitle("Add shoppinglist");
         dialog.show();
 
         leggTil.setOnClickListener(new View.OnClickListener() {
@@ -141,7 +150,7 @@ public class HvisListeneActivity extends AppCompatActivity {
 
                 if (!TextUtils.isEmpty(listenavn)) {
                     productDatabaseReference.child(listenavn).setValue(0);
-                    Toast.makeText(HvisListeneActivity.this, "Listen " + listenavn + " ble laget", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(HvisListeneActivity.this, "Listen " + listenavn + " ble laget", Toast.LENGTH_LONG).show();
                     dialog.cancel();
                 } else {
                     Toast.makeText(HvisListeneActivity.this, "Skriv inn navn på handleliste", Toast.LENGTH_SHORT).show();

@@ -485,6 +485,7 @@ public class HandlelisteActivity extends AppCompatActivity {
 
         builder.setView(view);
         final AlertDialog dialog = builder.create();
+        dialog.setTitle("Add new product");
         builder.setView(view);
 
 
