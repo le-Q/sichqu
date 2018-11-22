@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -42,6 +43,7 @@ public class HvisListeneActivity extends AppCompatActivity {
     private DrawerLayout mDrawerlayout;
     private ActionBarDrawerToggle mToggle;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         DeltPreferanse sharedpref = new DeltPreferanse(this);
@@ -50,6 +52,12 @@ public class HvisListeneActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hvis_listene);
+
+        /*//prøve å endre email til innloggede bruker
+        TextView userEmail = findViewById(R.id.email);
+        //Linjen under gjør at appen kræsjer
+        userEmail.setText(user.getUid());*/
+
 
         //Lager navigation drawer
         mDrawerlayout = (DrawerLayout) findViewById(R.id.drawer);
@@ -87,7 +95,6 @@ public class HvisListeneActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         getSupportActionBar().setTitle("Handlelister");
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         listView = findViewById(R.id.AlleListene);
         EditText handleListeNavn = findViewById(R.id.listName);
@@ -113,6 +120,7 @@ public class HvisListeneActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
     }
 
 
