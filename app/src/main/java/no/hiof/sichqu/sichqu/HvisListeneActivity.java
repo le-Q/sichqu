@@ -33,15 +33,12 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class HvisListeneActivity extends AppCompatActivity {
-    private FirebaseDatabase databaseReference;
     private DatabaseReference productDatabaseReference;
     private FirebaseAuth firebaseAuth;
-    private FirebaseUser user;
     ListView listView;
     private ArrayList<String> arrayList = new ArrayList<>();
     private ArrayAdapter arrayAdapter;
     private DrawerLayout mDrawerlayout;
-    private ActionBarDrawerToggle mToggle;
 
 
     @Override
@@ -88,7 +85,7 @@ public class HvisListeneActivity extends AppCompatActivity {
                     }
                 });
 
-        mToggle = new ActionBarDrawerToggle(this, mDrawerlayout, R.string.open, R.string.close);
+        ActionBarDrawerToggle mToggle = new ActionBarDrawerToggle(this, mDrawerlayout, R.string.open, R.string.close);
         mDrawerlayout.addDrawerListener(mToggle);
 
         mToggle.syncState();
@@ -101,13 +98,13 @@ public class HvisListeneActivity extends AppCompatActivity {
         ImageButton newListBtn = findViewById(R.id.addNewFloatBtn);
 
         firebaseAuth = FirebaseAuth.getInstance();
-        user = firebaseAuth.getCurrentUser();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
 
-        databaseReference = FirebaseDatabase.getInstance();
+        FirebaseDatabase databaseReference = FirebaseDatabase.getInstance();
         if (user != null) {
             productDatabaseReference = databaseReference.getReference("produkter").child(user.getUid());
         } else {
-            productDatabaseReference = databaseReference.getReference("produkter");
+            productDatabaseReference = databaseReference.getReference();
         }
 
 
@@ -115,8 +112,6 @@ public class HvisListeneActivity extends AppCompatActivity {
         listView.setAdapter(arrayAdapter);
 
         goToList();
-
-
     }
 
     public void goToList() {
@@ -130,7 +125,6 @@ public class HvisListeneActivity extends AppCompatActivity {
             }
         });
     }
-
 
     public void leggTilListe(View view) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(HvisListeneActivity.this);

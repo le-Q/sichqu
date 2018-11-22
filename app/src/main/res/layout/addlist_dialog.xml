@@ -10,7 +10,7 @@
         android:id="@+id/listName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Navn på handleliste" />
+        android:hint="@string/shoppinglist" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:text="@string/legg_til" />
+            android:text="@string/ok" />
 
     </LinearLayout>
 

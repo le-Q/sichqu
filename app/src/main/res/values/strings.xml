@@ -8,15 +8,12 @@
     <string name="pris">Pris</string>
     <string name="lister">lister</string>
     <string name="liste2">liste2</string>
-    <string name="name_input">Navn på vare</string>
     <string name="description_input">Description</string>
-    <string name="add_input">Legg til vare</string>
     <string name="s_k_p_varer">Søk på varer</string>
-    <string name="title_activity_main2">Main2Activity</string>
-    <string name="logout">Logout</string>
     <string name="logout_Options">Logout</string>
-    <string name="legg_til">Legg til</string>
-    <string name="skriv_inn_navn_p_produkt">Skriv inn navn på produkt..</string>
+    <string name="shoppinglist">Shoppinglist</string>
+    <string name="ok">Ok</string>
+    <string name="product_name">Product name</string>
     <string-array name="months">
         <item>January</item>
         <item>February</item>
