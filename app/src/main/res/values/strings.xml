@@ -11,6 +11,10 @@
     <string name="description_input">Description</string>
     <string name="s_k_p_varer">Søk på varer</string>
     <string name="logout_Options">Logout</string>
+    <string name="legg_til">Legg til</string>
+    <string name="skriv_inn_navn_p_produkt">Skriv inn navn på produkt..</string>
+    <string name="app_label">app_label</string>
+    <string name="search_hint">søk produkter</string>
     <string name="shoppinglist">Shoppinglist</string>
     <string name="ok">Ok</string>
     <string name="product_name">Product name</string>
