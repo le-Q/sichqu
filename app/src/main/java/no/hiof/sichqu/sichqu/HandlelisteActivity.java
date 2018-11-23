@@ -2,6 +2,7 @@ package no.hiof.sichqu.sichqu;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.os.PersistableBundle;
@@ -424,8 +425,28 @@ public class HandlelisteActivity extends AppCompatActivity {
                 }
                 return false;
             }
+
         });
 
+        searchView.setOnSuggestionListener(new SearchView.OnSuggestionListener() {
+            @Override
+            public boolean onSuggestionSelect(int position) {
+                Cursor cursor = (Cursor) searchView.getSuggestionsAdapter().getItem(position);
+                String feedName = cursor.getString(4);
+                searchView.setQuery(feedName, false);
+                searchView.clearFocus();
+                return true;
+            }
+
+            @Override
+            public boolean onSuggestionClick(int position) {
+                Cursor cursor = (Cursor) searchView.getSuggestionsAdapter().getItem(position);
+                String feedName = cursor.getString(4);
+                searchView.setQuery(feedName, false);
+                searchView.clearFocus();
+                return true;
+            }
+        });
         return super.onCreateOptionsMenu(menu);
     }
 
