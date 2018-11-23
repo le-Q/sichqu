@@ -33,15 +33,12 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class HvisListeneActivity extends AppCompatActivity {
-    private FirebaseDatabase databaseReference;
     private DatabaseReference productDatabaseReference;
     private FirebaseAuth firebaseAuth;
-    private FirebaseUser user;
     ListView listView;
     private ArrayList<String> arrayList = new ArrayList<>();
     private ArrayAdapter arrayAdapter;
     private DrawerLayout mDrawerlayout;
-    private ActionBarDrawerToggle mToggle;
 
 
     @Override
@@ -88,7 +85,7 @@ public class HvisListeneActivity extends AppCompatActivity {
                     }
                 });
 
-        mToggle = new ActionBarDrawerToggle(this, mDrawerlayout, R.string.open, R.string.close);
+        ActionBarDrawerToggle mToggle = new ActionBarDrawerToggle(this, mDrawerlayout, R.string.open, R.string.close);
         mDrawerlayout.addDrawerListener(mToggle);
 
         mToggle.syncState();
@@ -101,28 +98,33 @@ public class HvisListeneActivity extends AppCompatActivity {
         ImageButton newListBtn = findViewById(R.id.addNewFloatBtn);
 
         firebaseAuth = FirebaseAuth.getInstance();
-        user = firebaseAuth.getCurrentUser();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
 
-        databaseReference = FirebaseDatabase.getInstance();
-        productDatabaseReference = databaseReference.getReference("produkter").child(user.getUid());
+        FirebaseDatabase databaseReference = FirebaseDatabase.getInstance();
+        if (user != null) {
+            productDatabaseReference = databaseReference.getReference("produkter").child(user.getUid());
+        } else {
+            productDatabaseReference = databaseReference.getReference();
+        }
 
 
         arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayList);
         listView.setAdapter(arrayAdapter);
 
+        goToList();
+    }
 
+    public void goToList() {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(HvisListeneActivity.this, "Du trykket på: "+position+" "+arrayList.get(position), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(HvisListeneActivity.this, "Du trykket på: "+position+" "+arrayList.get(position), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(HvisListeneActivity.this, HandlelisteActivity.class);
 
                 startActivity(intent);
             }
         });
-
     }
-
 
     public void leggTilListe(View view) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(HvisListeneActivity.this);
@@ -131,6 +133,7 @@ public class HvisListeneActivity extends AppCompatActivity {
 
         builder.setView(viewDialog);
         final AlertDialog dialog = builder.create();
+        dialog.setTitle("Add shoppinglist");
         dialog.show();
 
         leggTil.setOnClickListener(new View.OnClickListener() {
@@ -141,7 +144,7 @@ public class HvisListeneActivity extends AppCompatActivity {
 
                 if (!TextUtils.isEmpty(listenavn)) {
                     productDatabaseReference.child(listenavn).setValue(0);
-                    Toast.makeText(HvisListeneActivity.this, "Listen " + listenavn + " ble laget", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(HvisListeneActivity.this, "Listen " + listenavn + " ble laget", Toast.LENGTH_LONG).show();
                     dialog.cancel();
                 } else {
                     Toast.makeText(HvisListeneActivity.this, "Skriv inn navn på handleliste", Toast.LENGTH_SHORT).show();
