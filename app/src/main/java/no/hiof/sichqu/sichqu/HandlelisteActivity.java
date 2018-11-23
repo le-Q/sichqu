@@ -1,8 +1,14 @@
 package no.hiof.sichqu.sichqu;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.MatrixCursor;
+import android.location.Address;
+import android.location.Geocoder;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.os.PersistableBundle;
@@ -17,7 +23,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,10 +34,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.SearchView;
+import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -53,10 +63,14 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import no.hiof.sichqu.sichqu.Products.Products;
 import no.hiof.sichqu.sichqu.Products.Produkt;
@@ -83,14 +97,18 @@ public class HandlelisteActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseUser user;
     private IntentIntegrator skuScan;
+    private SearchView searchView;
 
     private ArrayList<String> lister = new ArrayList<>();
+    public static String[] columns = new String[]{"_id", "PRODUKT_navn", "PRODUKT_img"};
+    private Produkt produktinfo;
+    private List<Map<String, String>> produktinfodisplay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         DeltPreferanse sharedpref = new DeltPreferanse(this);
-        if(sharedpref.loadNightModeState())
+        if (sharedpref.loadNightModeState())
             setTheme(R.style.darktheme);
 
         super.onCreate(savedInstanceState);
@@ -137,7 +155,7 @@ public class HandlelisteActivity extends AppCompatActivity {
         firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot snap : dataSnapshot.getChildren()) {
+                for (DataSnapshot snap : dataSnapshot.getChildren()) {
                     lister.add(snap.getKey());
                 }
 
@@ -154,6 +172,7 @@ public class HandlelisteActivity extends AppCompatActivity {
                     databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(lister.get(0));
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
@@ -164,7 +183,7 @@ public class HandlelisteActivity extends AppCompatActivity {
 
     }
 
-    private void goSpinner(){
+    private void goSpinner() {
         // Spinner
         // Hente handlelister
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar22);
@@ -172,46 +191,50 @@ public class HandlelisteActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 arrayHandleliste.clear();
-                for(DataSnapshot nameListShot : dataSnapshot.getChildren()){
+                for (DataSnapshot nameListShot : dataSnapshot.getChildren()) {
                     arrayHandleliste.add(nameListShot.getKey());
 
-                        databaseReference.child(nameListShot.getKey()).addChildEventListener(new ChildEventListener() {
-                            @Override
-                            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                                Products product = dataSnapshot.getValue(Products.class);
-                                String productKey = dataSnapshot.getKey();
-                                if (product != null) {
-                                    product.setId(productKey);
-                                }
+                    databaseReference.child(nameListShot.getKey()).addChildEventListener(new ChildEventListener() {
+                        @Override
+                        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                            Products product = dataSnapshot.getValue(Products.class);
+                            String productKey = dataSnapshot.getKey();
+                            if (product != null) {
+                                product.setId(productKey);
+                            }
 
-                                if (!productList.contains(product)) {
-                                    productList.add(product);
-                                    productListKeys.add(productKey);
-                                    productAdapter.notifyItemChanged(productList.size() - 1);
-                                }
-                                Log.d(TAG, "OnChildAdded fired");
+                            if (!productList.contains(product)) {
+                                productList.add(product);
+                                productListKeys.add(productKey);
+                                productAdapter.notifyItemChanged(productList.size() - 1);
                             }
-                            @Override
-                            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                            }
-                            @Override
-                            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                                Products removedProduct = dataSnapshot.getValue(Products.class);
-                                String producktKey = dataSnapshot.getKey();
-                                removedProduct.setId(producktKey);
+                            Log.d(TAG, "OnChildAdded fired");
+                        }
 
-                                int position = productListKeys.indexOf(producktKey);
-                                productList.remove(removedProduct);
-                                productListKeys.remove(position);
-                                productAdapter.notifyItemRemoved(position);
-                            }
-                            @Override
-                            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                            }
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-                            }
-                        });
+                        @Override
+                        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                        }
+
+                        @Override
+                        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                            Products removedProduct = dataSnapshot.getValue(Products.class);
+                            String producktKey = dataSnapshot.getKey();
+                            removedProduct.setId(producktKey);
+
+                            int position = productListKeys.indexOf(producktKey);
+                            productList.remove(removedProduct);
+                            productListKeys.remove(position);
+                            productAdapter.notifyItemRemoved(position);
+                        }
+
+                        @Override
+                        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                        }
+                    });
                 }
 
                 ArrayAdapter spinnerAdapter = new ArrayAdapter(getApplicationContext(), R.layout.spinner_drop_down_item, arrayHandleliste);
@@ -225,15 +248,15 @@ public class HandlelisteActivity extends AppCompatActivity {
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         Toast.makeText(HandlelisteActivity.this, "you selected: " + arrayHandleliste.get(position), Toast.LENGTH_SHORT).show();
                         testHandleliste = arrayHandleliste.get(position);
-                        Log.e("GetA",testHandleliste+ " <- " + arrayHandleliste.get(position));
+                        Log.e("GetA", testHandleliste + " <- " + arrayHandleliste.get(position));
 
                         firebaseDatabase.getReference().child("produkter").child(firebaseAuth.getUid()).child(testHandleliste).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot snap) {
-                                Log.e("Spinner",snap.getKey() + " -> " + snap.getChildren());
+                                Log.e("Spinner", snap.getKey() + " -> " + snap.getChildren());
 
                                 ArrayList<Products> lister = new ArrayList<>();
-                                for(DataSnapshot nameListShot : snap.getChildren()){
+                                for (DataSnapshot nameListShot : snap.getChildren()) {
                                     Products product = nameListShot.getValue(Products.class);
                                     lister.add(product);
                                     //Log.e("Spinner3", nameListShot.getChildren().toString());
@@ -243,10 +266,13 @@ public class HandlelisteActivity extends AppCompatActivity {
                                 productAdapter.setListData(lister);
                                 databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(testHandleliste);
                             }
+
                             @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) { }
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                            }
                         });
                     }
+
                     @Override
                     public void onNothingSelected(AdapterView<?> parent) {
 
@@ -263,19 +289,19 @@ public class HandlelisteActivity extends AppCompatActivity {
         databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid());
 
         firebaseDatabase.getReference().child("produkter").child(firebaseAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-    @Override
-    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-        arrayHandleliste.clear();
-        for(DataSnapshot nameListShot : dataSnapshot.getChildren()){
-            arrayHandleliste.add(nameListShot.getKey());
-        }
-    }
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                arrayHandleliste.clear();
+                for (DataSnapshot nameListShot : dataSnapshot.getChildren()) {
+                    arrayHandleliste.add(nameListShot.getKey());
+                }
+            }
 
-    @Override
-    public void onCancelled(@NonNull DatabaseError databaseError) {
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-    }
-});
+            }
+        });
         mRecyclerView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -328,7 +354,8 @@ public class HandlelisteActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }};
+            }
+        };
         databaseReference.addChildEventListener(childEventListener);
     }
 
@@ -408,22 +435,26 @@ public class HandlelisteActivity extends AppCompatActivity {
 
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.search_menu, menu);
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         MenuItem menuItem = menu.findItem(R.id.searchmenu);
-        final SearchView searchView = (SearchView)menuItem.getActionView();
+        searchView = (SearchView) menuItem.getActionView();
+
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                getProdukt(query, true);
+                getProdukt(query, true, false);
                 return false;
             }
 
             @Override
-            public boolean onQueryTextChange(String newText) {
-                if(newText.length() > 3){
-                    Toast.makeText(HandlelisteActivity.this, newText, Toast.LENGTH_SHORT).show();
-                }
-                return false;
+            public boolean onQueryTextChange(String s) {
+                /*if (s.length() > 3) {
+                    getProdukt(s, true);
+                }*/
+                return true;
             }
 
         });
@@ -432,8 +463,9 @@ public class HandlelisteActivity extends AppCompatActivity {
             @Override
             public boolean onSuggestionSelect(int position) {
                 Cursor cursor = (Cursor) searchView.getSuggestionsAdapter().getItem(position);
-                String feedName = cursor.getString(4);
-                searchView.setQuery(feedName, false);
+                String place = cursor.getString(1);
+                cursor.close();
+                searchView.setQuery(place, false);
                 searchView.clearFocus();
                 return true;
             }
@@ -441,20 +473,33 @@ public class HandlelisteActivity extends AppCompatActivity {
             @Override
             public boolean onSuggestionClick(int position) {
                 Cursor cursor = (Cursor) searchView.getSuggestionsAdapter().getItem(position);
-                String feedName = cursor.getString(4);
-                searchView.setQuery(feedName, false);
+                String produkt = cursor.getString(4);
+                searchView.setQuery(produkt, true);
                 searchView.clearFocus();
                 return true;
             }
         });
-        return super.onCreateOptionsMenu(menu);
+        //return super.onCreateOptionsMenu(menu);
+        return true;
     }
 
-    // Teste ved å legge til produkter da man trykker knappen
-    public void hentAPI(View view) {
-        getProdukt(cider, true);
-        //getSKU(iste);
-        Log.e("Adapter", productList.toString());
+
+    private MatrixCursor convertToCursor(Produkt produkter) {
+        MatrixCursor cursor = new MatrixCursor(columns);
+        int i = 0;
+        for (Products produktet : produkter.getProducts()) {
+            String[] temp = new String[3];
+            i = i + 1;
+            temp[0] = Integer.toString(i);
+
+            String produktUrl = produktet.getThumbnail();
+            if (produktUrl == null)
+                produktUrl = "https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.dirtyapronrecipes.com%2Fwp-content%2Fuploads%2F2015%2F10%2Ffood-placeholder.png&f=1";
+            temp[1] = produktet.getName();
+            temp[2] = produktUrl;
+            cursor.addRow(temp);
+        }
+        return cursor;
     }
 
     @Override
@@ -474,11 +519,11 @@ public class HandlelisteActivity extends AppCompatActivity {
         // Scan knapp trykket
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (result != null) {
-            if (result.getContents() == null ) {
+            if (result.getContents() == null) {
                 Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(this, "Scanned " + result.getContents(), Toast.LENGTH_LONG).show();
-                getProdukt(result.getContents(), false);
+                getProdukt(result.getContents(), false, false);
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
@@ -486,10 +531,10 @@ public class HandlelisteActivity extends AppCompatActivity {
     }
 
     // Knapp for floating action button
-    public void scanItem(View v){
-            skuScan.setOrientationLocked(false);
-            skuScan.initiateScan();
-        }
+    public void scanItem(View v) {
+        skuScan.setOrientationLocked(false);
+        skuScan.initiateScan();
+    }
 
     // Knapp for floating action button
     public void addNewItem(View v) {
@@ -502,12 +547,22 @@ public class HandlelisteActivity extends AppCompatActivity {
         final AlertDialog.Builder builder = new AlertDialog.Builder(HandlelisteActivity.this);
         final View view = getLayoutInflater().inflate(R.layout.leggtilvare_dialog, null);
         Button leggTil = (Button) view.findViewById(R.id.leggTilBtn);
-        final EditText editName = (EditText) view.findViewById(R.id.productName);
+        final EditText editName = view.findViewById(R.id.productName);
+
+
+        //AutoCompleteAdapter adapter = new AutoCompleteAdapter(this, currentSearchingList);
+        //editName.setAdapter(adapter);
 
         builder.setView(view);
         final AlertDialog dialog = builder.create();
         dialog.setTitle("Add new product");
         builder.setView(view);
+
+        String[] from={"produkt_image","produkt_navn"};
+        int[] to={R.id.produkt_bilde,R.id.produkt_navn};
+        SimpleAdapter listadapter=new SimpleAdapter(HandlelisteActivity.this,produktinfodisplay,R.layout.search_layout,from,to);
+
+        //listview.setAdapter(listadapter);
 
 
         leggTil.setOnClickListener(new View.OnClickListener() {
@@ -516,7 +571,6 @@ public class HandlelisteActivity extends AppCompatActivity {
 
                 String name = editName.getText().toString().trim();
                 Products product = new Products(name);
-                String id = databaseReference.push().getKey();
 
                 if (!TextUtils.isEmpty(name)) {
                     addNewItem(product);
@@ -531,7 +585,7 @@ public class HandlelisteActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    private void getProdukt(String produktKode, final Boolean kolonial) {
+    private void getProdukt(String produktKode, final Boolean kolonial, final Boolean firstArray) {
         String URL;
         if (kolonial) {
             URL = "https://kolonial.no/api/v1/search/?q=" + produktKode;
@@ -545,13 +599,23 @@ public class HandlelisteActivity extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         Gson gson = new Gson();
                         if (kolonial) {
-                            Produkt produkt = gson.fromJson(response.toString(), Produkt.class);
-                            Products nyProdukt = produkt.getProducts()[0];
-                            nyProdukt.setThumbnail(nyProdukt.getImages()[0].getThumbnail().getUrl());
-                            addNewItem(nyProdukt);
+                            produktinfo = gson.fromJson(response.toString(), Produkt.class);
+                            convertToCursor(produktinfo);
+                            for(Products item : produktinfo.getProducts()) {
+                                Map<String, String> nyProdukt = new HashMap<>();
+                                nyProdukt.put(item.getThumbnail(),item.getName());
+                                produktinfodisplay.add(nyProdukt);
+                            }
+
+
+                            if(firstArray) {
+                                Products nyProdukt = produktinfo.getProducts()[0];
+                                nyProdukt.setThumbnail(nyProdukt.getImages()[0].getThumbnail().getUrl());
+                                addNewItem(nyProdukt);
+                            }
                         } else {
                             UPC_data upc_produkt = gson.fromJson(response.toString(), UPC_data.class);
-                            if(upc_produkt.getUpcnumber().equals("7038010001215"))
+                            if (upc_produkt.getUpcnumber().equals("7038010001215"))
                                 addNewItem(new Products("Iste Lime", "https://kolonial.no/media/uploads/public/169/385/968385-1896e-product_list.jpg", "iste"));
                             else
                                 addNewItem(new Products(upc_produkt.getUpcnumber(), upc_produkt.getTitle()));

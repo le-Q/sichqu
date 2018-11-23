@@ -1,8 +1,11 @@
 package no.hiof.sichqu.sichqu;
 
+
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -32,8 +35,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Calendar;
+
+
 
 public class HvisListeneActivity extends AppCompatActivity {
     private DatabaseReference productDatabaseReference;
@@ -45,8 +53,25 @@ public class HvisListeneActivity extends AppCompatActivity {
     private DrawerLayout mDrawerlayout;
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        if(!isOnline()){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("No internet access").setMessage("You don't have internet! This app doesn't work without internet right now. We're deeply sorry.")
+                    .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            firebaseAuth.signOut();
+                            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        }
+
         DeltPreferanse sharedpref = new DeltPreferanse(this);
         if(sharedpref.loadNightModeState())
             setTheme(R.style.darktheme);
@@ -132,6 +157,20 @@ public class HvisListeneActivity extends AppCompatActivity {
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent );
 */
 
+    }
+
+    // Hentet fra nettet, sender en ping til Google. Skal fungere på de fleste enheter.
+    public boolean isOnline() {
+        Runtime runtime = Runtime.getRuntime();
+        try {
+            Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
+            int     exitValue = ipProcess.waitFor();
+            return (exitValue == 0);
+        }
+        catch (IOException e)          { e.printStackTrace(); }
+        catch (InterruptedException e) { e.printStackTrace(); }
+
+        return false;
     }
 
     public void goToList() {
@@ -227,4 +266,6 @@ public class HvisListeneActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 }
