@@ -1,5 +1,7 @@
 package no.hiof.sichqu.sichqu;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -31,6 +33,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class HvisListeneActivity extends AppCompatActivity {
     private DatabaseReference productDatabaseReference;
@@ -50,9 +53,6 @@ public class HvisListeneActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hvis_listene);
-
-
-
 
         //Lager navigation drawer
         mDrawerlayout = (DrawerLayout) findViewById(R.id.drawer);
@@ -99,7 +99,6 @@ public class HvisListeneActivity extends AppCompatActivity {
 
         View headerView = navigationView.getHeaderView(0);
         TextView userEmail = headerView.findViewById(R.id.email);
-        //Linjen under gjør at appen kræsjer
         String brukerEpost = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         userEmail.setText(brukerEpost);
 
@@ -119,6 +118,20 @@ public class HvisListeneActivity extends AppCompatActivity {
         listView.setAdapter(arrayAdapter);
 
         goToList();
+
+       /* //Notification
+        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.SECOND,5);
+        //calendar.add(Calendar.HOUR_OF_DAY, 19);
+        //calendar.add(Calendar.MINUTE, 50);
+
+        Intent intent = new Intent("com.android.alarm.permission.SET_ALARM");
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 100, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent );
+*/
+
     }
 
     public void goToList() {
@@ -127,7 +140,7 @@ public class HvisListeneActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //Toast.makeText(HvisListeneActivity.this, "Du trykket på: "+position+" "+arrayList.get(position), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(HvisListeneActivity.this, HandlelisteActivity.class);
-                intent.putExtra()
+                //intent.putExtra()
 
                 startActivity(intent);
             }
