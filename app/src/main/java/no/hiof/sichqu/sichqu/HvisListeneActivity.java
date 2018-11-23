@@ -50,10 +50,7 @@ public class HvisListeneActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hvis_listene);
 
-        /*//prøve å endre email til innloggede bruker
-        TextView userEmail = findViewById(R.id.email);
-        //Linjen under gjør at appen kræsjer
-        userEmail.setText(user.getUid());*/
+
 
 
         //Lager navigation drawer
@@ -96,6 +93,15 @@ public class HvisListeneActivity extends AppCompatActivity {
         listView = findViewById(R.id.AlleListene);
         EditText handleListeNavn = findViewById(R.id.listName);
         ImageButton newListBtn = findViewById(R.id.addNewFloatBtn);
+
+        //prøve å endre email til innloggede bruker
+
+        View headerView = navigationView.getHeaderView(0);
+        TextView userEmail = headerView.findViewById(R.id.email);
+        //Linjen under gjør at appen kræsjer
+        String brukerEpost = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        userEmail.setText(brukerEpost);
+
 
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
