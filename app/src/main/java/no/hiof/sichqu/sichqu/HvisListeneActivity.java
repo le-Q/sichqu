@@ -34,6 +34,7 @@ import java.util.ArrayList;
 
 public class HvisListeneActivity extends AppCompatActivity {
     private DatabaseReference productDatabaseReference;
+
     private FirebaseAuth firebaseAuth;
     ListView listView;
     private ArrayList<String> arrayList = new ArrayList<>();
@@ -120,6 +121,7 @@ public class HvisListeneActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //Toast.makeText(HvisListeneActivity.this, "Du trykket på: "+position+" "+arrayList.get(position), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(HvisListeneActivity.this, HandlelisteActivity.class);
+                intent.putExtra()
 
                 startActivity(intent);
             }
