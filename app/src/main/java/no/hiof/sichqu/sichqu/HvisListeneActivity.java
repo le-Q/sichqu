@@ -1,11 +1,8 @@
 package no.hiof.sichqu.sichqu;
 
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -36,14 +33,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Calendar;
 
-
-
-import no.hiof.sichqu.sichqu.Products.Products;
 
 public class HvisListeneActivity extends AppCompatActivity {
     private DatabaseReference productDatabaseReference;
@@ -60,7 +51,7 @@ public class HvisListeneActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        if(!isOnline()){
+        /*if(!isOnline()){
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("No internet access").setMessage("You don't have internet! This app doesn't work without internet right now. We're deeply sorry.")
                     .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -72,7 +63,7 @@ public class HvisListeneActivity extends AppCompatActivity {
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
-        }
+        }*/
 
         DeltPreferanse sharedpref = new DeltPreferanse(this);
         if(sharedpref.loadNightModeState())

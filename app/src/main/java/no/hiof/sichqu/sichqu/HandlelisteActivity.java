@@ -446,7 +446,7 @@ public class HandlelisteActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                getProdukt(query, true, false);
+                getProdukt(query, true, true);
                 return false;
             }
 
