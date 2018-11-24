@@ -144,20 +144,26 @@ public class HvisListeneActivity extends AppCompatActivity {
 
         goToList();
 
-       /* //Notification
-        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.SECOND,5);
-        //calendar.add(Calendar.HOUR_OF_DAY, 19);
-        //calendar.add(Calendar.MINUTE, 50);
+      /* //Notification
+        notification();*/
 
-        Intent intent = new Intent("com.android.alarm.permission.SET_ALARM");
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 100, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent );
-*/
 
     }
+
+    /*private void notification() {
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.set(Calendar.HOUR_OF_DAY, 21);
+        calendar.set(Calendar.MINUTE, 47);
+        calendar.set(Calendar.SECOND, 10);
+
+        Intent intent = new Intent(HvisListeneActivity.this, NotificationActivity.class);
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(HvisListeneActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        AlarmManager alarmManager = (AlarmManager) this.getSystemService(this.ALARM_SERVICE);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+    }*/
 
     // Hentet fra nettet, sender en ping til Google. Skal fungere på de fleste enheter.
     public boolean isOnline() {
