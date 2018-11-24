@@ -32,6 +32,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import no.hiof.sichqu.sichqu.Products.Products;
+
 public class HvisListeneActivity extends AppCompatActivity {
     private DatabaseReference productDatabaseReference;
 
@@ -50,8 +52,6 @@ public class HvisListeneActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hvis_listene);
-
-
 
 
         //Lager navigation drawer
@@ -99,9 +99,7 @@ public class HvisListeneActivity extends AppCompatActivity {
 
         View headerView = navigationView.getHeaderView(0);
         TextView userEmail = headerView.findViewById(R.id.email);
-        //Linjen under gjør at appen kræsjer
-        String brukerEpost = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        userEmail.setText(brukerEpost);
+
 
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -110,6 +108,8 @@ public class HvisListeneActivity extends AppCompatActivity {
         FirebaseDatabase databaseReference = FirebaseDatabase.getInstance();
         if (user != null) {
             productDatabaseReference = databaseReference.getReference("produkter").child(user.getUid());
+            String brukerEpost = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+            userEmail.setText(brukerEpost);
         } else {
             productDatabaseReference = databaseReference.getReference();
         }
@@ -127,7 +127,11 @@ public class HvisListeneActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //Toast.makeText(HvisListeneActivity.this, "Du trykket på: "+position+" "+arrayList.get(position), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(HvisListeneActivity.this, HandlelisteActivity.class);
-                intent.putExtra()
+
+                String productList = arrayList.get(position);
+                intent.putExtra(HandlelisteActivity.LIST_UID, productList);
+
+                Log.e("productList: ", "*** - productlist+arrayList.get(position) = " + productList);
 
                 startActivity(intent);
             }

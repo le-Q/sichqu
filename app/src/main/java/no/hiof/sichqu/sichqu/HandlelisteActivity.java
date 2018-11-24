@@ -65,7 +65,7 @@ import no.hiof.sichqu.sichqu.Products.UPC_data;
 public class HandlelisteActivity extends AppCompatActivity {
     private static final String TAG = HandlelisteActivity.class.getSimpleName();
     private static final int RC_SIGN_IN = 1;
-    public static final String PRODUCT_UID = "product_uid";
+    public static final String LIST_UID = "list_uid";
 
     String cider = "Grevens cider skogsbær";
     String testHandleliste = "Handleliste";
@@ -98,7 +98,8 @@ public class HandlelisteActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-        getSupportActionBar().setTitle("HuskMat!");
+        String productUid = getIntent().getStringExtra(LIST_UID);
+        getSupportActionBar().setTitle(productUid);
 
         //Sjekker om en bruker er logget inn, hvis ingen brukere er logget inn blir man sendt til loginactivty
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -197,10 +198,10 @@ public class HandlelisteActivity extends AppCompatActivity {
                             @Override
                             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
                                 Products removedProduct = dataSnapshot.getValue(Products.class);
-                                String producktKey = dataSnapshot.getKey();
-                                removedProduct.setId(producktKey);
+                                String productKey = dataSnapshot.getKey();
+                                removedProduct.setId(productKey);
 
-                                int position = productListKeys.indexOf(producktKey);
+                                int position = productListKeys.indexOf(productKey);
                                 productList.remove(removedProduct);
                                 productListKeys.remove(position);
                                 productAdapter.notifyItemRemoved(position);
