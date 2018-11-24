@@ -602,11 +602,11 @@ public class HandlelisteActivity extends AppCompatActivity {
                         if (kolonial) {
                             produktinfo = gson.fromJson(response.toString(), Produkt.class);
                             convertToCursor(produktinfo);
-                            for(Products item : produktinfo.getProducts()) {
+                            /*for(Products item : produktinfo.getProducts()) {
                                 Map<String, String> nyProdukt = new HashMap<>();
                                 nyProdukt.put(item.getThumbnail(),item.getName());
                                 produktinfodisplay.add(nyProdukt);
-                            }
+                            }*/
 
 
                             if(firstArray) {
