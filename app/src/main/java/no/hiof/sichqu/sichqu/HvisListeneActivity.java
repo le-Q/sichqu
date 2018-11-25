@@ -108,7 +108,7 @@ public class HvisListeneActivity extends AppCompatActivity {
         mToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        getSupportActionBar().setTitle("Handlelister");
+        getSupportActionBar().setTitle("Shoppinglists");
 
         listView = findViewById(R.id.AlleListene);
         EditText handleListeNavn = findViewById(R.id.listName);
