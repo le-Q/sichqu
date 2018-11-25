@@ -114,7 +114,7 @@ public class HvisListeneActivity extends AppCompatActivity {
         EditText handleListeNavn = findViewById(R.id.listName);
         ImageButton newListBtn = findViewById(R.id.addNewFloatBtn);
 
-        //prøve å endre email til innloggede bruker
+        //Sette innloggede bruker sin email i header på nav drawer
 
         View headerView = navigationView.getHeaderView(0);
         TextView userEmail = headerView.findViewById(R.id.email);
