@@ -51,7 +51,7 @@ public class HvisListeneActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        if(!isOnline()){
+        /*if(!isOnline()){
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Ingen internett tilgang!").setMessage("Denne appen fungerer desverre ikke uten internett.")
                     .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -63,7 +63,7 @@ public class HvisListeneActivity extends AppCompatActivity {
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
-        }
+        }*/
 
         DeltPreferanse sharedpref = new DeltPreferanse(this);
         if(sharedpref.loadNightModeState())
