@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">sichqu</string>
-    <string name="open">Open</string>
-    <string name="close">Close</string>
-    <string name="title">Title</string>
+    <string name="open">Åpne</string>
+    <string name="close">Lukk</string>
+    <string name="title">Tittel</string>
     <string name="description">Description</string>
     <string name="todo">TODO</string>
     <string name="pris">Pris</string>
@@ -15,9 +15,26 @@
     <string name="skriv_inn_navn_p_produkt">Skriv inn navn på produkt..</string>
     <string name="app_label">app_label</string>
     <string name="search_hint">søk produkter</string>
-    <string name="shoppinglist">Shoppinglist</string>
+    <string name="shoppinglist">Handleliste</string>
     <string name="ok">Ok</string>
-    <string name="product_name">Product name</string>
+    <string name="product_name">Produkt navn</string>
+    <string name="login">Login</string>
+    <string name="skriv_inn_passord">Skriv inn passord</string>
+    <string name="logg_inn">Logg inn</string>
+    <string name="har_du_ikke_en_konto_lag_en_konto_her">Har du ikke en konto? Lag en konto her</string>
+    <string name="bruker_registrering">Bruker registrering</string>
+    <string name="skriv_inn_e_post">Skriv inn e-post</string>
+    <string name="registrer_bruker">Registrer bruker</string>
+    <string name="alerede_registrert_logg_inn_her">Alerede registrert? Logg inn her!</string>
+    <string name="velg_m_rkt_tema">Velg mørkt tema</string>
+    <string name="m_rkt_tema">Mørkt tema</string>
+    <string name="slett_all_bruker_data">Slett all bruker data</string>
+    <string name="slett">Slett</string>
+    <string name="del">Del</string>
+    <string name="communicate">Communicate</string>
+    <string name="logg_ut">Logg ut</string>
+    <string name="innstillinger">Innstillinger</string>
+    <string name="alle_listene">Alle listene</string>
     <string-array name="months">
         <item>January</item>
         <item>February</item>

@@ -4,22 +4,22 @@
         <item
             android:id="@+id/nav_db"
             android:icon="@drawable/ic_dashboard_black_24dp"
-            android:title="Alle listene" />
+            android:title="@string/alle_listene" />
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings_black_24dp"
-            android:title="Settings" />
+            android:title="@string/innstillinger" />
         <item
             android:id="@+id/nav_logOut"
             android:icon="@drawable/ic_exit_to_app_black_24dp"
-            android:title="Log out" />
+            android:title="@string/logg_ut" />
     </group>
-    <item android:title="Communicate">
+    <item android:title="@string/communicate">
         <menu>
             <item
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_share_black_24dp"
-                android:title="Share" />
+                android:title="@string/del" />
         </menu>
     </item>
 </menu>

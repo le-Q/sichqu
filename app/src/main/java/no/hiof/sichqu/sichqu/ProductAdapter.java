@@ -70,7 +70,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         productViewHolder.thumbnails.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Log.e("Check Error", "long click");
                 ChangeImage(productViewHolder);
                 return true;
             }

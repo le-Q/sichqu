@@ -148,7 +148,6 @@ public class HandlelisteActivity extends AppCompatActivity {
 
         skuScan = new IntentIntegrator(this);
         recycleSetup();
-        //dbListener();
 
 
         goSpinner();
@@ -162,15 +161,9 @@ public class HandlelisteActivity extends AppCompatActivity {
 
                 if (!lister.isEmpty()) {
                     databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(lister.get(0));
-                    Log.e("Handel", " Test -> " + lister.get(0) + testHandleliste + " " + databaseReference.toString());
                 } else {
                     firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid());
-
                     startActivity(new Intent(HandlelisteActivity.this, HvisListeneActivity.class));
-                }
-
-                if (!lister.isEmpty()) {
-                    databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(lister.get(0));
                 }
             }
 
@@ -249,19 +242,15 @@ public class HandlelisteActivity extends AppCompatActivity {
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         Toast.makeText(HandlelisteActivity.this, "you selected: " + arrayHandleliste.get(position), Toast.LENGTH_SHORT).show();
                         testHandleliste = arrayHandleliste.get(position);
-                        Log.e("GetA", testHandleliste + " <- " + arrayHandleliste.get(position));
 
                         firebaseDatabase.getReference().child("produkter").child(firebaseAuth.getUid()).child(testHandleliste).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot snap) {
-                                Log.e("Spinner", snap.getKey() + " -> " + snap.getChildren());
 
                                 ArrayList<Products> lister = new ArrayList<>();
                                 for (DataSnapshot nameListShot : snap.getChildren()) {
                                     Products product = nameListShot.getValue(Products.class);
                                     lister.add(product);
-                                    //Log.e("Spinner3", nameListShot.getChildren().toString());
-
                                 }
                                 testHandleliste = snap.getKey();
                                 productAdapter.setListData(lister);
@@ -306,59 +295,11 @@ public class HandlelisteActivity extends AppCompatActivity {
         mRecyclerView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("View", "Hva er det?" + v);
                 Toast.makeText(HandlelisteActivity.this, "Hva er det?" + v, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void dbListener() {
-        childEventListener = new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Products product = dataSnapshot.getValue(Products.class);
-                String productKey = dataSnapshot.getKey();
-                if (product != null) {
-                    product.setId(productKey);
-                }
-
-                if (!productList.contains(product)) {
-                    productList.add(product);
-                    productListKeys.add(productKey);
-                    productAdapter.notifyItemChanged(productList.size() - 1);
-                }
-                Log.d(TAG, "OnChildAdded fired");
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                Products removedProduct = dataSnapshot.getValue(Products.class);
-                String producktKey = dataSnapshot.getKey();
-                removedProduct.setId(producktKey);
-
-                int position = productListKeys.indexOf(producktKey);
-                productList.remove(removedProduct);
-                productListKeys.remove(position);
-                productAdapter.notifyItemRemoved(position);
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        };
-        databaseReference.addChildEventListener(childEventListener);
-    }
 
     private void recycleSetup() {
         mRecyclerView = findViewById(R.id.recyleViewListe);
@@ -414,7 +355,6 @@ public class HandlelisteActivity extends AppCompatActivity {
             firebaseAuth.removeAuthStateListener(mAuthListener);
         }
         productAdapter.notifyDataSetChanged();
-        Log.e("Adapter", " - > " + productList);
     }
 
     protected void onPause() {

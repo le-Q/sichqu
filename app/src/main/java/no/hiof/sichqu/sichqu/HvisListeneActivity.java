@@ -51,9 +51,9 @@ public class HvisListeneActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        /*if(!isOnline()){
+        if(!isOnline()){
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("No internet access").setMessage("You don't have internet! This app doesn't work without internet right now. We're deeply sorry.")
+            builder.setTitle("Ingen internett tilgang!").setMessage("Denne appen fungerer desverre ikke uten internett.")
                     .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
@@ -63,7 +63,7 @@ public class HvisListeneActivity extends AppCompatActivity {
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
-        }*/
+        }
 
         DeltPreferanse sharedpref = new DeltPreferanse(this);
         if(sharedpref.loadNightModeState())
@@ -108,7 +108,7 @@ public class HvisListeneActivity extends AppCompatActivity {
         mToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        getSupportActionBar().setTitle("Shoppinglists");
+        getSupportActionBar().setTitle("Handlelister");
 
         listView = findViewById(R.id.AlleListene);
         EditText handleListeNavn = findViewById(R.id.listName);
@@ -118,9 +118,6 @@ public class HvisListeneActivity extends AppCompatActivity {
 
         View headerView = navigationView.getHeaderView(0);
         TextView userEmail = headerView.findViewById(R.id.email);
-
-
-
 
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
@@ -185,7 +182,6 @@ public class HvisListeneActivity extends AppCompatActivity {
                 String productList = arrayList.get(position);
                 intent.putExtra(HandlelisteActivity.LIST_UID, productList);
 
-                Log.e("productList: ", "*** - productlist+arrayList.get(position) = " + productList);
                 //intent.putExtra()
 
                 startActivity(intent);
@@ -228,9 +224,7 @@ public class HvisListeneActivity extends AppCompatActivity {
                 arrayList.clear();
                 for(DataSnapshot nameListShot : dataSnapshot.getChildren()){
                     arrayList.add(nameListShot.getKey());
-                    Log.e("Historikk", "->" + nameListShot.getKey());
                 }
-                Log.e("Historikk", "-> " + arrayList);
                 arrayAdapter.notifyDataSetChanged();
             }
 
