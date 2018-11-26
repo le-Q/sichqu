@@ -175,8 +175,7 @@ public class HvisListeneActivity extends AppCompatActivity {
     public void goToList() {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Toast.makeText(HvisListeneActivity.this, "Du trykket på: "+position+" "+arrayList.get(position), Toast.LENGTH_SHORT).show();
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {//Toast.makeText(HvisListeneActivity.this, "Du trykket på: "+position+" "+arrayList.get(position), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(HvisListeneActivity.this, HandlelisteActivity.class);
 
                 String productList = arrayList.get(position);
@@ -196,7 +195,7 @@ public class HvisListeneActivity extends AppCompatActivity {
 
         builder.setView(viewDialog);
         final AlertDialog dialog = builder.create();
-        dialog.setTitle("Add shoppinglist");
+        dialog.setTitle("Legg til handleliste");
         dialog.show();
 
         leggTil.setOnClickListener(new View.OnClickListener() {
@@ -207,7 +206,6 @@ public class HvisListeneActivity extends AppCompatActivity {
 
                 if (!TextUtils.isEmpty(listenavn)) {
                     productDatabaseReference.child(listenavn).setValue(0);
-                    //Toast.makeText(HvisListeneActivity.this, "Listen " + listenavn + " ble laget", Toast.LENGTH_LONG).show();
                     dialog.cancel();
                 } else {
                     Toast.makeText(HvisListeneActivity.this, "Skriv inn navn på handleliste", Toast.LENGTH_SHORT).show();

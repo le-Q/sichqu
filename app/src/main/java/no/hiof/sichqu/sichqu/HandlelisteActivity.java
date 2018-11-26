@@ -6,35 +6,22 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.MatrixCursor;
-import android.location.Address;
-import android.location.Geocoder;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -64,13 +51,10 @@ import com.google.zxing.integration.android.IntentResult;
 
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 import no.hiof.sichqu.sichqu.Products.Products;
 import no.hiof.sichqu.sichqu.Products.Produkt;
@@ -490,19 +474,14 @@ public class HandlelisteActivity extends AppCompatActivity {
         final EditText editName = view.findViewById(R.id.productName);
 
 
-        //AutoCompleteAdapter adapter = new AutoCompleteAdapter(this, currentSearchingList);
-        //editName.setAdapter(adapter);
-
         builder.setView(view);
         final AlertDialog dialog = builder.create();
-        dialog.setTitle("Add new product");
+        dialog.setTitle("Legg til nytt produkt");
         builder.setView(view);
 
         String[] from={"produkt_image","produkt_navn"};
         int[] to={R.id.produkt_bilde,R.id.produkt_navn};
         SimpleAdapter listadapter=new SimpleAdapter(HandlelisteActivity.this,produktinfodisplay,R.layout.search_layout,from,to);
-
-        //listview.setAdapter(listadapter);
 
 
         leggTil.setOnClickListener(new View.OnClickListener() {

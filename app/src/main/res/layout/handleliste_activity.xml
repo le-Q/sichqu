@@ -106,7 +106,7 @@
             android:onClick="scanItem"
             android:src="@drawable/ic_code_w_24dp"
             fab:fab_size="mini"
-            fab:fab_label="Scan" />
+            fab:fab_label="Skann vare" />
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/addNewFloat"
@@ -117,7 +117,7 @@
             fab:fab_colorRipple="@color/colorPrimary"
             android:src="@drawable/ic_add_circle_w_24dp"
             fab:fab_size="mini"
-            fab:fab_label="Add Item"
+            fab:fab_label="Legg til vare"
             android:onClick="addNewItem"
             app:layout_constraintBottom_toBottomOf="@+id/recyleViewListe"
             app:layout_constraintEnd_toEndOf="@+id/recyleViewListe"
