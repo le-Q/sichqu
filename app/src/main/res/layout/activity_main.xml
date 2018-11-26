@@ -49,7 +49,7 @@
 
        <TextView
            android:textAlignment="center"
-           android:text="@string/alerede_registrert_logg_inn_her"
+           android:text="@string/allerede_registrert_logg_inn_her"
            android:id="@+id/textViewSignin"
            android:layout_width="match_parent"
            android:layout_height="wrap_content" />

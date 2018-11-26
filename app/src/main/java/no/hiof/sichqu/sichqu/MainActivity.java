@@ -78,17 +78,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if(TextUtils.isEmpty(email)){
             //email is empty
-            Toast.makeText(this, "Please enter email", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Husk å skrive inn mail", Toast.LENGTH_SHORT).show();
             return;
         }
 
         if(TextUtils.isEmpty(password)){
             //password is empty
-            Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Husk å skrive inn passord", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        progressDialog.setMessage("Registering User...");
+        progressDialog.setMessage("Registrerer bruker...");
         progressDialog.show();
 
         firebaseAuth.createUserWithEmailAndPassword(email,password)
@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 finish();
                                 startActivity(new Intent(getApplicationContext(), HvisListeneActivity.class));
                         }else{
-                                Toast.makeText(MainActivity.this, "Could not register... Please try agian", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, "Kunne ikke registrere bruker, prøv igjen", Toast.LENGTH_SHORT).show();
                             }
                             progressDialog.dismiss();
                         }

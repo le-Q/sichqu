@@ -80,7 +80,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
                     @Override
                     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        Toast.makeText(LoginActivity.this, "You Got an Error", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Noe feil har sjedd", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
@@ -126,7 +126,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
-                Log.w(TAG, "Google sign in failed", e);
+                Log.w(TAG, "Google logg inn har feilet", e);
                 // ...
             }
         }
@@ -144,7 +144,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         Log.d(TAG, "signInWithCredential:onComplete" + task.isSuccessful());
                         if (!task.isSuccessful()) {
                             Log.w(TAG, "signInWithCredential", task.getException());
-                            Toast.makeText(LoginActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "Innlogging feilet.", Toast.LENGTH_SHORT).show();
                         }
 
                     }
@@ -157,17 +157,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         if(TextUtils.isEmpty(email)){
             //email is empty
-            Toast.makeText(this, "Please enter email", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Husk å skrive inn mail", Toast.LENGTH_SHORT).show();
             return;
         }
 
         if(TextUtils.isEmpty(password)){
             //password is empty
-            Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Husk å skrive inn passord", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        progressDialog.setMessage("Registering User...");
+        progressDialog.setMessage("Registrerer bruker...");
         progressDialog.show();
 
         firebaseAuth.signInWithEmailAndPassword(email, password)
