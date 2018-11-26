@@ -175,13 +175,12 @@ public class HvisListeneActivity extends AppCompatActivity {
     public void goToList() {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {//Toast.makeText(HvisListeneActivity.this, "Du trykket på: "+position+" "+arrayList.get(position), Toast.LENGTH_SHORT).show();
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(HvisListeneActivity.this, HandlelisteActivity.class);
 
                 String productList = arrayList.get(position);
                 intent.putExtra(HandlelisteActivity.LIST_UID, productList);
-
-                //intent.putExtra()
+                intent.putExtra(HandlelisteActivity.LIST_POS, position);
 
                 startActivity(intent);
             }

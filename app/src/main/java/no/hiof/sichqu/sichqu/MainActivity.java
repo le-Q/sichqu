@@ -39,12 +39,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-        if (firebaseAuth.getCurrentUser() != null) {
-            //account activity
-            finish();
-            startActivity(new Intent(getApplicationContext(), HvisListeneActivity.class));
-        }
-
         progressDialog = new ProgressDialog(this);
 
         buttonRegister = (Button) findViewById(R.id.buttonRegister);
@@ -78,17 +72,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if(TextUtils.isEmpty(email)){
             //email is empty
-            Toast.makeText(this, "Please enter email", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Skriv inn e-post", Toast.LENGTH_SHORT).show();
             return;
         }
 
         if(TextUtils.isEmpty(password)){
             //password is empty
-            Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Skriv inn passord", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        progressDialog.setMessage("Registering User...");
+        progressDialog.setMessage("Logger inn..");
         progressDialog.show();
 
         firebaseAuth.createUserWithEmailAndPassword(email,password)
@@ -105,13 +99,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         }
 
                 });
+        startActivity(new Intent(MainActivity.this, HvisListeneActivity.class));
     }
 
         @Override
         public void onClick (View v){
             if (v == buttonRegister) {
                 registerUser();
-                startActivity(new Intent(MainActivity.this, HvisListeneActivity.class));
             }
 
             if (v == textViewSignin) {

@@ -63,11 +63,12 @@ import no.hiof.sichqu.sichqu.Products.UPC_data;
 public class HandlelisteActivity extends AppCompatActivity {
     private static final String TAG = HandlelisteActivity.class.getSimpleName();
     private static final int RC_SIGN_IN = 1;
+    private int listposition;
     public static final String LIST_UID = "list_uid";
+    public static String LIST_POS = "list_pos";
 
     String cider = "Grevens cider skogsbær";
     String testHandleliste = "Handleliste";
-    private ArrayList<String> arrayHandleliste = new ArrayList<>();
 
     private RecyclerView mRecyclerView;
     private ProductAdapter productAdapter;
@@ -84,6 +85,8 @@ public class HandlelisteActivity extends AppCompatActivity {
     private SearchView searchView;
 
     private ArrayList<String> lister = new ArrayList<>();
+    private ArrayList<String> arrayHandleliste = new ArrayList<>();
+
     public static String[] columns = new String[]{"_id", "PRODUKT_navn", "PRODUKT_img"};
     private Produkt produktinfo;
     private List<Map<String, String>> produktinfodisplay;
@@ -101,6 +104,7 @@ public class HandlelisteActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
 
         String productUid = getIntent().getStringExtra(LIST_UID);
+        listposition = getIntent().getIntExtra(LIST_POS, 0);
         getSupportActionBar().setTitle(productUid);
 
         //Sjekker om en bruker er logget inn, hvis ingen brukere er logget inn blir man sendt til loginactivty
@@ -220,12 +224,14 @@ public class HandlelisteActivity extends AppCompatActivity {
                 Spinner navigationSpinner = new Spinner(getSupportActionBar().getThemedContext());
                 navigationSpinner.setAdapter(spinnerAdapter);
                 toolbar.addView(navigationSpinner, 0);
+                if (listposition > 0)
+                navigationSpinner.setSelection(listposition);
 
                 navigationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        Toast.makeText(HandlelisteActivity.this, "you selected: " + arrayHandleliste.get(position), Toast.LENGTH_SHORT).show();
                         testHandleliste = arrayHandleliste.get(position);
+                        getSupportActionBar().setTitle(arrayHandleliste.get(position));
 
                         firebaseDatabase.getReference().child("produkter").child(firebaseAuth.getUid()).child(testHandleliste).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
@@ -306,7 +312,6 @@ public class HandlelisteActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         databaseReference = firebaseDatabase.getReference("produkter").child(firebaseAuth.getUid()).child(lister.get(0)).child(productListKeys.get(position));
                         databaseReference.removeValue();
-                        //Toast.makeText(HandlelisteActivity.this, "Produkter å slette: " + databaseReference, Toast.LENGTH_SHORT).show();
                         productAdapter.notifyItemRemoved(position);
                     }
                 });
